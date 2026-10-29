@@ -1,0 +1,60 @@
+/* Plain, simple website style */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #2D3E2C;
+    color: white;
+}
+
+/* Top menu */
+.header {
+    background-color: #193321;
+    padding: 15px;
+    text-align: center;
+}
+.header h2 {
+    color: #E4FD97;
+}
+.header span {
+    color: white;
+    margin: 10px;
+}
+
+/* Main welcome section */
+.hero {
+    background-color: #E4FD97;
+    color: #0b2115;
+    text-align: center;
+    padding: 50px 20px;
+}
+.hero h1 {
+    font-size: 50px;
+    margin: 10px;
+}
+.button {
+    display: inline-block;
+    background-color: #2D3E2C;
+    color: white;
+    padding: 12px 20px;
+    margin-top: 10px;
+}
+
+/* About and feature cards */
+.about {
+    text-align: center;
+    padding: 30px 15px;
+}
+.card {
+    display: inline-block;
+    background-color: #193321;
+    padding: 15px;
+    margin: 10px;
+    width: 200px;
+}
+
+/* Bottom of the page */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #E4FD97;
+}
