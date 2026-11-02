@@ -1,0 +1,175 @@
+<style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+            --success-bg: #f0fdf4;
+            --success-text: #166534;
+            --warning-bg: #fefce8;
+            --warning-text: #854d0e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #152b40;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-badge {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border: 1px solid #fef08a;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        /* Comparison Section */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .price-card {
+            background: rgb(127, 90, 90);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            position: relative;
+        }
+
+        .price-card.featured {
+            border-color: var(--primary);
+            box-shadow: 0 10px 15px -3px rgb(37 99 235 / 0.1);
+        }
+
+        .tier-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+
+        .price-tag {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .price-tag span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #1166de;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            flex-grow: 1;
+        }
+
+        .features-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: #29a078;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .cta-btn {
+            background-color: var(--primary);
+            color: rgb(107, 175, 126);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .cta-btn.secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .cta-btn.secondary:hover {
+            background-color: #eff6ff;
+        }
+
+        /* Demo Sandbox Area */
+        .demo-sandbox {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .sandbox-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-box {
+            display: none;
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid #bbf7d0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .contact-heading {
+            font-weight: 700;
+            margin-top: 0;
+}
