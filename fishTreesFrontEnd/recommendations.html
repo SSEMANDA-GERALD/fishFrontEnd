@@ -1,12 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subject recommendations</title>
-    <link rel="icon" href="https://www.stickpng.com/img/icons-logos-emojis/recommended/highly-recommended-thumb-up">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FishTrees Pathways student recommendation system for academic and career guidance.">
+  <title>Recommendations | FishTrees Pathways</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/recommendations.css">
 </head>
 <body>
-    
+  <header class="topbar no-print">
+    <nav class="navbar">
+      <div class="brand" aria-label="FishTrees Pathways home">
+        <span class="brand-mark">F</span>
+        <span>FishTrees Pathways</span>
+      </div>
+      <div class="nav-links" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="payment.html">Payment</a>
+        <a href="recommendations.html" aria-current="page">Recommendations</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero-panel">
+      <div class="hero-inner">
+        <span class="eyebrow">Career guidance</span>
+        <h1>Student Recommendations</h1>
+        <p>Your future starts with understanding your strengths, interests and ambitions. Tell us a little about yourself so we can help you explore the right academic pathways.</p>
+
+        <div class="progress-row" aria-label="Progress tracking">
+          <div class="progress-step active" aria-current="step">
+            <span class="step-number">1</span>
+            <span>Student Profile</span>
+          </div>
+          <div class="progress-step">
+            <span class="step-number">2</span>
+            <span>Academic Results</span>
+          </div>
+          <div class="progress-step">
+            <span class="step-number">3</span>
+            <span>Recommendations</span>
+          </div>
+        </div>
+
+        <div class="demo-badge">Demo mode • Frontend guidance</div>
+      </div>
+    </section>
+
+    <div class="main-content">
+      <form id="recommendationForm" novalidate>
+        <section class="form-card">
+          <h2>Discover Your Academic Pathway</h2>
+          <p class="section-copy">Your future starts with understanding your strengths, interests and ambitions. Tell us a little about yourself so we can help you explore the right academic pathways.</p>
+
+          <div class="section-grid">
+            <div class="field-wrap">
+              <label for="schoolSearch">School</label>
+              <input id="schoolSearch" list="schoolOptions" class="form-control" placeholder="Search for your school" autocomplete="off" />
+              <datalist id="schoolOptions"></datalist>
+            </div>
+
+            <div class="field-wrap">
+              <label for="careerAspiration">What would you like to become in the future?</label>
+              <textarea id="careerAspiration" placeholder="Optional: share your future ambition or write 'not sure yet'"></textarea>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <h3>Interest Clusters</h3>
+            <p class="section-copy">Select the areas that best match your interests. You can choose more than one.</p>
+            <div id="interestGrid" class="interest-grid" aria-label="Student interests"></div>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <h2>Your O-Level Academic Results</h2>
+          <p class="section-copy">Enter your final UNEB examination results. Your academic performance helps us understand your strengths and identify suitable A-Level combinations.</p>
+          <div id="oLevelResultsContainer" class="subject-layout" aria-live="polite"></div>
+        </section>
+
+        <section class="form-card">
+          <div class="section-toggle">
+            <div>
+              <h3>Add Mock Examination Results (Optional)</h3>
+              <p class="section-copy">Would you like to include your mock examination results? These can provide additional information about your academic progress.</p>
+            </div>
+          </div>
+
+          <div class="toggle-box">
+            <button id="mockResultsToggle" class="toggle-header" type="button" aria-expanded="false">
+              <span id="mockResultsToggleText">Add Mock Examination Results (Optional)</span>
+              <span>▾</span>
+            </button>
+            <div id="mockResultsPanel" class="mock-section" aria-live="polite">
+              <div id="mockResultsContainer" class="subject-layout"></div>
+            </div>
+          </div>
+        </section>
+
+        <div id="validationBox" class="validation-box" aria-live="polite"></div>
+
+        <div class="form-actions">
+          <span class="inline-note">Development note: demonstration recommendation logic is currently active.</span>
+          <button id="generateRecommendationsBtn" class="primary-btn" type="button">
+            Generate My Recommendations
+          </button>
+        </div>
+
+        <div id="loadingText" class="loading-state" style="display: none;">
+          <span class="loading-spinner"></span>
+          <span>Exploring your academic pathways...</span>
+        </div>
+      </form>
+
+      <section id="resultsSection" class="results-section">
+        <div class="result-panel">
+          <h3>Your Recommended A-Level Pathways</h3>
+          <p class="section-copy">Explore combinations that align with your academic strengths, interests and future aspirations.</p>
+          <div id="recommendationsContainer" aria-live="polite">
+            <div class="empty-state">Select your school, interests and examination results to generate recommendations.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="report-panel no-print">
+        <div id="reportCard" class="report-card hidden"></div>
+        <div class="form-actions mt-3 no-print">
+          <span class="inline-note">After recommendation generation, download a print-friendly summary for sharing.</span>
+          <button id="reportDownloadBtn" class="secondary-btn" type="button" style="display: none;">Download My Career Guidance Report</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer no-print">
+    © 2026 FishTrees Pathways. All rights reserved.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-3QmG1p2P+Lh0dQeQ7bHc1yN5dKmxVqJ4uN6m1hC8lTpC7vQm0xVvJfF1G8A0A5AA" crossorigin="anonymous"></script>
+  <script src="js/recommendations.js"></script>
 </body>
 </html>
