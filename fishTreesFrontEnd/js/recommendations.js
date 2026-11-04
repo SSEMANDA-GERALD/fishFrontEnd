@@ -169,6 +169,10 @@ function bindEvents() {
   document.getElementById("loadSampleDataBtn").addEventListener("click", () => {
     fillSampleData();
   });
+
+  document.getElementById("generateRecommendationsBtn").addEventListener("click", () => {
+    window.location.href = "payment.html";
+  });
 }
 
 function fillSampleData() {

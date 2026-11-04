@@ -1,0 +1,100 @@
+:root {
+  color-scheme: light;
+  --forest: #193321;
+  --leaf: #e4fd97;
+  --bs-body-color: #1f2d24;
+  --bs-secondary-color: #58675d;
+}
+
+body {
+  background: #f3f7ef;
+  color: #1f2d24;
+}
+
+.card {
+  background-color: #fff;
+  color: #1f2d24;
+}
+
+.bg-forest {
+  background-color: var(--forest);
+}
+
+.text-forest {
+  color: var(--forest) !important;
+}
+
+.brand-mark {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  background: var(--leaf);
+  color: var(--forest);
+}
+
+.site-nav-link {
+  color: rgb(255 255 255 / 80%);
+  text-decoration: none;
+}
+
+.site-nav-link:hover,
+.site-nav-link.active {
+  color: #fff;
+}
+
+.eyebrow {
+  color: var(--forest);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.border-forest {
+  border-color: var(--forest) !important;
+}
+
+.payment-option {
+  cursor: pointer;
+}
+
+.payment-option .form-check-input {
+  position: static;
+  margin-left: 0;
+  flex: 0 0 auto;
+  accent-color: var(--forest);
+}
+
+.payment-option:has(.form-check-input:checked) {
+  border-color: var(--forest) !important;
+  background: #f3f7ef;
+}
+
+.price-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  border-color: #dfe7d8 !important;
+}
+
+.btn-forest {
+  background: var(--forest);
+  color: #fff;
+}
+
+.btn-forest:hover {
+  background: #2d3e2c;
+  color: #fff;
+}
+
+.btn-outline-forest {
+  border: 1px solid var(--forest);
+  color: var(--forest);
+}
+
+.btn-outline-forest:hover {
+  background: var(--forest);
+  color: #fff;
+}
