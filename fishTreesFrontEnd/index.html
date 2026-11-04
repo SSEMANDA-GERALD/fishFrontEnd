@@ -1,510 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-bs-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Fish Trees Pathways | Discover Your Future</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore educational choices and plan your next academic step with FishTrees Pathways.">
+  <title>FishTrees Pathways | Explore Your Future</title>
+  <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
-
-<body class="home-page">
-
-    <!-- ================= NAVIGATION BAR ================= -->
-
-    <nav class="navbar navbar-expand-lg home-navbar">
-        <div class="container">
-
-            <a class="navbar-brand" href="index.html">
-                🌳 Fish Trees Pathways
-            </a>
-
-            <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-
-                <span class="navbar-toggler-icon"></span>
-
-            </button>
-
-            <div class="collapse navbar-collapse" id="mainNavbar">
-
-                <ul class="navbar-nav ms-auto align-items-lg-center">
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Home</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#how-it-works">How It Works</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="recommendations.html">
-                            Explore Pathways
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                        <a href="recommendations.html"
-                            class="btn btn-fishtrees">
-                            Get Started →
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
-        </div>
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg container site-navbar" aria-label="Main navigation">
+      <a class="navbar-brand p-0" href="index.html" aria-label="FishTrees Pathways home">
+        <img class="site-logo" src="images/FishTrees Pathways Logo.png" alt="FishTrees Pathways">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavigation" aria-controls="siteNavigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="siteNavigation">
+        <ul class="navbar-nav ms-lg-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html" aria-current="page">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="recommendations.html">Recommendations</a></li>
+          <li class="nav-item"><a class="nav-link" href="payment.html">Payment</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item nav-cta"><a class="btn btn-site" href="recommendations.html">Get started</a></li>
+        </ul>
+      </div>
     </nav>
+  </header>
 
-
-    <!-- ================= HERO SECTION ================= -->
-
-    <section class="hero-section">
-
-        <div class="container">
-
-            <div class="row align-items-center g-5">
-
-                <div class="col-lg-7">
-
-                    <p class="hero-label">
-                        EDUCATION • CAREER • OPPORTUNITY
-                    </p>
-
-                    <h1>
-                        Fish Trees<br>
-                        Pathways
-                    </h1>
-
-                    <h4 class="fw-bold">
-                        Discover Your Potential, Choose Your Path,
-                        Build Your Future.
-                    </h4>
-
-                    <p class="hero-description mt-3">
-                        An AI-assisted platform helping learners make
-                        informed educational decisions by exploring
-                        suitable subject combinations and future
-                        opportunities.
-                    </p>
-
-                    <div class="mt-4">
-
-                        <a href="recommendations.html"
-                            class="btn btn-fishtrees me-2">
-                            Explore Pathways →
-                        </a>
-
-                        <a href="about.html"
-                            class="btn btn-outline-fishtrees mt-2 mt-sm-0">
-                            Learn More
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <div class="col-lg-5">
-
-                    <div class="hero-illustration">
-
-                        <div class="tree-icon">🌱</div>
-
-                        <h3 class="fw-bold">
-                            Different Paths
-                        </h3>
-
-                        <h4>Brighter Futures</h4>
-
-                        <p class="small mt-2">
-                            Every choice shapes your tomorrow.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+  <main>
+    <section class="home-hero">
+      <div class="container home-hero-content">
+        <p class="page-eyebrow">Education, interests and opportunity</p>
+        <h1>Explore your strengths. Plan your next step.</h1>
+        <p class="lead">Understand your academic options, explore subject pathways and make a thoughtful plan for the future.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a class="btn btn-site btn-lg" href="recommendations.html">Explore pathways</a>
+          <a class="btn btn-site-outline btn-lg" href="about.html">About FishTrees</a>
         </div>
-
+      </div>
     </section>
 
-
-    <!-- ================= ABOUT SECTION ================= -->
-
-    <section class="home-section">
-
-        <div class="container text-center">
-
-            <p class="section-label">
-                WHO WE ARE
-            </p>
-
-            <h2 class="section-title">
-                Guidance for a Brighter Tomorrow
-            </h2>
-
-            <p class="section-description mx-auto"
-                style="max-width: 750px;">
-
-                Fish Trees Pathways is designed to help learners
-                understand their educational options, explore
-                suitable subject combinations and make informed
-                decisions about their future.
-
-            </p>
-
-            <a href="about.html" class="btn btn-fishtrees mt-3">
-                Discover More →
-            </a>
-
+    <section class="home-section" aria-labelledby="journey-title">
+      <div class="container">
+        <div class="mb-5">
+          <p class="page-eyebrow">A clear place to begin</p>
+          <h2 class="home-section-title" id="journey-title">Make your next choice with confidence</h2>
+          <p class="text-secondary mb-0">Start with what you know about yourself, then explore the options ahead.</p>
         </div>
-
+        <div class="row g-4">
+          <div class="col-md-4">
+            <article class="journey-step">
+              <span class="journey-number">01</span>
+              <h3>Share your interests</h3>
+              <p>Think about the subjects and activities that keep you curious.</p>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="journey-step">
+              <span class="journey-number">02</span>
+              <h3>Review your options</h3>
+              <p>Explore academic pathways that connect with your strengths.</p>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="journey-step">
+              <span class="journey-number">03</span>
+              <h3>Plan what comes next</h3>
+              <p>Use what you learn to guide your next educational decision.</p>
+            </article>
+          </div>
+        </div>
+      </div>
     </section>
 
-
-    <!-- ================= FEATURES SECTION ================= -->
-
-    <section class="home-section pt-0">
-
-        <div class="container">
-
-            <div class="text-center mb-5">
-
-                <p class="section-label">
-                    WHAT WE OFFER
-                </p>
-
-                <h2 class="section-title">
-                    Explore Your Possibilities
-                </h2>
-
-                <p class="section-description">
-                    Discover the tools that can help guide your
-                    educational journey.
-                </p>
-
-            </div>
-
-
-            <div class="row g-4">
-
-                <!-- Card 1 -->
-
-                <div class="col-12 col-md-6 col-lg-3">
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">📚</div>
-
-                        <h5>Subject Guidance</h5>
-
-                        <p>
-                            Explore suitable A-Level subject
-                            combinations and understand your
-                            educational options.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Card 2 -->
-
-                <div class="col-12 col-md-6 col-lg-3">
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">🎓</div>
-
-                        <h5>Education Pathways</h5>
-
-                        <p>
-                            Discover educational programmes and
-                            possible directions for your academic
-                            journey.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Card 3 -->
-
-                <div class="col-12 col-md-6 col-lg-3">
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">🧭</div>
-
-                        <h5>Career Discovery</h5>
-
-                        <p>
-                            Explore possible career directions
-                            connected to your educational interests.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Card 4 -->
-
-                <div class="col-12 col-md-6 col-lg-3">
-
-                    <div class="feature-card">
-
-                        <div class="feature-icon">💡</div>
-
-                        <h5>Future Opportunities</h5>
-
-                        <p>
-                            Make informed decisions as you prepare
-                            for future educational and career
-                            opportunities.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
+    <section class="home-cta text-center">
+      <div class="container">
+        <h2>Every future begins with a choice.</h2>
+        <p>Take time to understand your options and find a direction that feels right for you.</p>
+        <a class="btn btn-site" href="recommendations.html">Start exploring</a>
+      </div>
     </section>
-
-
-    <!-- ================= HOW IT WORKS ================= -->
-
-    <section class="home-section" id="how-it-works">
-
-        <div class="container">
-
-            <div class="text-center mb-5">
-
-                <p class="section-label">
-                    YOUR JOURNEY
-                </p>
-
-                <h2 class="section-title">
-                    How Fish Trees Pathways Works
-                </h2>
-
-                <p class="section-description">
-                    A simple journey towards making informed choices.
-                </p>
-
-            </div>
-
-
-            <div class="row g-4 text-center">
-
-                <div class="col-12 col-md-6 col-lg-3">
-
-                    <div class="step-card">
-
-                        <div class="step-number">01</div>
-
-                        <h5>Discover</h5>
-
-                        <p class="section-description">
-                            Explore your interests and educational
-                            possibilities.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="col-12 col-md-6 col-lg-3">
-
-                    <div class="step-card">
-
-                        <div class="step-number">02</div>
-
-                        <h5>Understand</h5>
-
-                        <p class="section-description">
-                            Learn about available subject
-                            combinations and opportunities.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="col-12 col-md-6 col-lg-3">
-
-                    <div class="step-card">
-
-                        <div class="step-number">03</div>
-
-                        <h5>Plan</h5>
-
-                        <p class="section-description">
-                            Make informed decisions about your
-                            educational direction.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="col-12 col-md-6 col-lg-3">
-
-                    <div class="step-card">
-
-                        <div class="step-number">04</div>
-
-                        <h5>Grow</h5>
-
-                        <p class="section-description">
-                            Work towards your ambitions and
-                            future opportunities.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= CALL TO ACTION ================= -->
-
-    <section class="container">
-
-        <div class="cta-section text-center">
-
-            <h2>Your Future Starts With the Right Choice.</h2>
-
-            <p class="mt-3">
-                Explore your educational possibilities and
-                discover where your journey can take you.
-            </p>
-
-            <a href="recommendations.html"
-                class="btn btn-fishtrees mt-3">
-                Get Started →
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= FOOTER ================= -->
-
-    <footer class="home-footer">
-
-        <div class="container">
-
-            <div class="row g-4">
-
-                <div class="col-md-6">
-
-                    <h5>🌳 Fish Trees Pathways</h5>
-
-                    <p>
-                        Discover Your Potential, Choose Your Path,
-                        Build Your Future.
-                    </p>
-
-                    <p class="small">
-                        Helping learners make informed educational
-                        decisions and explore future opportunities.
-                    </p>
-
-                </div>
-
-
-                <div class="col-6 col-md-3">
-
-                    <h5>Quick Links</h5>
-
-                    <p><a href="index.html">Home</a></p>
-
-                    <p><a href="about.html">About</a></p>
-
-                    <p><a href="#how-it-works">How It Works</a></p>
-
-                </div>
-
-
-                <div class="col-6 col-md-3">
-
-                    <h5>Explore</h5>
-
-                    <p>
-                        <a href="recommendations.html">
-                            Recommendations
-                        </a>
-                    </p>
-
-                    <p>
-                        <a href="contact.html">
-                            Contact
-                        </a>
-                    </p>
-
-                    <p>
-                        <a href="payment.html">
-                            Payment
-                        </a>
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="footer-bottom text-center">
-
-                <p class="mb-0">
-                    &copy; 2026 Fish Trees Pathways.
-                    All Rights Reserved.
-                </p>
-
-            </div>
-
-        </div>
-
-    </footer>
-
-
-    <!-- Bootstrap JavaScript -->
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-    </script>
-
+  </main>
+
+  <footer class="site-footer py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <p class="mb-0">&copy; 2026 FishTrees Pathways</p>
+      <div class="d-flex flex-wrap gap-3">
+        <a href="about.html">About</a>
+        <a href="recommendations.html">Recommendations</a>
+        <a href="payment.html">Payment</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

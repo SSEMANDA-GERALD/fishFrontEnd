@@ -6,21 +6,28 @@
   <meta name="description" content="Choose individual recommendation payment or sign in through a school account.">
   <title>Payment | FishTrees Pathways</title>
   <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
   <link rel="stylesheet" href="css/payment-bootstrap.css">
 </head>
 <body>
-  <header class="bg-forest">
-    <nav class="container py-3 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3" aria-label="Main navigation">
-      <a class="d-flex align-items-center gap-2 text-white text-decoration-none fw-bold" href="index.html" aria-label="FishTrees Pathways home">
-        <img class="brand-logo" src="images/FishTrees Pathways Logo.png" alt="FishTrees Pathways">
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg container site-navbar" aria-label="Main navigation">
+      <a class="navbar-brand p-0" href="index.html" aria-label="FishTrees Pathways home">
+        <img class="site-logo" src="images/FishTrees Pathways Logo.png" alt="FishTrees Pathways">
       </a>
-      <div class="d-flex flex-wrap gap-3">
-        <a class="site-nav-link" href="index.html">Home</a>
-        <a class="site-nav-link" href="about.html">About Us</a>
-        <a class="site-nav-link" href="contact.html">Contact</a>
-        <a class="site-nav-link active" href="payment.html" aria-current="page">Payment</a>
-        <a class="site-nav-link" href="recommendations.html">Recommendations</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavigation" aria-controls="siteNavigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="siteNavigation">
+        <ul class="navbar-nav ms-lg-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="recommendations.html">Recommendations</a></li>
+          <li class="nav-item"><a class="nav-link active" href="payment.html" aria-current="page">Payment</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item nav-cta"><a class="btn btn-site" href="recommendations.html">Get started</a></li>
+        </ul>
       </div>
     </nav>
   </header>
@@ -93,6 +100,7 @@
     </div>
   </main>
 
-  <footer class="container py-4 text-center text-secondary small">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <footer class="site-footer py-4 text-center small">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
