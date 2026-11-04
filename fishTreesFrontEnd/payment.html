@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Payment | FishTrees Pathways</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -27,5 +28,80 @@
             </div>
         </section>
     </main>
+=======
+    <title>Payment Options - fishTreesFrontEnd</title>
+    <!-- Link to your shared styles if applicable -->
+    <link rel="stylesheet" href="style 2.css">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <span class="demo-badge">Front-End Demonstration Mode</span>
+        <h1>Choose Your Access Plan</h1>
+        <p>Select the option that best fits your educational or individual needs.</p>
+    </div>
+
+    <!-- Pricing Comparison Grid -->
+    <div class="pricing-grid">
+        <!-- Individual Option -->
+        <div class="price-card">
+            <h2 class="tier-name">Individual Recommendation</h2>
+            <div class="price-tag">UGX 500 <span>/ recommendation</span></div>
+            <ul class="features-list">
+                <li>On-demand single target analysis</li>
+                <li>Instant processing and setup</li>
+                <li>Ideal for one-off personal testing</li>
+            </ul>
+            <button class="cta-btn" onclick="triggerDemoState('Individual Recommendation Plan')">Test Individual Flow</button>
+        </div>
+
+        <!-- School Subscription Option -->
+        <div class="price-card featured">
+            <h2 class="tier-name">School Annual Subscription</h2>
+            <div class="price-tag">UGX 500,000 <span>/ school / year</span></div>
+            <ul class="features-list">
+                <li>Covers full academic year cycle</li>
+                <li>Aligned with single main annual intake</li>
+                <li>Centralized management access</li>
+                <li>*Subject to team verification parameters</li>
+            </ul>
+            <button class="cta-btn" onclick="triggerDemoState('School Annual Subscription Plan')">Test School Flow</button>
+        </div>
+    </div>
+
+    <!-- Explanation & Confirmation Sandbox State -->
+    <div class="demo-sandbox">
+        <h3 class="sandbox-title">🛠️ Demo Sandbox Control & Next Steps</h3>
+        <p><strong>What happens next:</strong> Clicking either test flow button simulates target routing workflow states for frontend configuration verification. No real money or credentials are handled during this sandbox demonstration phase.</p>
+        
+        <!-- Clear Simulation Label / Box -->
+        <div id="demoStatusBox" class="status-box">
+            <h4 style="margin: 0 0 8px 0; font-weight: 700;">[DEMO STATE] Simulation Action Triggered Successfully</h4>
+            <p style="margin: 0;" id="demoStatusText"></p>
+        </div>
+    </div>
+
+    <!-- Grace Contact Inquiry Box -->
+    <div class="contact-section">
+        <h3 class="contact-heading">Need specific customized subscription terms?</h3>
+        <p>To request detailed deployment documentation or ask about school package features, please connect directly with our coordination desk:</p>
+        <p><strong>Contact Coordinator:</strong> Grace (<a href="mailto:grace@example.com">grace@example.com</a>)</p>
+    </div>
+</div>
+
+<script>
+    function triggerDemoState(planName) {
+        const statusBox = document.getElementById('demoStatusBox');
+        const statusText = document.getElementById('demoStatusText');
+        
+        statusText.innerText = "System Simulation State: A user has simulated interest in pursuing the '" + planName + "'. Form placement parameters have logged UI tracking events successfully. No actual financial transaction was processed.";
+        statusBox.style.display = 'block';
+        statusBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+</script>
+
+>>>>>>> eb96fae6e457db73578f3326498ceb872bf77e4c
 </body>
 </html>
