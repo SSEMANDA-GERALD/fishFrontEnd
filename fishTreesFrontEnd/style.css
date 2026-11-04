@@ -1,6 +1,7 @@
+
 /* =====================================
    FISH TREES PATHWAYS
-   Homepage stylesheet
+   Homepage Stylesheet
    ===================================== */
 
 :root {
@@ -114,9 +115,9 @@ body.home-page {
     background-color: var(--fresh-canopy);
     color: var(--lime-sprout);
     min-height: 270px;
-    border-radius: 50%;
     width: 270px;
     max-width: 100%;
+    border-radius: 50%;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -126,8 +127,15 @@ body.home-page {
     padding: 20px;
 }
 
-.hero-illustration .tree-icon {
-    font-size: 75px;
+.hero-illustration h2 {
+    font-size: 38px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hero-illustration p {
+    font-size: 13px;
+    margin-top: 10px;
 }
 
 /* GENERAL SECTIONS */
@@ -170,7 +178,8 @@ body.home-page {
 }
 
 .feature-icon {
-    font-size: 35px;
+    font-size: 30px;
+    font-weight: bold;
     color: var(--lime-sprout);
     margin-bottom: 15px;
 }
