@@ -55,15 +55,14 @@ select {
   text-transform: uppercase;
 }
 
-.brand-mark {
-  width: 2.2rem;
-  height: 2.2rem;
-  border-radius: 50%;
-  background: var(--forest-soft);
-  color: var(--forest-deep);
-  display: grid;
-  place-items: center;
-  font-weight: 700;
+.brand-logo {
+  display: block;
+  width: 168px;
+  height: 80px;
+  border-radius: 4px;
+  background: #fff;
+  object-fit: cover;
+  object-position: center;
 }
 
 .nav-links {

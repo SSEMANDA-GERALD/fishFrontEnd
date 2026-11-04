@@ -24,14 +24,14 @@ body {
   color: var(--forest) !important;
 }
 
-.brand-mark {
-  display: inline-flex;
-  width: 36px;
-  height: 36px;
-  align-items: center;
-  justify-content: center;
-  background: var(--leaf);
-  color: var(--forest);
+.brand-logo {
+  display: block;
+  width: 168px;
+  height: 80px;
+  border-radius: 4px;
+  background: #fff;
+  object-fit: cover;
+  object-position: center;
 }
 
 .site-nav-link {
