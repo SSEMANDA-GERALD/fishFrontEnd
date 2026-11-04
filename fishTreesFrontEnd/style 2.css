@@ -133,43 +133,4 @@
             background-color: #eff6ff;
         }
 
-        /* Demo Sandbox Area */
-        .demo-sandbox {
-            background: white;
-            border: 1px dashed #cbd5e1;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-        }
-
-        .sandbox-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-box {
-            display: none;
-            background-color: var(--success-bg);
-            color: var(--success-text);
-            border: 1px solid #bbf7d0;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            background-color: #e2e8f0;
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .contact-heading {
-            font-weight: 700;
-            margin-top: 0;
-}
+        

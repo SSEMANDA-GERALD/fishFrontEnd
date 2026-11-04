@@ -7,15 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <a class="logo" href="index.html">FishTrees</a>
-        <nav aria-label="Main navigation">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <a href="recommendations.html">Recommendations</a>
-            <a href="payment.html" aria-current="page">Payment</a>
-        </nav>
+    
     </header>
 
     <main>
@@ -27,5 +19,48 @@
             </div>
         </section>
     </main>
+    <div class="container">
+    <div class="header">
+        <span class="demo-badge">Front-End Demonstration Mode</span>
+        <h1>Choose Your Access Plan</h1>
+        <p>Select the option that best fits your educational or individual needs.</p>
+    </div>
+
+    <!-- Pricing Comparison Grid -->
+    <div class="pricing-grid">
+        <!-- Individual Option -->
+        <div class="price-card">
+            <h2 class="tier-name">Individual Recommendation</h2>
+            <div class="price-tag">UGX 500 <span>/ recommendation</span></div>
+            <ul class="features-list">
+                <li>On-demand single target analysis</li>
+                <li>Instant processing and setup</li>
+                <li>Ideal for one-off personal testing</li>
+            </ul>
+            <button class="cta-btn" onclick="triggerDemoState('Individual Recommendation Plan')">Test Individual Flow</button>
+        </div>
+
+        <!-- School Subscription Option -->
+        <div class="price-card featured">
+            <h2 class="tier-name">School Annual Subscription</h2>
+            <div class="price-tag">UGX 500,000 <span>/ school / year</span></div>
+            <ul class="features-list">
+                <li>Covers full academic year cycle</li>
+                <li>Aligned with single main annual intake</li>
+                <li>Centralized management access</li>
+                <li>*Subject to team verification parameters</li>
+            </ul>
+            <button class="cta-btn" onclick="triggerDemoState('School Annual Subscription Plan')">Test School Flow</button>
+        </div>
+    </div>
+
+    
+<!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2026 Fish trees pathway. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
 </body>
 </html>
