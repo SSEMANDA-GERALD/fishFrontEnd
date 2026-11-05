@@ -1,0 +1,90 @@
+.home-hero {
+  background: linear-gradient(135deg, var(--lime) 0%, #eff8d7 100%);
+  border-bottom: 1px solid var(--line);
+}
+
+.home-hero-content {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.home-hero h1 {
+  max-width: 760px;
+  margin: 1rem 0;
+  color: var(--forest);
+  font-size: 3.75rem;
+  font-weight: 750;
+  line-height: 1.06;
+}
+
+.home-hero .lead {
+  max-width: 650px;
+  color: var(--canopy);
+  line-height: 1.7;
+}
+
+.home-section {
+  padding: 5rem 0;
+}
+
+.home-section-title {
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.journey-step {
+  height: 100%;
+  padding: 1.25rem 1.5rem;
+  border-left: 3px solid var(--lime);
+}
+
+.journey-number {
+  color: var(--canopy);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.journey-step h3 {
+  margin: 0.5rem 0;
+  color: var(--forest);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.journey-step p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.home-cta {
+  padding: 3.5rem 1.5rem;
+  background: var(--forest);
+  color: var(--white);
+}
+
+.home-cta h2 {
+  color: var(--lime);
+  font-weight: 700;
+}
+
+.home-cta p {
+  max-width: 650px;
+  margin: 1rem auto 1.5rem;
+  color: rgb(255 255 255 / 82%);
+}
+
+@media (max-width: 767.98px) {
+  .home-hero-content {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .home-hero h1 {
+    font-size: 2.75rem;
+  }
+
+  .home-section {
+    padding: 3.5rem 0;
+  }
+}

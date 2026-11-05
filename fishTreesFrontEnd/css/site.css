@@ -1,0 +1,138 @@
+:root {
+  color-scheme: light;
+  --forest: #193321;
+  --canopy: #2d3e2c;
+  --lime: #e4fd97;
+  --pale-green: #f3f7ef;
+  --soft-green: #d2e6a5;
+  --ink: #1f2d24;
+  --muted: #58675d;
+  --line: #dfe7d8;
+  --white: #fff;
+}
+
+body {
+  margin: 0;
+  background: var(--pale-green);
+  color: var(--ink);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: var(--forest);
+  box-shadow: 0 3px 14px rgb(25 51 33 / 12%);
+}
+
+.site-navbar {
+  min-height: 88px;
+}
+
+.site-logo {
+  display: block;
+  width: 120px;
+  height: 80px;
+  border-radius: 4px;
+  background: var(--white);
+  object-fit: contain;
+}
+
+.site-navbar .navbar-nav {
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.site-navbar .nav-link {
+  padding: 0.65rem 0.8rem;
+  color: rgb(255 255 255 / 84%);
+  font-weight: 600;
+}
+
+.site-navbar .nav-link:hover,
+.site-navbar .nav-link.active {
+  color: var(--lime);
+}
+
+.site-navbar .navbar-toggler {
+  border-color: rgb(228 253 151 / 65%);
+}
+
+.site-navbar .navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgb(228 253 151 / 30%);
+}
+
+.site-navbar .navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+}
+
+.btn-site {
+  border: 2px solid var(--lime);
+  background: var(--lime);
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.btn-site:hover,
+.btn-site:focus {
+  border-color: var(--lime);
+  background: transparent;
+  color: var(--lime);
+}
+
+.btn-site-outline {
+  border: 2px solid var(--forest);
+  background: transparent;
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.btn-site-outline:hover,
+.btn-site-outline:focus {
+  background: var(--forest);
+  color: var(--lime);
+}
+
+.site-footer {
+  background: var(--forest);
+  color: rgb(255 255 255 / 82%);
+}
+
+.site-footer a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--lime);
+}
+
+.site-footer-title {
+  color: var(--lime);
+  font-weight: 700;
+}
+
+.page-heading {
+  color: var(--forest);
+  font-weight: 700;
+}
+
+.page-eyebrow {
+  color: var(--canopy);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 991.98px) {
+  .site-navbar .navbar-nav {
+    align-items: stretch;
+    padding: 0.75rem 0 0.25rem;
+  }
+
+  .site-navbar .nav-cta {
+    margin: 0.5rem 0 0.25rem;
+  }
+}
