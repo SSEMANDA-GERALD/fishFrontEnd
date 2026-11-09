@@ -15,9 +15,9 @@
 
   <main class="results-shell">
     <section class="results-heading">
-      <p class="results-eyebrow">Demonstration results</p>
-      <h1>Your pathway ideas</h1>
-      <p>These sample subject pathways help you explore A-Level options. They are for exploration only, not official placement or eligibility advice.</p>
+      <p class="results-eyebrow">A-Level combinations</p>
+      <h1>Your subject combinations</h1>
+      <p id="schoolAvailability">These common combinations are suggestions to discuss with your school. Confirm which combinations it offers.</p>
     </section>
 
     <div id="emptyResults" class="results-empty" hidden>
@@ -45,8 +45,8 @@
       <section class="pathway-section" aria-labelledby="pathway-title">
         <div class="section-heading">
           <div>
-            <p class="results-eyebrow">Explore combinations</p>
-            <h2 id="pathway-title">Suggested A-Level pathways</h2>
+            <p class="results-eyebrow">Matched to your interests</p>
+            <h2 id="pathway-title">Recommended combinations</h2>
           </div>
           <span id="testingNotice" class="testing-notice" hidden>Testing mode: payment bypassed</span>
         </div>
@@ -67,7 +67,10 @@
         </div>
       </details>
 
-      <a class="results-link" href="recommendations.html">Edit your profile</a>
+      <div class="results-actions">
+        <a class="results-link" href="recommendations.html">Edit your profile</a>
+        <button id="exportResults" class="results-link results-link-button" type="button">Export as PDF / Print</button>
+      </div>
     </div>
   </main>
 

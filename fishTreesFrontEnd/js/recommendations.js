@@ -62,10 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("loadSampleData").addEventListener("click", loadSampleData);
-  document.getElementById("testingButton").addEventListener("click", () => {
-    saveRecommendationData();
-    window.location.href = "results.html?testing=1";
-  });
 
   document.getElementById("mockResultsToggle").addEventListener("click", (event) => {
     const button = event.currentTarget;

@@ -89,9 +89,9 @@ The page is split across three files:
 - “Enter mock results” shows or hides the mock grade grid and updates its text and `aria-expanded` value.
 - “Load sample data” fills the profile and both grade sets, and opens the mock results.
 - “Get recommendations” saves the form in browser storage and opens `payment.html`.
-- “Testing” saves the profile and opens `results.html` without visiting payment.
+- “Testing” on `payment.html` opens `results.html` using the saved profile, without processing a payment.
 - The payment email field uses browser email validation. Payment processing is not connected.
-- `results.html` displays example pathways based on selected interests and the saved profile; these are not official eligibility or placement recommendations.
+- `results.html` maps selected interests to common A-Level subject combinations and offers browser printing, including Save as PDF. Check each school's current subject offerings; the prototype has no verified school catalog.
 
 There is no backend behavior: profile data stays in browser storage, and the project does not send data to a server or process payment.
 
@@ -157,6 +157,6 @@ After changing the navbar, form, or styles:
 1. Open all six pages and check that each has the right active nav item.
 2. Check the navbar at desktop width and use its toggle at mobile width.
 3. On recommendations, confirm school suggestions, multiple selected interests, sample data, mock results, and both navigation actions.
-4. On payment, confirm invalid emails are rejected and a valid email displays the front-end-only status.
-5. On results, confirm the saved profile, sample pathways, and entered grades appear.
+4. On payment, confirm invalid emails are rejected, Testing preserves the saved profile, and valid email displays the front-end-only status.
+5. On results, confirm the saved profile, combinations, and entered grades appear; test Export as PDF / Print.
 6. Check the pages at desktop and phone widths for overflow, overlap, and readable labels.

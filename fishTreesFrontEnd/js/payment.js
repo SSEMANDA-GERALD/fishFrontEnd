@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("paymentForm");
   const email = document.getElementById("paymentEmail");
   const status = document.getElementById("paymentStatus");
+  const testingButton = document.getElementById("testingButton");
 
   email.addEventListener("input", () => {
     status.textContent = "";
@@ -16,5 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     status.textContent = "Email looks valid. Payment processing is not connected in this demonstration.";
+  });
+
+  testingButton.addEventListener("click", () => {
+    if (!localStorage.getItem("fishTreesRecommendation")) {
+      status.textContent = "No saved profile found. Return to recommendations and enter your details first.";
+      return;
+    }
+
+    window.location.href = "results.html?testing=1";
   });
 });
