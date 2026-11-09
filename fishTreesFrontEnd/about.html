@@ -1,42 +1,84 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Learn about FishTrees Pathways and its commitment to educational guidance.">
-  <title>About | FishTrees Pathways</title>
-  <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Contact Us | FishTrees Pathways</title> <!-- Link to your style.css file -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <header data-page="about"></header>
 
-  <main class="container py-5">
-    <section class="mb-5">
-      <p class="page-eyebrow">About FishTrees Pathways</p>
-      <h1 class="page-title">Helping learners make informed choices</h1>
-      <p class="lead text-secondary">FishTrees Pathways helps learners explore educational options, subject combinations and future opportunities.</p>
+<body> <!-- Navigation Bar -->
+  <nav class="navbar">
+    <divclass="logo">
+      <h2>FishTrees Pathways</h2>
+      </div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#recommendations">Recommendations</a></li>
+        <li><a href="#payment">Payment</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+  </nav> <!-- Welcome Hero Section -->
+  <header class="contact-hero">
+    <h1>Get in Touch</h1>
+    <p>Have questions about subject combinations or career paths? Reach out to our team!</p>
+  </header> <!-- Contact Info & Form Section -->
+  <main class="contact-container"> <!-- Left Side: Contact Info -->
+    <section class="contact-info">
+      <h2>Contact Information</h2>
+      <p>We are here to support learners in exploring their educational pathways, understanding combinations, and
+        making brilliant choices for their future.</p>
+      <p><strong>Email:</strong> info@fishtreespathways.com</p>
+      <p><strong>Hours:</strong> Monday – Friday, 8:00 AM – 5:00PM</p>
+    </section> <!-- Right Side: Contact Form -->
+    <section class="contact-form">
+      <h2>Send us a Message</h2>
+      <form action="https://formsubmit.co/graceasiimwe006@gmail.com" method="POST"> <input type="text" name="name"
+          placeholder="Your Name" required> <input type="email" name="email" placeholder="Your Email Address" required>
+        <input type="text" name="subject" placeholder="Subject" required> <textarea name="message" rows="5"
+          placeholder="Write your message here..." required></textarea> <button type="submit">Send
+          Message</button> </form>
     </section>
-    <div class="row g-4">
-      <section class="col-md-6">
-        <div class="about-panel h-100">
-          <h2>Our vision</h2>
-          <p class="mb-0">To help learners discover their abilities, make informed education decisions and move confidently towards meaningful work.</p>
-        </div>
-      </section>
-      <section class="col-md-6">
-        <div class="about-panel h-100">
-          <h2>Our mission</h2>
-          <p class="mb-0">To make educational guidance accessible and help learners plan a path from school towards their goals.</p>
-        </div>
-      </section>
+  </main> <!-- Our Team Section -->
+  <section class="team-section">
+    <h2>Our Team</h2>
+    <div class="team-container"> <!-- Member 1 -->
+      <div class="team-card">
+        <div class="profile-avatar bg-primary">SG</div>
+        <h3>Ssemanda Gerald</h3>
+        <p>Project Developer</p>
+        <ahref="mailto:ssemandagerald7@gmail.com">ssemandagerald7@gmail.com</a>
+      </div> <!-- Member 2 -->
+      <div class="team-card">
+        <div class="profile-avatar bg-dark">MS</div>
+        <h3>Muyonga Stefan</h3>
+        <p>Project Manager</p>
+        <ahref="mailto:muyongastefan@gmail.com">muyongastefan@gmail.com</a>
+      </div> <!-- Member 3 -->
+      <div class="team-card">
+        <div class="profile-avatar bg-accent">USP</div>
+        <h3>Uyenykeu Shalom Peace</h3>
+        <p>Project Coordinator</p>
+        <ahref="mailto:shalomkuc@gmail.com">shalomkuc@gmail.com</a>
+      </div> <!-- Member 4 --> <divclass="team-card">
+        <div class="profile-avatar bg-primary">AMG</div>
+        <h3>Asiimwe M Grace</h3>
+        <p>Project Researcher</p>
+        <ahref="mailto:graceasiimwe006@gmail.com">graceasiimwe006@gmail.com</a>
+    </div> <!-- Member 5 -->
+    <div class="team-card">
+      <div class="profile-avatar bg-dark">AA</div>
+      <h3>Ainembabazi Anabel</h3>
+      <p>Project Analyst</p>
+      <ahref="mailto:annaaine04@gmail.com">annaaine04@gmail.com</a>
     </div>
-    <a class="btn btn-fishtrees mt-4" href="recommendations.html">Explore recommendations</a>
-  </main>
-
-  <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
-  <script src="js/navbar.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+  </section> <!-- Footer Section -->
+  <footer>
+    <p>&copy; 2026 Fish Trees Pathways. All Rights Reserved.</p>
+  </footer>
 </body>
+
 </html>
