@@ -13,13 +13,17 @@ The website pages are in [fishTreesFrontEnd/](fishTreesFrontEnd/):
 | `index.html` | Home page |
 | `recommendations.html` | Learner details and grades form |
 | `payment.html` | Payment options page; currently front-end only |
+| `results.html` | Demonstration pathway results |
 | `about.html` | Project introduction |
 | `contact.html` | Contact information |
 | `style.css` | Shared site styling, including the navbar and brand styles |
 | `css/recommendations.css` | Recommendations-page layout and form styling |
 | `css/payment-bootstrap.css` | Extra payment-page styling |
+| `css/results.css` | Results-page layout and styling |
 | `js/navbar.js` | Builds the shared navbar on each page |
 | `js/recommendations.js` | Populates and controls the recommendations form |
+| `js/payment.js` | Validates the individual payment email field |
+| `js/results.js` | Shows saved profile data and sample pathways |
 
 ## How The Pages Load
 
@@ -47,7 +51,7 @@ The order matters on the recommendations page:
 2. Bootstrap's bundle adds behavior to Bootstrap components, including the responsive navbar toggle.
 3. `recommendations.js` adds the school, interest, and grade UI and the mock-results toggle.
 
-Only `recommendations.html` needs `recommendations.js`. All five pages load `navbar.js` and the Bootstrap bundle. No build or install step is needed; open a page in a browser or use a local static web server.
+Each page loads `navbar.js` and the Bootstrap bundle. The recommendations, payment, and results pages also load their page-specific scripts. No build or install step is needed; open a page in a browser or use a local static web server.
 
 ## Shared Navbar
 
@@ -79,14 +83,17 @@ The page is split across three files:
 
 ### Current Front-End Behavior
 
-- The `schools` array in `recommendations.js` supplies options to the school `<datalist>`.
-- The `interests` array supplies nine visible, disabled interest buttons. They are display-only and cannot be selected.
+- The `schools` array in `recommendations.js` supplies searchable school suggestions to the `<datalist>`.
+- The `interests` array supplies nine selectable buttons. Multiple interests can stay selected at once.
 - The `subjects` and `grades` arrays generate the O-Level and mock grade selectors.
 - “Enter mock results” shows or hides the mock grade grid and updates its text and `aria-expanded` value.
-- “Load sample data” is an inert button. It has no click handler and does not fill the form.
-- “Get recommendations” is a normal link to `payment.html`. It does not generate a recommendation or verify payment.
+- “Load sample data” fills the profile and both grade sets, and opens the mock results.
+- “Get recommendations” saves the form in browser storage and opens `payment.html`.
+- “Testing” saves the profile and opens `results.html` without visiting payment.
+- The payment email field uses browser email validation. Payment processing is not connected.
+- `results.html` displays example pathways based on selected interests and the saved profile; these are not official eligibility or placement recommendations.
 
-There is no backend behavior: the page does not save form entries, send them anywhere, calculate recommendations, or process payment.
+There is no backend behavior: profile data stays in browser storage, and the project does not send data to a server or process payment.
 
 ### Changing Form Content Or Behavior
 
@@ -104,13 +111,13 @@ The HTML IDs connect the HTML and JavaScript. If you rename one, update the matc
 | `mockResultsContainer` | Mock grade fields and show/hide target |
 | `mockResultsToggle` | Button that shows and hides mock results |
 
-The sample button intentionally has no behavior. The recommendations link intentionally leads to the payment page; do not describe either as a completed service.
+The saved profile is shared between pages through the `fishTreesRecommendation` browser storage key. Clear that key in browser storage to reset the demonstration data.
 
 ## Styling And Bootstrap
 
 ### Shared Styling: `style.css`
 
-`style.css` is linked by all five pages. It contains the shared brand colors and styles for the navbar, logo, navigation links, common FishTrees buttons, footer, and home-page sections. Change shared navbar or brand styling here so the update remains consistent across pages.
+`style.css` is linked by all six pages. It contains the shared brand colors and styles for the navbar, logo, navigation links, common FishTrees buttons, footer, and home-page sections. Change shared navbar or brand styling here so the update remains consistent across pages.
 
 ### Recommendations Styling: `css/recommendations.css`
 
@@ -139,6 +146,7 @@ Most of the recommendations form's layout and visual design is custom CSS, not B
 - `index.html` uses the shared navbar and `style.css`; the home page sections are styled in `style.css`.
 - `about.html` and `contact.html` use the shared navbar and Bootstrap layout/spacing utilities, with shared styles from `style.css`.
 - `payment.html` uses the shared navbar, Bootstrap layout and card/form styles, `style.css`, and the additional `css/payment-bootstrap.css` rules.
+- `results.html` uses the shared navbar and `css/results.css` for the demonstration pathways and submitted grade summary.
 
 The page files are regular HTML and can be opened directly. Since Bootstrap is loaded from a CDN, its styles and navbar behavior need an internet connection.
 
@@ -146,8 +154,9 @@ The page files are regular HTML and can be opened directly. Since Bootstrap is l
 
 After changing the navbar, form, or styles:
 
-1. Open all five pages and check that each has the right active nav item.
+1. Open all six pages and check that each has the right active nav item.
 2. Check the navbar at desktop width and use its toggle at mobile width.
-3. On recommendations, confirm school suggestions and grade fields appear, interest buttons remain display-only, and mock results open and close.
-4. Confirm “Load sample data” remains inert and “Get recommendations” links to `payment.html` unless the team's requirements have changed.
-5. Check the page at desktop and phone widths for overflow, overlap, and readable labels.
+3. On recommendations, confirm school suggestions, multiple selected interests, sample data, mock results, and both navigation actions.
+4. On payment, confirm invalid emails are rejected and a valid email displays the front-end-only status.
+5. On results, confirm the saved profile, sample pathways, and entered grades appear.
+6. Check the pages at desktop and phone widths for overflow, overlap, and readable labels.

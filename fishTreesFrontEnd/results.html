@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View your FishTrees Pathways demonstration recommendations.">
+  <title>Your Results | FishTrees Pathways</title>
+  <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/results.css">
+</head>
+<body>
+  <header data-page="recommendations"></header>
+
+  <main class="results-shell">
+    <section class="results-heading">
+      <p class="results-eyebrow">Demonstration results</p>
+      <h1>Your pathway ideas</h1>
+      <p>These sample subject pathways help you explore A-Level options. They are for exploration only, not official placement or eligibility advice.</p>
+    </section>
+
+    <div id="emptyResults" class="results-empty" hidden>
+      <h2>No profile to show yet</h2>
+      <p>Enter your school, interests, or grades first, then return to view pathway ideas.</p>
+      <a class="results-link" href="recommendations.html">Back to recommendations</a>
+    </div>
+
+    <div id="resultsContent" hidden>
+      <section class="profile-strip" aria-label="Student profile">
+        <div>
+          <span class="profile-label">School</span>
+          <strong id="resultSchool">Not provided</strong>
+        </div>
+        <div>
+          <span class="profile-label">Career aspiration</span>
+          <strong id="resultAspiration">Not provided</strong>
+        </div>
+        <div>
+          <span class="profile-label">Selected interests</span>
+          <strong id="resultInterests">None selected</strong>
+        </div>
+      </section>
+
+      <section class="pathway-section" aria-labelledby="pathway-title">
+        <div class="section-heading">
+          <div>
+            <p class="results-eyebrow">Explore combinations</p>
+            <h2 id="pathway-title">Suggested A-Level pathways</h2>
+          </div>
+          <span id="testingNotice" class="testing-notice" hidden>Testing mode: payment bypassed</span>
+        </div>
+        <div id="recommendationsList" class="pathway-list"></div>
+      </section>
+
+      <details class="grades-details">
+        <summary>Your entered grades</summary>
+        <div class="grades-tables">
+          <div>
+            <h3>O-Level</h3>
+            <dl id="oLevelSummary"></dl>
+          </div>
+          <div>
+            <h3>Mock examinations</h3>
+            <dl id="mockSummary"></dl>
+          </div>
+        </div>
+      </details>
+
+      <a class="results-link" href="recommendations.html">Edit your profile</a>
+    </div>
+  </main>
+
+  <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="js/navbar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/results.js"></script>
+</body>
+</html>

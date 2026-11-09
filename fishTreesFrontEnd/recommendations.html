@@ -22,7 +22,7 @@
       </div>
     </section>
 
-    <form class="main-content">
+    <form id="recommendationForm" class="main-content">
         <section class="panel">
           <h2>Discover Your Academics Pathway</h2>
           <p class="section-copy">Your future starts with understanding your strengths, interests and ambitions. Tell us a little about yourself so we can help you explore the right academic pathways.</p>
@@ -30,7 +30,7 @@
           <div class="two-column">
             <div class="field-box">
               <label for="schoolSearch">School</label>
-              <input id="schoolSearch" list="schoolOptions" class="form-control" placeholder="Search for your school" autocomplete="off">
+              <input id="schoolSearch" list="schoolOptions" class="form-control" placeholder="Search or select your school" autocomplete="off">
               <datalist id="schoolOptions"></datalist>
             </div>
 
@@ -68,8 +68,11 @@
         </section>
 
         <div class="action-row">
-          <button class="secondary-btn" type="button">Load sample data</button>
-          <a class="primary-btn" href="payment.html">Get recommendations</a>
+          <button id="loadSampleData" class="secondary-btn" type="button">Load sample data</button>
+          <div class="recommendation-actions">
+            <button class="primary-btn" type="submit">Get recommendations</button>
+            <button id="testingButton" class="testing-btn" type="button">Testing</button>
+          </div>
         </div>
     </form>
   </main>

@@ -33,10 +33,19 @@ const schools = [
   "Mbarara High School",
   "Ggaba Secondary School",
   "Kololo Senior Secondary School",
+  "St. Henry's College Kitovu",
+  "St. Mary's College, Rushoroza",
+  "Lubiri Secondary School",
+  "Kitende Secondary School",
+  "Seeta High School",
+  "Kawempe Muslim Secondary School",
+  "Busoga College Mwiri",
+  "Tororo Girls School",
   "Other School"
 ];
 
 const grades = ["A", "B", "C", "D", "E", "F", "U"];
+const sampleGrades = ["A", "B", "A", "B", "A", "B", "B", "A", "A"];
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("schoolOptions").innerHTML = schools
@@ -45,6 +54,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderInterestCards();
   renderGradeFields();
+
+  document.getElementById("recommendationForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    saveRecommendationData();
+    window.location.href = "payment.html";
+  });
+
+  document.getElementById("loadSampleData").addEventListener("click", loadSampleData);
+  document.getElementById("testingButton").addEventListener("click", () => {
+    saveRecommendationData();
+    window.location.href = "results.html?testing=1";
+  });
 
   document.getElementById("mockResultsToggle").addEventListener("click", (event) => {
     const button = event.currentTarget;
@@ -59,10 +80,18 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderInterestCards() {
   const container = document.getElementById("interestGrid");
   container.innerHTML = interests.map((interest) => `
-    <button class="interest-card" type="button" disabled>
+    <button class="interest-card" type="button" aria-pressed="false">
       ${interest}
     </button>
   `).join("");
+
+  container.addEventListener("click", (event) => {
+    const button = event.target.closest(".interest-card");
+    if (!button) return;
+
+    const selected = button.getAttribute("aria-pressed") !== "true";
+    button.setAttribute("aria-pressed", String(selected));
+  });
 }
 
 function renderGradeFields() {
@@ -84,4 +113,45 @@ function createGradeRows(section) {
       </div>
     `;
   }).join("");
+}
+
+function loadSampleData() {
+  document.getElementById("schoolSearch").value = "Makerere College School";
+  document.getElementById("careerAspiration").value = "I would like to explore a career in biomedical engineering.";
+
+  const sampleInterests = ["Medicine and Healthcare", "Engineering and Innovation", "Technology and Computing"];
+  document.querySelectorAll(".interest-card").forEach((button) => {
+    button.setAttribute("aria-pressed", String(sampleInterests.includes(button.textContent.trim())));
+  });
+
+  subjects.forEach((subject, index) => {
+    const subjectId = subject.toLowerCase().replaceAll(" ", "-");
+    document.getElementById(`oLevelResults-${subjectId}`).value = sampleGrades[index];
+    document.getElementById(`mockResults-${subjectId}`).value = sampleGrades[(index + 2) % sampleGrades.length];
+  });
+
+  const mockPanel = document.getElementById("mockResultsContainer");
+  mockPanel.classList.remove("hidden");
+  const mockToggle = document.getElementById("mockResultsToggle");
+  mockToggle.textContent = "Hide mock results";
+  mockToggle.setAttribute("aria-expanded", "true");
+}
+
+function saveRecommendationData() {
+  const selectedInterests = Array.from(document.querySelectorAll('.interest-card[aria-pressed="true"]'))
+    .map((button) => button.textContent.trim());
+  const collectGrades = (section) => Object.fromEntries(subjects.map((subject) => {
+    const subjectId = subject.toLowerCase().replaceAll(" ", "-");
+    return [subject, document.getElementById(`${section}-${subjectId}`).value];
+  }));
+
+  const recommendationData = {
+    school: document.getElementById("schoolSearch").value.trim(),
+    aspiration: document.getElementById("careerAspiration").value.trim(),
+    interests: selectedInterests,
+    oLevelResults: collectGrades("oLevelResults"),
+    mockResults: collectGrades("mockResults")
+  };
+
+  localStorage.setItem("fishTreesRecommendation", JSON.stringify(recommendationData));
 }

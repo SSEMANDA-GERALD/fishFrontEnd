@@ -154,12 +154,20 @@ textarea {
   text-align: left;
   color: var(--text-main);
   font-weight: 600;
-  cursor: default;
+  cursor: pointer;
   opacity: 1;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
 }
 
-.interest-card:disabled {
-  color: var(--text-main);
+.interest-card:hover {
+  border-color: var(--success);
+}
+
+.interest-card[aria-pressed="true"] {
+  border-color: var(--success);
+  background: var(--success);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(26, 117, 93, 0.16);
 }
 
 .grade-grid {
@@ -222,12 +230,28 @@ textarea {
 .secondary-btn:not(:disabled) {
   background: var(--forest-soft);
   color: var(--forest-deep);
-  cursor: default;
+  cursor: pointer;
 }
 
-.primary-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.primary-btn,
+.testing-btn {
+  cursor: pointer;
+}
+
+.recommendation-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.testing-btn {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  background: #fff;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .action-row {
@@ -270,5 +294,9 @@ textarea {
   .toggle-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .recommendation-actions {
+    flex-wrap: wrap;
   }
 }
