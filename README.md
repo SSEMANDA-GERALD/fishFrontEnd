@@ -53,6 +53,10 @@ The order matters on the recommendations page:
 
 Each page loads `navbar.js` and the Bootstrap bundle. The recommendations, payment, and results pages also load their page-specific scripts. No build or install step is needed; open a page in a browser or use a local static web server.
 
+## Deployment
+
+This is a static site and has no build command. Static hosts can publish the repository root; the root `index.html` forwards visitors to `fishTreesFrontEnd/index.html`. Alternatively, set the publish directory to `fishTreesFrontEnd/`. The Bootstrap CDN requires an internet connection. Payment and school sign-in are demonstration-only and do not submit credentials or process transactions. The Contact form depends on FormSubmit; verify its configured recipient and complete any required activation before relying on live submissions.
+
 ## Shared Navbar
 
 Each page has one small placeholder instead of repeating all of the navbar markup. The `data-page` value identifies which link is active:
@@ -93,7 +97,7 @@ The page is split across three files:
 - The payment email field uses browser email validation. Payment processing is not connected.
 - `results.html` maps selected interests to common A-Level subject combinations and offers browser printing, including Save as PDF. Check each school's current subject offerings; the prototype has no verified school catalog.
 
-There is no backend behavior: profile data stays in browser storage, and the project does not send data to a server or process payment.
+There is no project backend: profile data stays in browser storage, and payment and school sign-in do not send data to a server. The Contact form uses the external FormSubmit service.
 
 ### Changing Form Content Or Behavior
 

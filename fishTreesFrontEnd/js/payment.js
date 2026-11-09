@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const email = document.getElementById("paymentEmail");
   const status = document.getElementById("paymentStatus");
   const testingButton = document.getElementById("testingButton");
+  const schoolLoginForm = document.getElementById("schoolLoginForm");
+  const schoolLoginStatus = document.getElementById("schoolLoginStatus");
 
   email.addEventListener("input", () => {
     status.textContent = "";
@@ -26,5 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.location.href = "results.html?testing=1";
+  });
+
+  schoolLoginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    schoolLoginStatus.textContent = "School account sign-in is not available in this demonstration.";
   });
 });
