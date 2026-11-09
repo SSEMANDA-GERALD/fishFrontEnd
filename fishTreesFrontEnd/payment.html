@@ -72,18 +72,22 @@
             <h2 id="school-title" class="h3 text-forest">School account</h2>
             <p class="text-secondary">School staff can sign in to manage student profiles and prepare combination recommendations.</p>
 
-            <div class="mb-3">
-              <label class="form-label fw-semibold" for="schoolEmail">School email</label>
-              <input class="form-control" id="schoolEmail" name="schoolEmail" type="email" placeholder="name@school.ac.ug" autocomplete="username">
-            </div>
+            <form id="schoolLoginForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold" for="schoolEmail">School email</label>
+                <input class="form-control" id="schoolEmail" name="schoolEmail" type="email" placeholder="name@school.ac.ug" autocomplete="username" required>
+                <div id="emailWarning" class="form-text text-danger mt-1" hidden></div>
+              </div>
 
-            <div class="mb-3">
-              <label class="form-label fw-semibold" for="schoolPassword">Password</label>
-              <input class="form-control" id="schoolPassword" name="schoolPassword" type="password" placeholder="Enter your password" autocomplete="current-password">
-            </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold" for="schoolPassword">Password</label>
+                <input class="form-control" id="schoolPassword" name="schoolPassword" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+              </div>
 
-            <button class="btn btn-outline-forest w-100" type="button">Sign in to school account</button>
-            <p class="small text-secondary mt-2 mb-0">School account access is for authorised staff.</p>
+              <button id="schoolSubmitBtn" class="btn btn-outline-forest w-100" type="submit">Sign in to school account</button>
+              <p id="schoolLoginStatus" class="small text-secondary mt-2 mb-0" role="status" aria-live="polite"></p>
+            </form>
+            <p class="small text-secondary mt-2 mb-0">School account sign-in is not connected in this front-end demonstration. No credentials are sent.</p>
           </div>
         </section>
       </div>
