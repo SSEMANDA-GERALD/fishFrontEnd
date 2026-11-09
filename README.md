@@ -1,141 +1,153 @@
 # FishTrees Pathways
 
-FishTrees Pathways is a student project for helping learners explore suitable A-Level subject combinations. A learner will provide exam grades and other relevant details, then receive guidance about combinations to consider.
+This is a student project for helping learners explore A-Level study options. The current website is a front-end prototype made with HTML, CSS, JavaScript, and Bootstrap. It has no server, database, recommendation engine, login system, or live payment processing.
 
-## Semester scope
+The detailed team responsibilities are in [TEAM_ROLES.md](TEAM_ROLES.md).
 
-This semester, our work is limited to the **front end**. We are building the pages and browser-side interactions that a user can see and use. We are not building a server, database, recommendation engine, account system, or live payment processing as part of this semester's scope.
+## Project Map
 
-Use only:
+The website pages are in [fishTreesFrontEnd/](fishTreesFrontEnd/):
 
-- HTML for page structure
-- CSS for styling and responsive layouts
-- JavaScript for browser-side interactions
-- Bootstrap for front-end layout and components
+| File | Purpose |
+| --- | --- |
+| `index.html` | Home page |
+| `recommendations.html` | Learner details and grades form |
+| `payment.html` | Payment options page; currently front-end only |
+| `about.html` | Project introduction |
+| `contact.html` | Contact information |
+| `style.css` | Shared site styling, including the navbar and brand styles |
+| `css/recommendations.css` | Recommendations-page layout and form styling |
+| `css/payment-bootstrap.css` | Extra payment-page styling |
+| `js/navbar.js` | Builds the shared navbar on each page |
+| `js/recommendations.js` | Populates and controls the recommendations form |
 
-Do not add other frameworks, languages, or backend services unless the team agrees to a change in scope.
+## How The Pages Load
 
-## Project files
+Each page links to Bootstrap 5.3.0 CSS from jsDelivr in its `<head>`. It then loads the project's CSS. For example, `recommendations.html` loads the styles in this order:
 
-The current multi-page site is in [`fishTreesFrontEnd/`](fishTreesFrontEnd/):
+```html
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/recommendations.css">
+```
 
-- `index.html` - home page
-- `recommendations.html` - recommendation page
-- `payment.html` - payment options page
-- `about.html` - about page
-- `contact.html` - contact page
-- `style.css` - shared styles for the pages
+Bootstrap provides common layout and component styles. The project's CSS follows it to add the FishTrees look and page-specific layout. The CDN requires an internet connection.
 
-There are also `home_page.html` and `home_page_style.css` in the workspace root. Before developing another version of the home page, agree as a team which version is the one to continue and present. Avoid maintaining two competing versions by accident.
+The JavaScript files are placed near the end of the page, after the page content:
 
-## Pages and team roles
+```html
+<script src="js/navbar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/recommendations.js"></script>
+```
 
-Each team member owns a main contribution:
+The order matters on the recommendations page:
 
-- Stefan - Home page
-- Gerald - Recommendations page and team coordination
-- Anabel - Payment page
-- Grace - Contact page
-- Shalom - About page
+1. `navbar.js` replaces the empty header placeholder with the navbar HTML.
+2. Bootstrap's bundle adds behavior to Bootstrap components, including the responsive navbar toggle.
+3. `recommendations.js` adds the school, interest, and grade UI and the mock-results toggle.
 
-The detailed page responsibilities, suggested content, beginner workflow, and teamwork expectations are in [`TEAM_ROLES.md`](TEAM_ROLES.md).
+Only `recommendations.html` needs `recommendations.js`. All five pages load `navbar.js` and the Bootstrap bundle. No build or install step is needed; open a page in a browser or use a local static web server.
 
-## Shared expectations
+## Shared Navbar
 
-- Make pages feel like one product: use consistent navigation, typography, spacing, colors, buttons, and footer where appropriate.
-- Make the pages usable on phones and desktop screens. Use clear labels, readable contrast, and keyboard-friendly controls.
-- Keep the experience straightforward. Prioritize the main task on each page over extra features.
-- Use sample or clearly identified demonstration data for front-end behavior. Do not present a mock recommendation or payment as a real result or completed transaction.
-- Coordinate changes to shared files such as `style.css` and navigation so one page does not break another.
-- Each member should understand and be able to explain their own contribution.
+Each page has one small placeholder instead of repeating all of the navbar markup. The `data-page` value identifies which link is active:
 
-## Working together
+```html
+<header data-page="recommendations"></header>
+```
 
-Work in small, understandable steps. Before starting, check the current files and agree on the page boundaries. Share progress regularly, use GitHub branches and pull requests if that is the workflow your team has agreed on, and make commits that clearly describe your own work. Review changes and check links and layouts across the pages before presenting.
+The valid values are `home`, `about`, `recommendations`, `payment`, and `contact`. `js/navbar.js` reads this value, creates the logo, links, and “Get started” link, then adds `active` and `aria-current="page"` to the matching link. The “Get started” link always points to `recommendations.html`.
 
-The project is intentionally front-end-only for this semester. Any recommendation rules, user records, school subscriptions, or payment verification would require a backend and must not be claimed as implemented by these pages.
+To change the navbar:
 
-## Recommendation page structure for beginners
+- Change labels, destinations, or order in the `pages` array in `js/navbar.js`.
+- Keep each array item's third value in sync with that page's `data-page` value.
+- Keep the Bootstrap classes and `mainNavbar` ID/target paired. The ID on the collapsible menu must match the toggler's `data-bs-target` and `aria-controls`.
+- Change its colors, logo sizing, sticky position, and other visual details in `style.css` under the navbar and button rules.
+- When adding a new page, add its link to the `pages` array, put the matching `data-page` on its header, and include `js/navbar.js` and the Bootstrap bundle before `</body>`.
 
-The recommendation page is located in [`fishTreesFrontEnd/recommendations.html`](fishTreesFrontEnd/recommendations.html).
+The image and page links are relative to the `fishTreesFrontEnd/` directory. If a page is moved into another folder, update its relative paths.
 
-### 1. HTML file: page structure
-The HTML file is the skeleton of the page. It contains:
+## Recommendations Page
 
-- the top navigation bar
-- the main title and welcome message
-- school input
-- future career input
-- interest selection buttons
-- O-Level subject grade selectors
-- optional mock results section
-- the sample-data button
-- a status message telling the presenter that the recommendation engine is not active yet
+The page is split across three files:
 
-This file is like the building plan. It tells the browser where everything should be placed on the page.
+- [recommendations.html](fishTreesFrontEnd/recommendations.html) contains the form structure and element IDs.
+- [recommendations.js](fishTreesFrontEnd/js/recommendations.js) fills in repeated options and handles the mock-results toggle.
+- [recommendations.css](fishTreesFrontEnd/css/recommendations.css) controls the form layout, colors, panels, fields, buttons, and smaller-screen layout.
 
-### 2. CSS file: page styling
-The styling file is in [`fishTreesFrontEnd/css/recommendations.css`](fishTreesFrontEnd/css/recommendations.css).
+### Current Front-End Behavior
 
-Its purpose is to make the page look clean and professional. It controls:
+- The `schools` array in `recommendations.js` supplies options to the school `<datalist>`.
+- The `interests` array supplies nine visible, disabled interest buttons. They are display-only and cannot be selected.
+- The `subjects` and `grades` arrays generate the O-Level and mock grade selectors.
+- “Enter mock results” shows or hides the mock grade grid and updates its text and `aria-expanded` value.
+- “Load sample data” is an inert button. It has no click handler and does not fill the form.
+- “Get recommendations” is a normal link to `payment.html`. It does not generate a recommendation or verify payment.
 
-- colors used by FishTrees Pathways
-- spacing between sections
-- the layout of the form
-- card styles for the interest choices
-- button styles
-- responsive design for mobile and tablet screens
-- a simple, smart visual identity without unnecessary decoration
+There is no backend behavior: the page does not save form entries, send them anywhere, calculate recommendations, or process payment.
 
-In beginner terms: CSS is what makes the page look good. It decides where things sit, how big they are, what colors they use, and how the page behaves on smaller screens.
+### Changing Form Content Or Behavior
 
-### 3. JavaScript file: interactions
-The JavaScript file is in [`fishTreesFrontEnd/js/recommendations.js`](fishTreesFrontEnd/js/recommendations.js).
+To add or remove a subject, edit the `subjects` array in `recommendations.js`. To change grade choices, edit `grades`. To change school suggestions or visible interest clusters, edit `schools` or `interests`.
 
-This file is responsible for the dynamic part of the page. It does things such as:
+`createGradeRows()` creates one labelled `<select>` per subject. It generates an element ID from the group name and subject name, and uses that ID in the label's `for` attribute. Keep those paired if you change the generated markup.
 
-- populate the school list
-- create the interest buttons
-- create the subject and grade selectors
-- allow the user to click interests and select them
-- fill the form with sample data when the user clicks the sample button
-- keep the page and data organised in a simple JavaScript object
+The HTML IDs connect the HTML and JavaScript. If you rename one, update the matching `getElementById()` call in `recommendations.js` as well:
 
-Why JavaScript matters:
-JavaScript helps the page react to user actions. A static HTML page cannot do this by itself. JavaScript lets the page feel alive, even though this semester is only focused on front-end design.
+| HTML ID | Used for |
+| --- | --- |
+| `schoolOptions` | School suggestions populated from `schools` |
+| `interestGrid` | Interest buttons populated from `interests` |
+| `oLevelResultsContainer` | O-Level grade fields |
+| `mockResultsContainer` | Mock grade fields and show/hide target |
+| `mockResultsToggle` | Button that shows and hides mock results |
 
-### 4. Why the code is simple
-This page is intentionally simple because:
+The sample button intentionally has no behavior. The recommendations link intentionally leads to the payment page; do not describe either as a completed service.
 
-- the project is front-end only
-- the recommendation engine is not connected yet
-- the goal is to present the design clearly
-- beginner students should be able to understand the code
+## Styling And Bootstrap
 
-The code is written in a straightforward way so it is easy to explain during a presentation. The names of the variables and functions are written in plain English, which makes it easier to follow.
+### Shared Styling: `style.css`
 
-### 5. Why the recommendation engine is inactive
-The project is only required to present the front-end. That means we do not connect to a real backend or AI system. Instead, we keep the interface ready and clean so a future team can plug in the real recommendation feature later.
+`style.css` is linked by all five pages. It contains the shared brand colors and styles for the navbar, logo, navigation links, common FishTrees buttons, footer, and home-page sections. Change shared navbar or brand styling here so the update remains consistent across pages.
 
-This is why the page shows a simple message saying that the recommendation engine is currently inactive.
+### Recommendations Styling: `css/recommendations.css`
 
-### 6. Why letter grades are used instead of marks
-The form uses only a letter grade input for each subject, such as A, B, C, D, E, F, or U. This keeps the page cleaner and easier for a beginner to understand.
+This file is loaded only by `recommendations.html`. Its `:root` block defines local colors and a panel shadow. The remaining rules style the page shell, hero area, form panels, two-column inputs, interest grid, grade grid, subject rows, mock-results button, and action buttons.
 
-It also matches the presentation requirement: the student does not have to enter both marks and grade in the same section.
+Responsive rules are at the bottom of the file:
 
-### 7. Sample data button
-The sample button helps when the team is testing the page. It loads a realistic example student profile so the form looks complete and easy to demonstrate during a presentation.
+- At `820px` and below, the two-column inputs, grade fields, and interest grid become one column.
+- At `560px` and below, subject rows and the mock-results header stack vertically.
 
-This is useful because it makes the page look finished even before the live recommendation system is connected.
+If you change a class in the HTML or generated JavaScript, check whether its matching CSS selector needs to change too.
 
-### 8. Beginner summary
-Think of the page like this:
+### Where Bootstrap Is Used
 
-- HTML = structure
-- CSS = design
-- JavaScript = interactions
+Bootstrap is a CSS and JavaScript toolkit, not a backend. On these pages it is used for:
 
-That is the basic idea behind the project. The design is simple because the goal is to present a polished, understandable front-end without overcomplicating the code.
+- The shared responsive navbar: `navbar`, `navbar-expand-lg`, `navbar-toggler`, `collapse`, `navbar-collapse`, `navbar-nav`, and related classes.
+- Common widths, rows, columns, and spacing, such as `container`, `row`, `col-*`, `py-5`, `g-4`, and `mb-*`.
+- The school field's `form-control` styling and a few standard button, card, and text utility classes.
+- The navbar's mobile expand/collapse behavior, provided by `bootstrap.bundle.min.js`.
 
-If you want to keep improving this project later, the easiest next step is to add a second page that looks like the same FishTrees brand and continue building the same clean design style.
+Most of the recommendations form's layout and visual design is custom CSS, not Bootstrap. Bootstrap classes and custom CSS can be used together: Bootstrap handles common responsive structure while the local styles control the FishTrees appearance.
+
+## Other Pages
+
+- `index.html` uses the shared navbar and `style.css`; the home page sections are styled in `style.css`.
+- `about.html` and `contact.html` use the shared navbar and Bootstrap layout/spacing utilities, with shared styles from `style.css`.
+- `payment.html` uses the shared navbar, Bootstrap layout and card/form styles, `style.css`, and the additional `css/payment-bootstrap.css` rules.
+
+The page files are regular HTML and can be opened directly. Since Bootstrap is loaded from a CDN, its styles and navbar behavior need an internet connection.
+
+## Quick Test Checklist
+
+After changing the navbar, form, or styles:
+
+1. Open all five pages and check that each has the right active nav item.
+2. Check the navbar at desktop width and use its toggle at mobile width.
+3. On recommendations, confirm school suggestions and grade fields appear, interest buttons remain display-only, and mock results open and close.
+4. Confirm “Load sample data” remains inert and “Get recommendations” links to `payment.html` unless the team's requirements have changed.
+5. Check the page at desktop and phone widths for overflow, overlap, and readable labels.
