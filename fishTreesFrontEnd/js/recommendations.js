@@ -135,15 +135,11 @@ function renderGradeFields() {
 function createGradeRow(subject, sectionName) {
   return `
     <div class="subject-row">
-      <div>
-        <label for="${sectionName}-${subject.key}">${subject.label}</label>
-      </div>
-      <div>
-        <select id="${sectionName}-${subject.key}" data-section="${sectionName}" data-subject="${subject.key}" aria-label="${subject.label} grade">
-          <option value="">Select grade</option>
-          ${GRADE_OPTIONS.map((grade) => `<option value="${grade}">${grade}</option>`).join("")}
-        </select>
-      </div>
+      <label for="${sectionName}-${subject.key}">${subject.label}</label>
+      <select id="${sectionName}-${subject.key}" data-section="${sectionName}" data-subject="${subject.key}" aria-label="${subject.label} grade">
+        <option value="">Select grade</option>
+        ${GRADE_OPTIONS.map((grade) => `<option value="${grade}">${grade}</option>`).join("")}
+      </select>
     </div>
   `;
 }
@@ -158,7 +154,7 @@ function bindEvents() {
   });
 
   document.getElementById("mockResultsToggle").addEventListener("click", () => {
-    const panel = document.getElementById("mockResultsPanel");
+    const panel = document.getElementById("mockResultsContainer");
     const button = document.getElementById("mockResultsToggle");
     const isOpen = panel.classList.toggle("hidden");
     studentProfile.includeMockResults = !isOpen;
