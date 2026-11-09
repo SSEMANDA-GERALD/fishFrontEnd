@@ -154,14 +154,12 @@ textarea {
   text-align: left;
   color: var(--text-main);
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  cursor: default;
+  opacity: 1;
 }
 
-.interest-card:hover,
-.interest-card.selected {
-  background: rgba(228, 253, 151, 0.25);
-  border-color: rgba(25, 51, 33, 0.25);
+.interest-card:disabled {
+  color: var(--text-main);
 }
 
 .grade-grid {
@@ -202,16 +200,18 @@ textarea {
 .ghost-btn,
 .primary-btn,
 .secondary-btn {
+  display: inline-block;
   border: none;
   border-radius: 12px;
   padding: 0.75rem 1.1rem;
   font-weight: 700;
-  cursor: pointer;
+  text-decoration: none;
 }
 
 .ghost-btn {
   background: #edf4e7;
   color: var(--forest-deep);
+  cursor: pointer;
 }
 
 .primary-btn {
@@ -219,9 +219,10 @@ textarea {
   color: #fff;
 }
 
-.secondary-btn {
+.secondary-btn:not(:disabled) {
   background: var(--forest-soft);
   color: var(--forest-deep);
+  cursor: default;
 }
 
 .primary-btn:disabled {
