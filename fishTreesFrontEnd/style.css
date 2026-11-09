@@ -110,6 +110,133 @@ body.home-page {
     padding: 3rem;
 }
 
+.contact-hero {
+    padding: 3.5rem 0;
+    background: var(--lime-sprout);
+    color: var(--fresh-canopy);
+}
+
+.contact-hero .page-title {
+    margin-bottom: 0.75rem;
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+}
+
+.contact-hero .container > p:last-child {
+    max-width: 620px;
+    line-height: 1.7;
+}
+
+.contact-content {
+    max-width: 1140px;
+}
+
+.contact-card {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--fresh-canopy);
+    border-radius: 8px;
+    background: var(--white);
+}
+
+.contact-card h2,
+.team-heading h2 {
+    margin-bottom: 1rem;
+    color: var(--dark-green);
+    font-weight: 700;
+}
+
+.contact-information {
+    background: var(--page-background);
+}
+
+.contact-information > p:not(.page-eyebrow) {
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.contact-details > div + div {
+    margin-top: 1rem;
+}
+
+.contact-details dt,
+.contact-form .form-label {
+    color: var(--dark-green);
+    font-weight: 700;
+}
+
+.contact-details dd {
+    margin-bottom: 0;
+    color: var(--text-muted);
+}
+
+.contact-details a,
+.team-card a {
+    color: var(--fresh-canopy);
+    font-weight: 600;
+    text-underline-offset: 3px;
+}
+
+.contact-form .form-control {
+    border-color: var(--border);
+    color: var(--text-main);
+}
+
+.contact-form .form-control:focus {
+    border-color: var(--fresh-canopy);
+    box-shadow: 0 0 0 0.2rem rgba(45, 62, 44, 0.16);
+}
+
+.team-section {
+    background: var(--page-background);
+}
+
+.team-heading {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.team-card {
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+}
+
+.profile-avatar {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--fresh-canopy);
+    color: var(--lime-sprout);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.team-card h3 {
+    color: var(--dark-green);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.team-card p {
+    min-height: 1.5em;
+    margin-bottom: 0.75rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 575.98px) {
+    .contact-hero {
+        padding: 2.75rem 0;
+    }
+
+    .contact-card {
+        padding: 1.5rem;
+    }
+}
+
 /* BUTTONS */
 
 .btn-fishtrees {
