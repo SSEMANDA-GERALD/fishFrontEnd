@@ -16,22 +16,6 @@ body {
   border-color: var(--forest) !important;
 }
 
-.payment-option {
-  cursor: pointer;
-}
-
-.payment-option .form-check-input {
-  position: static;
-  margin-left: 0;
-  flex: 0 0 auto;
-  accent-color: var(--forest);
-}
-
-.payment-option:has(.form-check-input:checked) {
-  border-color: var(--forest) !important;
-  background: var(--pale-green);
-}
-
 .price-line {
   display: flex;
   align-items: baseline;

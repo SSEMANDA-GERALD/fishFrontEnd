@@ -1,30 +1,70 @@
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("refreshAdmin").addEventListener("click", loadAdmin);
-  document.getElementById("adminSignout").addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
-  document.getElementById("trainingExport").addEventListener("click", (event) => {
-    event.preventDefault();
-    document.getElementById("adminStatus").textContent = "Account review and feedback export need a backend and are disabled in this presentation build.";
-  });
+  document.getElementById("adminSignout").addEventListener("click", signOut);
   loadAdmin();
 });
 
 function loadAdmin() {
   try {
+    const account = window.FishTreesDemo.getAccount();
+    if (!account) {
+      window.location.replace("signin.html");
+      return;
+    }
+    if (account.role !== "admin") {
+      window.location.replace("dashboard.html");
+      return;
+    }
+    document.getElementById("adminTitle").textContent = `${account.displayName} dashboard`;
     const orders = window.FishTreesDemo.getOrders();
-    const demoOrders = orders.filter((order) => order.status === "demo-paid");
-    const predictionCount = demoOrders.reduce((sum, order) => sum + order.predictionCount, 0);
+    const completedOrders = orders.filter((order) => order.status === "completed");
+    const predictionCount = completedOrders.reduce((sum, order) => sum + order.predictionCount, 0);
     document.getElementById("adminStats").hidden = false;
     document.getElementById("statPredictions").textContent = predictionCount;
-    document.getElementById("statRevenue").textContent = `UGX ${demoOrders.reduce((sum, order) => sum + order.amount, 0).toLocaleString()} (demo)`;
-    document.getElementById("statPayments").textContent = orders.filter((order) => order.status === "awaiting-demo").length;
-    ["statInstitutions", "statSchools", "statOtherInstitutions", "statAccounts", "statFeedback", "statTraining"].forEach((id) => {
-      document.getElementById(id).textContent = "—";
-    });
-    showEmpty(document.getElementById("pendingAccounts"), "Account review is unavailable in this frontend-only demo.");
-    showEmpty(document.getElementById("pendingPayments"), "No real transactions are collected or verified in this demo.");
+    document.getElementById("statRevenue").textContent = `UGX ${completedOrders.reduce((sum, order) => sum + order.amount, 0).toLocaleString()}`;
+    document.getElementById("statPayments").textContent = orders.filter((order) => order.status === "pending").length;
+    renderOrders(orders);
     document.getElementById("adminStatus").textContent = "";
+  } catch (error) {
+    document.getElementById("adminStatus").textContent = error.message;
+  }
+}
+
+function renderOrders(orders) {
+  const list = document.getElementById("adminOrders");
+  list.replaceChildren();
+  if (!orders.length) {
+    showEmpty(list, "No prediction requests yet.");
+    return;
+  }
+  orders.forEach((order) => {
+    const row = document.createElement("article");
+    row.className = "admin-row";
+    const details = document.createElement("div");
+    const reference = document.createElement("strong");
+    reference.textContent = order.reference;
+    const summary = document.createElement("p");
+    const role = order.createdByRole === "school" ? "School" : "Administrator";
+    const kind = order.mode === "bulk" ? "Bulk" : "Single";
+    const status = order.status === "completed" ? "Complete (simulated payment)" : "Waiting for Continue";
+    summary.textContent = `${role} · ${kind} · ${order.predictionCount} learner${order.predictionCount === 1 ? "" : "s"} · UGX ${Number(order.amount).toLocaleString()} · ${status}`;
+    details.append(reference, summary);
+
+    const action = document.createElement("a");
+    action.className = "order-action";
+    action.href = order.status === "completed"
+      ? `results.html?order=${encodeURIComponent(order.id)}`
+      : `payment.html?order=${encodeURIComponent(order.id)}`;
+    action.textContent = order.status === "completed" ? "View report" : "Continue";
+    row.append(details, action);
+    list.append(row);
+  });
+}
+
+function signOut() {
+  try {
+    window.FishTreesDemo.signOut();
+    window.location.href = "signin.html";
   } catch (error) {
     document.getElementById("adminStatus").textContent = error.message;
   }

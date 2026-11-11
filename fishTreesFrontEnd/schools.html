@@ -17,14 +17,14 @@
     <section class="schools-heading">
       <p class="schools-eyebrow">School workspace</p>
       <h1>Student pathway reports</h1>
-      <p>Import a sample class list with final grades, optional mock grades and interests. Reports unlock after simulated checkout.</p>
+      <p>Import a class list with final grades, optional mock grades and interests. Continue to generate a report for each learner.</p>
     </section>
 
     <form id="bulkForm" class="bulk-form">
       <div class="bulk-form-heading">
         <div>
           <h2>Import student results</h2>
-          <p>Use a CSV or Excel workbook with one student per row. Demo data stays in this browser.</p>
+          <p>Use a CSV or Excel workbook with one student per row.</p>
         </div>
         <button id="downloadTemplate" class="text-action" type="button">Download CSV template</button>
       </div>
@@ -43,7 +43,7 @@
 
       <p class="column-note">UGX 500 per student. Required columns: student_name and final grades. Optional columns: mock grades (use “mock_” before the subject) and interests.</p>
       <div class="bulk-actions">
-        <p class="privacy-note">Use sample data only. This demo stores names, grades and interests in this browser; no file is uploaded to a server.</p>
+        <p class="privacy-note">Use sample data only. Names, grades and interests stay in this browser; no file is uploaded to a server.</p>
         <button id="generateReports" class="primary-action" type="submit">Generate reports</button>
       </div>
       <p id="uploadStatus" class="upload-status" role="status" aria-live="polite"></p>
@@ -52,10 +52,10 @@
   </main>
 
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="js/demo-store.js"></script>
   <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script src="js/demo-store.js"></script>
   <script src="js/schools.js"></script>
 </body>
 </html>

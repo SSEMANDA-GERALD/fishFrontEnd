@@ -55,21 +55,19 @@ The current presentation displays **UGX 500 per learner** as an illustrative amo
 
 Suggested page parts:
 
-- A clear comparison of the individual recommendation option and school annual subscription option.
-- A clearly marked presentation-only checkout using the displayed illustrative amount.
-- A simple explanation of what happens next in this front-end demonstration.
-- A clearly labelled demo or confirmation state, rather than a claim that money was actually received.
-- A way for a school to ask about subscription details, coordinated with Grace's contact information.
+- A simple single-action checkout after either a single or bulk prediction request.
+- A clear explanation that the payment button advances a simulation and no money is charged.
+- A results link after the simulation, rather than a claim that money was actually received.
 
 Beginner steps:
 
 1. Confirm the payment flow and page location with Gerald.
-2. Confirm with the team what the annual school subscription covers.
-3. Sketch the two options so users can understand the difference quickly.
+2. Confirm that school users can choose either a single or bulk prediction from their workspace.
+3. Keep the payment simulation short and consistent for both request types.
 4. Build and style `payment.html` using the shared site layout.
-5. Test links and the demo state, and make sure no screen falsely confirms a real transaction.
+5. Test the complete flow and make sure no screen falsely confirms a real transaction.
 
-There is no backend, account service, or live payment processing in this project. Do not collect mobile-money PINs, card numbers, passwords, or real transaction references. Any payment interaction shown is only a front-end simulation and does not transfer or verify money.
+There is no backend, account service, or live payment processing in this project. The administrator and school sign-ins use public example credentials in browser-side JavaScript; they do not provide security and must not be used as real accounts. Do not ask for real passwords, mobile-money PINs, card numbers, or transaction references. The payment button only simulates checkout and does not transfer or verify money.
 
 ## Stefan: Home page
 

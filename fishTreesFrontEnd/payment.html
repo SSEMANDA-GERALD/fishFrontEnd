@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Choose a payment method for a FishTrees Pathways recommendation.">
+  <meta name="description" content="Continue the simulated payment for a FishTrees Pathways recommendation.">
   <title>Payment | FishTrees Pathways</title>
   <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,17 +18,17 @@
     <section class="mb-4" aria-labelledby="page-title">
       <p class="eyebrow mb-2">Access and payment</p>
       <h1 id="page-title" class="display-5 fw-bold text-forest">Your next step starts here</h1>
-      <p class="lead text-secondary mb-0">Preview the checkout flow for an individual recommendation or a school batch.</p>
-      <p class="alert alert-warning mt-3 mb-0" role="note">Presentation demo only: no money is charged, no payment provider is connected, and no real payment is verified.</p>
+      <p class="lead text-secondary mb-0">Continue to complete your recommendation request.</p>
+      <p class="alert alert-warning mt-3 mb-0" role="note">This is a payment simulation. No money is charged or transferred.</p>
     </section>
 
     <div class="row g-4">
       <div class="col-lg-6">
         <section class="card h-100 border-0 border-top border-4 border-forest shadow-sm" aria-labelledby="individual-title">
           <div class="card-body p-4">
-            <p class="eyebrow mb-2">Demo checkout</p>
+            <p class="eyebrow mb-2">Payment</p>
             <h2 id="individual-title" class="h3 text-forest">Recommendation payment</h2>
-            <p class="text-secondary">Choose a simulated payment method to continue to the sample report.</p>
+            <p class="text-secondary">Press Continue to complete the simulation and view the recommendation.</p>
 
             <p class="price-line border-top border-bottom py-3 mb-3">
               <span class="fw-bold text-forest">UGX</span>
@@ -38,31 +38,10 @@
             <p id="paymentOrderSummary" class="small text-secondary" hidden></p>
 
             <form id="paymentForm">
-              <fieldset class="mb-3">
-                <legend class="fs-6 fw-semibold mb-3">Choose a payment method</legend>
-                <label class="form-check payment-option d-flex align-items-start gap-2 border rounded p-3 mb-2" for="mobileMoney">
-                  <input class="form-check-input mt-1" id="mobileMoney" type="radio" name="paymentMethod" value="mobile-money" checked>
-                  <span class="form-check-label"><strong>Mobile money demo</strong><small class="d-block text-secondary">Simulated MTN MoMo or Airtel Money flow</small></span>
-                </label>
-                <label class="form-check payment-option d-flex align-items-start gap-2 border rounded p-3 mb-2" for="bankTransfer">
-                  <input class="form-check-input mt-1" id="bankTransfer" type="radio" name="paymentMethod" value="bank-transfer">
-                  <span class="form-check-label"><strong>Bank transfer demo</strong><small class="d-block text-secondary">Simulated transfer flow</small></span>
-                </label>
-                <label class="form-check payment-option d-flex align-items-start gap-2 border rounded p-3" for="bankCard">
-                  <input class="form-check-input mt-1" id="bankCard" type="radio" name="paymentMethod" value="card">
-                  <span class="form-check-label"><strong>Bank card demo</strong><small class="d-block text-secondary">Simulated card checkout; no card details requested</small></span>
-                </label>
-              </fieldset>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold" for="paymentEmail">Email address</label>
-                <input class="form-control" id="paymentEmail" name="email" type="email" placeholder="Optional" autocomplete="email">
-                <div class="form-text">Optional for this demo. No email is sent or saved.</div>
-              </div>
-
-              <button class="btn btn-forest w-100" type="submit">Continue to demo payment</button>
+              <button class="btn btn-forest w-100" type="submit">Continue</button>
               <p id="paymentStatus" class="small text-secondary mt-2 mb-0" role="status" aria-live="polite"></p>
-              <a id="paymentResultsLink" class="btn btn-outline-forest w-100 mt-2" href="#" hidden>View sample report</a>
+              <a id="paymentResultsLink" class="btn btn-outline-forest w-100 mt-2" href="#" hidden>View recommendations</a>
+              <a id="paymentStartLink" class="btn btn-outline-forest w-100 mt-2" href="signin.html" hidden>Go to account sign in</a>
             </form>
           </div>
         </section>
@@ -71,9 +50,9 @@
   </main>
 
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="js/demo-store.js"></script>
   <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/demo-store.js"></script>
   <script src="js/payment.js"></script>
 </body>
 </html>

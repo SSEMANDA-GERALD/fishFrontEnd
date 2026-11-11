@@ -26,6 +26,26 @@
   width: min(800px, calc(100% - 2rem));
 }
 
+.account-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.account-choice-grid .account-form {
+  align-content: start;
+  padding: 1.25rem;
+  border: 1px solid var(--account-line);
+  border-top: 3px solid var(--account-accent);
+  background: #fff;
+}
+
+.account-choice-grid h2 {
+  margin: 0 0 0.25rem;
+  color: var(--account-ink);
+  font-size: 1.2rem;
+}
+
 .account-heading {
   margin-bottom: 1.5rem;
 }
@@ -221,27 +241,6 @@
   color: var(--account-ink);
 }
 
-#paymentReferenceForm {
-  display: grid;
-  gap: 0.55rem;
-  max-width: 560px;
-}
-
-#paymentReferenceForm label {
-  margin-top: 0.35rem;
-  color: var(--account-ink);
-  font-weight: 700;
-}
-
-#paymentReferenceForm input,
-#paymentReferenceForm select {
-  width: 100%;
-  min-height: 44px;
-  padding: 0.6rem 0.7rem;
-  border: 1px solid #b8c5bb;
-  border-radius: 2px;
-}
-
 .payment-result-links,
 .dashboard-actions {
   display: flex;
@@ -425,6 +424,10 @@
   }
 
   .account-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-choice-grid {
     grid-template-columns: 1fr;
   }
 

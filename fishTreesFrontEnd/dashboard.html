@@ -17,7 +17,7 @@
       <div>
         <p class="account-eyebrow">Account workspace</p>
         <h1 id="dashboardTitle">Dashboard</h1>
-        <p id="accountDescriptor">Presentation demo order history saved in this browser.</p>
+        <p id="accountDescriptor">School account workspace</p>
       </div>
       <button id="signoutButton" class="text-action" type="button">Back to home</button>
     </section>
@@ -25,13 +25,14 @@
     <section id="dashboardContent" hidden>
       <div class="account-stat-grid">
         <article class="account-stat"><span>Predictions</span><strong id="predictionCount">0</strong></article>
-        <article class="account-stat"><span>Demo checkout totals</span><strong id="amountPaid">UGX 0</strong></article>
+        <article class="account-stat"><span>Simulated payment total</span><strong id="amountPaid">UGX 0</strong></article>
         <article class="account-stat"><span>Orders</span><strong id="orderCount">0</strong></article>
       </div>
       <nav class="dashboard-actions" aria-label="Account actions">
-        <a id="individualLink" class="account-action" href="recommendations.html">Individual recommendation</a>
-        <a id="bulkLink" class="account-action" href="schools.html" hidden>Bulk student recommendations</a>
+        <a id="individualLink" class="account-action" href="recommendations.html">Single prediction</a>
+        <a id="bulkLink" class="account-action" href="schools.html">Bulk predictions</a>
       </nav>
+      <p class="account-note">Payment is simulated. No money is charged or transferred.</p>
       <section class="dashboard-section">
         <div class="dashboard-section-heading">
           <div>
@@ -46,9 +47,9 @@
     <p id="dashboardStatus" class="account-status" role="status" aria-live="polite"></p>
   </main>
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="js/demo-store.js"></script>
   <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/demo-store.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>

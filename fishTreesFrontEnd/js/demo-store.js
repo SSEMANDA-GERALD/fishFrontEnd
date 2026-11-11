@@ -1,6 +1,10 @@
 (function () {
   const storageKey = "fishTreesPresentationDemo";
   const gradeValues = { A: 5, B: 4, C: 3, D: 2, E: 1, F: 0, U: 0 };
+  const accounts = {
+    admin: { username: "admin", password: "admin123", role: "admin", displayName: "Presentation Administrator" },
+    school: { username: "school", password: "school123", role: "school", displayName: "Presentation School" },
+  };
   const pathways = [
     { code: "PCM", subjects: ["Physics", "Chemistry", "Mathematics"], interests: ["Technology and Computing", "Engineering and Innovation"], careers: "engineering, physical sciences, and technology", reason: "A science combination commonly considered for engineering, physical sciences, and technology." },
     { code: "PEM", subjects: ["Physics", "Economics", "Mathematics"], interests: ["Engineering and Innovation", "Business and Entrepreneurship"], careers: "engineering, economics, and quantitative business", reason: "Combines mathematical and physical sciences with economics." },
@@ -18,10 +22,11 @@
     } catch (error) {
       throw new Error("Browser storage is unavailable. Open the site in a browser that allows local storage and try again.");
     }
-    if (!raw) return { version: 1, orders: [], feedback: [] };
+    if (!raw) return { version: 1, orders: [], feedback: [], account: null };
     try {
       const state = JSON.parse(raw);
       if (state.version !== 1 || !Array.isArray(state.orders) || !Array.isArray(state.feedback)) throw new Error();
+      if (!Object.prototype.hasOwnProperty.call(state, "account")) state.account = null;
       return state;
     } catch (error) {
       throw new Error("Saved presentation data could not be read. Clear this site's browser data and reload.");
@@ -32,7 +37,7 @@
     try {
       localStorage.setItem(storageKey, JSON.stringify(state));
     } catch (error) {
-      throw new Error("Could not save this demo in the browser. Check available storage and try again.");
+      throw new Error("Could not save your request in this browser. Check available storage and try again.");
     }
   }
 
@@ -45,7 +50,7 @@
       id: createId(),
       createdAt: new Date().toISOString(),
       mode: "individual",
-      status: "awaiting-demo",
+      status: "pending",
       amount: 500,
       predictionCount: 1,
       profile,
@@ -58,7 +63,7 @@
       id: createId(),
       createdAt: new Date().toISOString(),
       mode: "bulk",
-      status: "awaiting-demo",
+      status: "pending",
       amount: students.length * 500,
       predictionCount: students.length,
       school,
@@ -73,6 +78,8 @@
 
   function saveOrder(order) {
     const state = readState();
+    order.reference = `FT-${createId().slice(-6).toUpperCase()}`;
+    order.createdByRole = state.account ? state.account.role : "visitor";
     state.orders.unshift(order);
     writeState(state);
     return order;
@@ -83,25 +90,17 @@
     return readState().orders.find((order) => order.id === id) || null;
   }
 
-  function getOrders() {
-    return readState().orders;
-  }
-
-  function setPaymentMethod(id, method) {
-    const state = readState();
-    const order = state.orders.find((item) => item.id === id);
-    if (!order) throw new Error("This demo order could not be found. Start again from the recommendations form.");
-    if (order.status !== "awaiting-demo") throw new Error("This demo order has already been completed.");
-    order.paymentMethod = method;
-    writeState(state);
+  function getOrders(role) {
+    const orders = readState().orders;
+    return role ? orders.filter((order) => order.createdByRole === role) : orders;
   }
 
   function completePayment(id) {
     const state = readState();
     const order = state.orders.find((item) => item.id === id);
-    if (!order) throw new Error("This demo order could not be found. Start again from the recommendations form.");
-    if (order.status === "awaiting-demo") {
-      order.status = "demo-paid";
+    if (!order) throw new Error("This request could not be found. Start again from your account workspace.");
+    if (order.status === "pending") {
+      order.status = "completed";
       if (order.mode === "individual") {
         order.predictionId = createId();
         order.reports = createReports(order.profile);
@@ -113,6 +112,27 @@
       writeState(state);
     }
     return order;
+  }
+
+  function signIn(role, username, password) {
+    const account = accounts[role];
+    if (!account || account.username !== username.trim().toLowerCase() || account.password !== password) {
+      throw new Error("The username or password does not match this account.");
+    }
+    const state = readState();
+    state.account = { role: account.role, displayName: account.displayName, username: account.username };
+    writeState(state);
+    return state.account;
+  }
+
+  function getAccount() {
+    return readState().account || null;
+  }
+
+  function signOut() {
+    const state = readState();
+    state.account = null;
+    writeState(state);
   }
 
   function saveFeedback(predictionId, feedback) {
@@ -168,7 +188,9 @@
     createBulkOrder,
     getOrder,
     getOrders,
-    setPaymentMethod,
+    signIn,
+    getAccount,
+    signOut,
     completePayment,
     saveFeedback,
   };

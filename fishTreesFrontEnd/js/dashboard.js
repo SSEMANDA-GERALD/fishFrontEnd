@@ -1,24 +1,41 @@
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("refreshDashboard").addEventListener("click", loadDashboard);
-  document.getElementById("signoutButton").addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
+  document.getElementById("signoutButton").addEventListener("click", signOut);
   loadDashboard();
 });
 
 function loadDashboard() {
   const status = document.getElementById("dashboardStatus");
   try {
-    const orders = window.FishTreesDemo.getOrders();
+    const account = window.FishTreesDemo.getAccount();
+    if (!account) {
+      window.location.replace("signin.html");
+      return;
+    }
+    if (account.role === "admin") {
+      window.location.replace("admin.html");
+      return;
+    }
+    document.getElementById("dashboardTitle").textContent = `${account.displayName} dashboard`;
+    const orders = window.FishTreesDemo.getOrders("school");
     document.getElementById("dashboardContent").hidden = false;
-    document.getElementById("predictionCount").textContent = orders.filter((order) => order.status === "demo-paid").reduce((sum, order) => sum + order.predictionCount, 0);
-    document.getElementById("amountPaid").textContent = `UGX ${orders.filter((order) => order.status === "demo-paid").reduce((sum, order) => sum + order.amount, 0).toLocaleString()} (demo)`;
+    document.getElementById("predictionCount").textContent = orders.filter((order) => order.status === "completed").reduce((sum, order) => sum + order.predictionCount, 0);
+    document.getElementById("amountPaid").textContent = `UGX ${orders.filter((order) => order.status === "completed").reduce((sum, order) => sum + order.amount, 0).toLocaleString()}`;
     document.getElementById("orderCount").textContent = orders.length;
     document.getElementById("bulkLink").hidden = false;
     renderOrders(orders);
     status.textContent = "";
   } catch (error) {
     status.textContent = error.message;
+  }
+}
+
+function signOut() {
+  try {
+    window.FishTreesDemo.signOut();
+    window.location.href = "signin.html";
+  } catch (error) {
+    document.getElementById("dashboardStatus").textContent = error.message;
   }
 }
 
@@ -39,16 +56,16 @@ function renderOrders(orders) {
     const reference = document.createElement("strong");
     reference.textContent = order.reference;
     const description = document.createElement("p");
-    description.textContent = `${order.mode === "bulk" ? "Bulk" : "Individual"} · ${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"} · UGX ${Number(order.amount).toLocaleString()} · ${order.status === "demo-paid" ? "demo complete" : "awaiting demo"}`;
+    description.textContent = `${order.mode === "bulk" ? "Bulk" : "Single"} · ${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"} · UGX ${Number(order.amount).toLocaleString()} · ${order.status === "completed" ? "complete" : "payment incomplete"}`;
     details.append(reference, description);
     const action = document.createElement("a");
     action.className = "order-action";
-    if (order.status === "demo-paid") {
+    if (order.status === "completed") {
       action.href = `results.html?order=${encodeURIComponent(order.id)}`;
-      action.textContent = "View demo report";
+      action.textContent = "View report";
     } else {
       action.href = `payment.html?order=${encodeURIComponent(order.id)}`;
-      action.textContent = "Continue demo";
+      action.textContent = "Continue";
     }
     row.append(details, action);
     list.append(row);

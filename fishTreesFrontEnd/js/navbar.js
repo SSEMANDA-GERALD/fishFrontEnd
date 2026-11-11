@@ -1,4 +1,11 @@
 const siteHeader = document.querySelector("header[data-page]");
+const currentAccount = window.FishTreesDemo.getAccount();
+const accountHref = currentAccount
+  ? currentAccount.role === "admin" ? "admin.html" : "dashboard.html"
+  : "signin.html";
+const accountLabel = currentAccount
+  ? `Open ${currentAccount.role === "admin" ? "administrator" : "school"} account`
+  : "Sign in as administrator or school";
 const pages = [
   ["Home", "index.html", "home"],
   ["About", "about.html", "about"],
@@ -37,10 +44,10 @@ if (siteHeader) {
           <ul class="navbar-nav ms-auto align-items-lg-center">
             ${links}
             <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-              <a class="btn btn-fishtrees nav-cta" href="recommendations.html">Get started</a>
+              <a class="btn btn-fishtrees nav-cta" href="signin.html">Get started</a>
             </li>
             <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-              <a id="accountLink" class="nav-link account-icon-link" href="dashboard.html" aria-label="Open the presentation demo dashboard" title="Demo dashboard">
+              <a id="accountLink" class="nav-link account-icon-link" href="${accountHref}" aria-label="${accountLabel}" title="Account">
                 <i class="bi bi-person-circle" aria-hidden="true"></i>
               </a>
             </li>

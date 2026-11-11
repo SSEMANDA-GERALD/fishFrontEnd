@@ -16,50 +16,34 @@
     <section class="account-heading dashboard-heading">
       <div>
         <p class="account-eyebrow">Administrator workspace</p>
-        <h1>Operations dashboard</h1>
-        <p>Presentation-only preview. Accounts, live payments, and administrative review are not connected.</p>
+        <h1 id="adminTitle">Operations dashboard</h1>
+        <p>View prediction activity and run single or bulk pathway reports. Payments are simulated; no money is charged.</p>
       </div>
       <button id="adminSignout" class="text-action" type="button">Back to home</button>
     </section>
     <nav class="dashboard-actions" aria-label="Recommendation tools">
-      <a class="account-action" href="recommendations.html">Normal recommendation</a>
-      <a class="account-action" href="schools.html">Bulk recommendation</a>
+      <a class="account-action" href="recommendations.html">Single prediction</a>
+      <a class="account-action" href="schools.html">Bulk predictions</a>
     </nav>
     <div id="adminStats" class="account-stat-grid" hidden>
       <article class="account-stat"><span>Predictions generated</span><strong id="statPredictions">0</strong></article>
-      <article class="account-stat"><span>Simulated totals (not revenue)</span><strong id="statRevenue">UGX 0</strong></article>
-      <article class="account-stat"><span>Unfinished demo checkouts</span><strong id="statPayments">0</strong></article>
-      <article class="account-stat"><span>Pending institutions</span><strong id="statInstitutions">—</strong></article>
-      <article class="account-stat"><span>Approved schools</span><strong id="statSchools">—</strong></article>
-      <article class="account-stat"><span>Other institutions</span><strong id="statOtherInstitutions">—</strong></article>
-      <article class="account-stat"><span>All accounts</span><strong id="statAccounts">—</strong></article>
-      <article class="account-stat"><span>Feedback entries</span><strong id="statFeedback">—</strong></article>
-      <article class="account-stat"><span>Training consent</span><strong id="statTraining">—</strong></article>
+      <article class="account-stat"><span>Simulated total (UGX)</span><strong id="statRevenue">0</strong></article>
+      <article class="account-stat"><span>Requests awaiting Continue</span><strong id="statPayments">0</strong></article>
     </div>
     <section class="dashboard-section">
       <div class="dashboard-section-heading">
-        <div><p class="account-eyebrow">Access review</p><h2>Institution requests</h2></div>
+        <div><p class="account-eyebrow">Activity</p><h2>Prediction requests</h2></div>
         <button id="refreshAdmin" class="text-action" type="button">Refresh</button>
       </div>
-      <div id="pendingAccounts" class="admin-list"></div>
+      <div id="adminOrders" class="admin-list"></div>
     </section>
-    <section class="dashboard-section">
-      <div class="dashboard-section-heading">
-        <div><p class="account-eyebrow">Payment ledger</p><h2>Verify transactions</h2></div>
-      </div>
-      <div id="pendingPayments" class="admin-list"></div>
-    </section>
-    <section class="dashboard-section training-section">
-      <div><p class="account-eyebrow">Presentation demo</p><h2>No live administration</h2></div>
-      <p class="account-note">Payment options only simulate a completed checkout. They do not charge, transfer, or verify money. Sample recommendations are generated in this browser.</p>
-      <a id="trainingExport" class="account-action" href="#">Feedback export unavailable</a>
-    </section>
+    <p class="account-note">The account and report data is kept in this browser only.</p>
     <p id="adminStatus" class="account-status" role="status" aria-live="polite"></p>
   </main>
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="js/demo-store.js"></script>
   <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/demo-store.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>

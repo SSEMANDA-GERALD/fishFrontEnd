@@ -49,6 +49,17 @@ const sampleGrades = ["A", "B", "A", "B", "A", "B", "B", "A", "A"];
 let selectedSchools = [];
 
 document.addEventListener("DOMContentLoaded", () => {
+  const recommendationStatus = document.getElementById("recommendationStatus");
+  try {
+    if (!window.FishTreesDemo.getAccount()) {
+      window.location.replace("signin.html");
+      return;
+    }
+  } catch (error) {
+    recommendationStatus.textContent = error.message;
+    return;
+  }
+
   document.getElementById("schoolOptions").innerHTML = schools
     .map((school) => `<option value="${school}"></option>`)
     .join("");

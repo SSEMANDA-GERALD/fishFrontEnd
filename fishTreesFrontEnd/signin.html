@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Sign in to your FishTrees Pathways account.">
+  <meta name="description" content="Sign in to the FishTrees Pathways school or administrator workspace.">
   <title>Sign In | FishTrees Pathways</title>
   <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,20 +12,37 @@
 </head>
 <body>
   <header data-page="account"></header>
-  <main class="account-shell">
+  <main class="account-shell account-shell-wide">
     <section class="account-heading">
       <p class="account-eyebrow">Account access</p>
       <h1>Sign in</h1>
-      <p>Accounts are not available in this presentation build.</p>
+      <p>Choose the account type you want to use.</p>
     </section>
-    <section class="account-form">
-      <p>No password or account data is collected. Try the individual or school demo instead.</p>
-      <a class="account-primary d-inline-block text-decoration-none" href="recommendations.html">Continue without an account</a>
-      <p class="account-switch mt-3">School batch demo? <a href="schools.html">Import sample results</a></p>
-    </section>
+    <div class="account-choice-grid">
+      <form class="account-form" data-role="admin">
+        <h2>Administrator</h2>
+        <label for="adminUsername">Username</label>
+        <input id="adminUsername" name="username" autocomplete="username" value="admin" required>
+        <label for="adminPassword">Password</label>
+        <input id="adminPassword" name="password" type="password" autocomplete="current-password" value="admin123" required>
+        <button class="account-primary" type="submit">Sign in as administrator</button>
+      </form>
+      <form class="account-form" data-role="school">
+        <h2>School</h2>
+        <label for="schoolUsername">Username</label>
+        <input id="schoolUsername" name="username" autocomplete="username" value="school" required>
+        <label for="schoolPassword">Password</label>
+        <input id="schoolPassword" name="password" type="password" autocomplete="current-password" value="school123" required>
+        <button class="account-primary" type="submit">Sign in as school</button>
+      </form>
+    </div>
+    <p class="account-note mt-3">These are presentation accounts stored only in this browser. They are not secure and must not be used for real accounts or passwords.</p>
+    <p id="signinStatus" class="account-status" role="status" aria-live="polite"></p>
   </main>
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="js/demo-store.js"></script>
   <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/signin.js"></script>
 </body>
 </html>

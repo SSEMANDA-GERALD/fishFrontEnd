@@ -4,9 +4,29 @@ const subjects = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("bulkForm");
+  const status = document.getElementById("uploadStatus");
+  let account;
+  try {
+    account = window.FishTreesDemo.getAccount();
+  } catch (error) {
+    form.hidden = true;
+    status.textContent = error.message;
+    return;
+  }
+  if (!account) {
+    window.location.replace("signin.html");
+    return;
+  }
+  if (!["school", "admin"].includes(account.role)) {
+    form.hidden = true;
+    status.textContent = "Sign in with a school or administrator account to use bulk predictions.";
+    return;
+  }
+
   document.getElementById("bulkForm").addEventListener("submit", importResults);
   document.getElementById("downloadTemplate").addEventListener("click", downloadTemplate);
-  document.getElementById("activeSchoolName").textContent = "Presentation demo (stored in this browser)";
+  document.getElementById("activeSchoolName").textContent = account.displayName;
 });
 
 async function importResults(event) {

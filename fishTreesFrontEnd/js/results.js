@@ -4,20 +4,24 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("exportResults").addEventListener("click", () => window.print());
   document.getElementById("exportResultsExcel").addEventListener("click", exportExcel);
   document.getElementById("feedbackForms").addEventListener("submit", submitFeedback);
-  loadDemoOrder();
+  loadCompletedOrder();
 });
 
-function loadDemoOrder() {
+function loadCompletedOrder() {
   const empty = document.getElementById("emptyResults");
   const message = document.getElementById("resultsEmptyMessage");
   const orderId = new URLSearchParams(window.location.search).get("order");
   try {
+    if (!window.FishTreesDemo.getAccount()) {
+      window.location.replace("signin.html");
+      return;
+    }
     const order = window.FishTreesDemo.getOrder(orderId);
     if (!order) {
       empty.hidden = false;
       return;
     }
-    if (order.status !== "demo-paid") {
+    if (order.status !== "completed") {
       message.textContent = "Complete the simulated payment to view this sample report.";
       empty.hidden = false;
       return;
@@ -27,7 +31,7 @@ function loadDemoOrder() {
     exportRows = [];
     if (order.mode === "individual") renderIndividualReport(order);
     else renderBulkReport(order);
-    document.getElementById("resultsStatus").textContent = "Presentation demo: recommendations are illustrative and stored only in this browser.";
+    document.getElementById("resultsStatus").textContent = "Recommendations are illustrative and stored only in this browser.";
   } catch (error) {
     message.textContent = error.message;
     empty.hidden = false;
