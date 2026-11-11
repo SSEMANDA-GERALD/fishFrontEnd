@@ -56,39 +56,20 @@ document.addEventListener("DOMContentLoaded", () => {
   renderInterestCards();
   renderGradeFields();
   renderSelectedSchools();
-  restorePendingProfile();
 
-  document.getElementById("recommendationForm").addEventListener("submit", async (event) => {
+  document.getElementById("recommendationForm").addEventListener("submit", (event) => {
     event.preventDefault();
     if (!selectedSchools.length) {
       document.getElementById("schoolSelectionStatus").textContent = "Add at least one school to continue.";
       return;
     }
 
-    const submitButton = event.currentTarget.querySelector('[type="submit"]');
-    const status = document.getElementById("recommendationStatus");
-    submitButton.disabled = true;
-    status.textContent = "Preparing your recommendations...";
     try {
       const recommendationData = saveRecommendationData();
-      const result = await fishTreesApi("/api/payment-orders", {
-        method: "POST",
-        body: JSON.stringify({
-          mode: "individual",
-          paymentMethod: "mobile-money",
-          profile: recommendationData,
-        })
-      });
-      window.location.href = `payment.html?order=${encodeURIComponent(result.order.id)}`;
+      const order = window.FishTreesDemo.createIndividualOrder(recommendationData);
+      window.location.href = `payment.html?order=${encodeURIComponent(order.id)}`;
     } catch (error) {
-      if (error.status === 401) {
-        sessionStorage.setItem("fishTreesPendingProfile", JSON.stringify(recommendationData));
-        window.location.href = "signin.html?next=recommendations.html";
-        return;
-      }
-      status.textContent = error.message || "Could not reach the recommendation service. Start it with python app.py and try again.";
-    } finally {
-      submitButton.disabled = false;
+      document.getElementById("recommendationStatus").textContent = error.message;
     }
   });
 
@@ -218,28 +199,6 @@ function renderSelectedSchools() {
   });
   const status = document.getElementById("schoolSelectionStatus");
   status.textContent = selectedSchools.length ? `${selectedSchools.length} of 3 schools selected.` : "Choose at least one school.";
-}
-
-function restorePendingProfile() {
-  const savedProfile = sessionStorage.getItem("fishTreesPendingProfile");
-  if (!savedProfile) return;
-  sessionStorage.removeItem("fishTreesPendingProfile");
-  try {
-    const profile = JSON.parse(savedProfile);
-    selectedSchools = Array.isArray(profile.schools) ? profile.schools.slice(0, 3) : [];
-    renderSelectedSchools();
-    document.getElementById("careerAspiration").value = profile.aspiration || "";
-    document.querySelectorAll(".interest-card").forEach((button) => {
-      button.setAttribute("aria-pressed", String((profile.interests || []).includes(button.textContent.trim())));
-    });
-    subjects.forEach((subject) => {
-      const subjectId = subject.toLowerCase().replaceAll(" ", "-");
-      document.getElementById(`oLevelResults-${subjectId}`).value = profile.oLevelResults?.[subject] || "";
-      document.getElementById(`mockResults-${subjectId}`).value = profile.mockResults?.[subject] || "";
-    });
-  } catch {
-    sessionStorage.removeItem("fishTreesPendingProfile");
-  }
 }
 
 function saveRecommendationData() {

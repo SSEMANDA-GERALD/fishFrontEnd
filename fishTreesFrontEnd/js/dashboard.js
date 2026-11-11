@@ -1,42 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("refreshDashboard").addEventListener("click", loadDashboard);
-  document.getElementById("signoutButton").addEventListener("click", signout);
+  document.getElementById("signoutButton").addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
   loadDashboard();
 });
 
-async function loadDashboard() {
+function loadDashboard() {
   const status = document.getElementById("dashboardStatus");
   try {
-    const { account } = await fishTreesApi("/api/auth/me");
-    if (!account) {
-      window.location.replace("signin.html");
-      return;
-    }
-    if (["admin", "superadmin"].includes(account.role)) {
-      window.location.replace("admin.html");
-      return;
-    }
-    document.getElementById("dashboardTitle").textContent = account.organizationName || account.displayName;
-    document.getElementById("accountDescriptor").textContent = `${account.role === "student" ? "Student" : account.institutionType || "Institution"} account`;
-    if (account.status !== "approved") {
-      document.getElementById("approvalNotice").hidden = false;
-      document.getElementById("approvalNotice").textContent = account.status === "pending"
-        ? "Your institution account is waiting for administrator approval. Reports and bulk tools will unlock after approval."
-        : "This account is not active. Contact a FishTrees administrator.";
-      return;
-    }
-
-    const data = await fishTreesApi("/api/dashboard");
+    const orders = window.FishTreesDemo.getOrders();
     document.getElementById("dashboardContent").hidden = false;
-    document.getElementById("predictionCount").textContent = data.predictionCount;
-    document.getElementById("amountPaid").textContent = `UGX ${Number(data.amountPaid).toLocaleString()}`;
-    document.getElementById("orderCount").textContent = data.orders.length;
-    document.getElementById("bulkLink").hidden = !["school", "institution"].includes(account.role);
-    renderOrders(data.orders);
+    document.getElementById("predictionCount").textContent = orders.filter((order) => order.status === "demo-paid").reduce((sum, order) => sum + order.predictionCount, 0);
+    document.getElementById("amountPaid").textContent = `UGX ${orders.filter((order) => order.status === "demo-paid").reduce((sum, order) => sum + order.amount, 0).toLocaleString()} (demo)`;
+    document.getElementById("orderCount").textContent = orders.length;
+    document.getElementById("bulkLink").hidden = false;
+    renderOrders(orders);
     status.textContent = "";
   } catch (error) {
     status.textContent = error.message;
-    if (error.status === 401) window.location.replace("signin.html");
   }
 }
 
@@ -57,26 +39,18 @@ function renderOrders(orders) {
     const reference = document.createElement("strong");
     reference.textContent = order.reference;
     const description = document.createElement("p");
-    description.textContent = `${order.mode === "bulk" ? "Bulk" : "Individual"} · ${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"} · UGX ${Number(order.amount).toLocaleString()}`;
+    description.textContent = `${order.mode === "bulk" ? "Bulk" : "Individual"} · ${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"} · UGX ${Number(order.amount).toLocaleString()} · ${order.status === "demo-paid" ? "demo complete" : "awaiting demo"}`;
     details.append(reference, description);
     const action = document.createElement("a");
     action.className = "order-action";
-    if (order.status === "paid") {
+    if (order.status === "demo-paid") {
       action.href = `results.html?order=${encodeURIComponent(order.id)}`;
-      action.textContent = "View report";
+      action.textContent = "View demo report";
     } else {
       action.href = `payment.html?order=${encodeURIComponent(order.id)}`;
-      action.textContent = order.status === "pending" ? "Payment status" : order.status;
+      action.textContent = "Continue demo";
     }
     row.append(details, action);
     list.append(row);
   });
-}
-
-async function signout() {
-  try {
-    await fishTreesApi("/api/auth/logout", { method: "POST", body: "{}" });
-  } finally {
-    window.location.replace("signin.html");
-  }
 }

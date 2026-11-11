@@ -16,62 +16,15 @@
     <section class="account-heading">
       <p class="account-eyebrow">Join FishTrees Pathways</p>
       <h1>Request an account</h1>
-      <p>Institution accounts are reviewed by an administrator before they can request reports.</p>
+      <p>Account registration is disabled in this presentation build.</p>
     </section>
-    <form id="signupForm" class="account-form account-form-grid">
-      <div class="account-field">
-        <label for="role">Account type</label>
-        <select id="role" required>
-          <option value="student">Student</option>
-          <option value="school">School</option>
-          <option value="institution">Other institution</option>
-        </select>
-      </div>
-      <div class="account-field" id="organizationField" hidden>
-        <label for="organizationName">Institution name</label>
-        <input id="organizationName" maxlength="180" autocomplete="organization">
-      </div>
-      <div class="account-field" id="institutionTypeField" hidden>
-        <label for="institutionType">Institution type</label>
-        <select id="institutionType">
-          <option value="">Select type</option>
-          <option value="school">School</option>
-          <option value="college">College</option>
-          <option value="university">University</option>
-          <option value="other">Other education provider</option>
-        </select>
-      </div>
-      <div class="account-field">
-        <label for="displayName">Your name</label>
-        <input id="displayName" maxlength="160" autocomplete="name" required>
-      </div>
-      <div class="account-field">
-        <label for="username">Username <span>(optional)</span></label>
-        <input id="username" maxlength="80" autocomplete="username">
-      </div>
-      <div class="account-field">
-        <label for="email">Work or personal email</label>
-        <input id="email" type="email" maxlength="254" autocomplete="email" required>
-      </div>
-      <div class="account-field">
-        <label for="password">Password</label>
-        <input id="password" type="password" minlength="12" autocomplete="new-password" required>
-      </div>
-      <div class="account-field account-field-wide">
-        <p class="account-note">Use at least 12 characters. Do not reuse a password from another service. School and institution requests remain pending until approved.</p>
-      </div>
-      <div class="account-field account-field-wide">
-        <button class="account-primary" type="submit">Create account request</button>
-        <p id="signupStatus" class="account-status" role="status" aria-live="polite"></p>
-        <p class="account-switch">Already have an account? <a href="signin.html">Sign in</a></p>
-      </div>
-    </form>
+    <section class="account-form">
+      <p>No names, email addresses, or passwords are collected here. Use the browser-based recommendation demo without signing up.</p>
+      <a class="account-primary d-inline-block text-decoration-none" href="recommendations.html">Start a recommendation</a>
+    </section>
   </main>
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
   <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/api-config.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/signup.js"></script>
 </body>
 </html>

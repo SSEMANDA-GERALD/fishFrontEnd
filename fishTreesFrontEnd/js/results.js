@@ -4,22 +4,21 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("exportResults").addEventListener("click", () => window.print());
   document.getElementById("exportResultsExcel").addEventListener("click", exportExcel);
   document.getElementById("feedbackForms").addEventListener("submit", submitFeedback);
-  loadPaidOrder();
+  loadDemoOrder();
 });
 
-async function loadPaidOrder() {
+function loadDemoOrder() {
   const empty = document.getElementById("emptyResults");
   const message = document.getElementById("resultsEmptyMessage");
   const orderId = new URLSearchParams(window.location.search).get("order");
-  if (!orderId) {
-    empty.hidden = false;
-    return;
-  }
-
   try {
-    const { order } = await fishTreesApi(`/api/payment-orders/${encodeURIComponent(orderId)}`);
-    if (order.status !== "paid") {
-      message.textContent = `This order is ${order.status}. Recommendations remain locked until payment is verified.`;
+    const order = window.FishTreesDemo.getOrder(orderId);
+    if (!order) {
+      empty.hidden = false;
+      return;
+    }
+    if (order.status !== "demo-paid") {
+      message.textContent = "Complete the simulated payment to view this sample report.";
       empty.hidden = false;
       return;
     }
@@ -28,9 +27,9 @@ async function loadPaidOrder() {
     exportRows = [];
     if (order.mode === "individual") renderIndividualReport(order);
     else renderBulkReport(order);
-    document.getElementById("resultsStatus").textContent = "Feedback is optional. Only feedback marked for future model training is included in the admin export.";
+    document.getElementById("resultsStatus").textContent = "Presentation demo: recommendations are illustrative and stored only in this browser.";
   } catch (error) {
-    message.textContent = error.status === 401 ? "Sign in to view this paid report." : error.message;
+    message.textContent = error.message;
     empty.hidden = false;
   }
 }
@@ -162,7 +161,7 @@ function createFeedbackForm(predictionId) {
   commentLabel.append(comment);
   const consentLabel = document.createElement("label");
   consentLabel.className = "feedback-check";
-  consentLabel.innerHTML = '<input name="consentToTrain" type="checkbox"> I consent to this feedback being used to improve future recommendations';
+  consentLabel.innerHTML = '<input name="keepInBrowser" type="checkbox"> I agree to keep this feedback in this browser';
   const submit = document.createElement("button");
   submit.className = "account-primary";
   submit.type = "submit";
@@ -174,23 +173,20 @@ function createFeedbackForm(predictionId) {
   return form;
 }
 
-async function submitFeedback(event) {
+function submitFeedback(event) {
   if (!event.target.matches(".feedback-form")) return;
   event.preventDefault();
   const form = event.target;
   const data = new FormData(form);
   const status = form.querySelector(".feedback-status");
   try {
-    const result = await fishTreesApi(`/api/predictions/${encodeURIComponent(form.dataset.predictionId)}/feedback`, {
-      method: "POST",
-      body: JSON.stringify({
-        rating: data.get("rating"),
-        helpful: data.has("helpful"),
-        comment: data.get("comment"),
-        consentToTrain: data.has("consentToTrain"),
-      }),
+    window.FishTreesDemo.saveFeedback(form.dataset.predictionId, {
+      rating: Number(data.get("rating")),
+      helpful: data.has("helpful"),
+      comment: String(data.get("comment") || ""),
+      keepInBrowser: data.has("keepInBrowser"),
     });
-    status.textContent = result.message;
+    status.textContent = "Thank you. This feedback is saved only in this browser and is not sent to FishTrees.";
     form.querySelector('button[type="submit"]').disabled = true;
   } catch (error) {
     status.textContent = error.message;
@@ -243,6 +239,10 @@ function appendGrades(list, gradeData) {
 
 function exportExcel() {
   if (!exportRows.length) return;
+  if (typeof XLSX === "undefined") {
+    document.getElementById("resultsStatus").textContent = "Excel export needs an internet connection to load the spreadsheet library. Use Export as PDF / Print instead.";
+    return;
+  }
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(exportRows), "Recommendations");
   XLSX.writeFile(workbook, "fishtrees-recommendations.xlsx");

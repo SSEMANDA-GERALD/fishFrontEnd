@@ -3,41 +3,11 @@ const subjects = [
   "Geography", "History", "Economics", "Computer Studies"
 ];
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("bulkForm").addEventListener("submit", importResults);
   document.getElementById("downloadTemplate").addEventListener("click", downloadTemplate);
-  await checkInstitutionAccount();
+  document.getElementById("activeSchoolName").textContent = "Presentation demo (stored in this browser)";
 });
-
-async function checkInstitutionAccount() {
-  const form = document.getElementById("bulkForm");
-  const message = document.getElementById("schoolGateMessage");
-  try {
-    const { account } = await fishTreesApi("/api/auth/me");
-    if (!account) throw Object.assign(new Error("Sign in with an approved school or institution account to upload a batch."), { status: 401 });
-    document.getElementById("activeSchoolName").textContent = account.organizationName || account.displayName;
-    if (["admin", "superadmin"].includes(account.role)) {
-      document.getElementById("adminSchoolField").hidden = false;
-      document.getElementById("adminSchoolName").required = true;
-    }
-    if (account.status !== "approved") {
-      form.hidden = true;
-      message.textContent = "This institution account is awaiting administrator approval.";
-    } else if (!["school", "institution", "admin", "superadmin"].includes(account.role)) {
-      form.hidden = true;
-      message.textContent = "Bulk recommendations are available to approved institution accounts.";
-    }
-  } catch (error) {
-    form.hidden = true;
-    message.textContent = error.status === 401
-      ? "Sign in with an approved school or institution account to upload a batch."
-      : error.message;
-    const signIn = document.createElement("a");
-    signIn.href = "signin.html?next=schools.html";
-    signIn.textContent = "Sign in";
-    message.append(" ", signIn);
-  }
-}
 
 async function importResults(event) {
   event.preventDefault();
@@ -51,36 +21,78 @@ async function importResults(event) {
   submitButton.disabled = true;
 
   try {
-    const workbook = XLSX.read(await file.arrayBuffer(), { type: "array" });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(worksheet, { defval: "", raw: false });
+    const rows = await readStudentRows(file);
     const parsedRows = rows.map((row, index) => ({ student: toStudent(row), rowNumber: index + 2 }))
       .filter(({ student }) => student.name || Object.keys(student.oLevelResults).length || student.interests.length);
     if (!parsedRows.length) throw new Error("No student rows found. Check the first worksheet and its column headings.");
     const invalidRow = parsedRows.find(({ student }) => !student.name || !Object.keys(student.oLevelResults).length);
     if (invalidRow) throw new Error(`Row ${invalidRow.rowNumber} needs a student name and at least one final grade.`);
+    const allowedGrades = new Set(["A", "B", "C", "D", "E", "F", "U"]);
+    const invalidGradeRow = parsedRows.find(({ student }) => [...Object.values(student.oLevelResults), ...Object.values(student.mockResults)]
+      .some((grade) => !allowedGrades.has(grade)));
+    if (invalidGradeRow) throw new Error(`Row ${invalidGradeRow.rowNumber} contains an invalid grade. Use A, B, C, D, E, F, or U.`);
     const students = parsedRows.map(({ student }) => student);
 
-    status.textContent = `Creating a payment order for ${students.length} students...`;
-    const result = await fishTreesApi("/api/payment-orders", {
-      method: "POST",
-      body: JSON.stringify({
-        mode: "bulk",
-        paymentMethod: "mobile-money",
-        school: document.getElementById("adminSchoolName").value.trim(),
-        students,
-      })
-    });
-    window.location.href = `payment.html?order=${encodeURIComponent(result.order.id)}`;
+    const school = document.getElementById("schoolName").value.trim() || "School cohort";
+    const order = window.FishTreesDemo.createBulkOrder(school, students);
+    window.location.href = `payment.html?order=${encodeURIComponent(order.id)}`;
   } catch (error) {
-    if (error.status === 401) {
-      window.location.href = "signin.html?next=schools.html";
-      return;
-    }
     status.textContent = error.message || "Could not read the file. Check that it is a valid CSV or Excel workbook.";
   } finally {
     submitButton.disabled = false;
   }
+}
+
+async function readStudentRows(file) {
+  if (typeof XLSX !== "undefined") {
+    const workbook = XLSX.read(await file.arrayBuffer(), { type: "array" });
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    return XLSX.utils.sheet_to_json(worksheet, { defval: "", raw: false });
+  }
+  if (!file.name.toLowerCase().endsWith(".csv")) {
+    throw new Error("Excel import needs an internet connection to load the spreadsheet library. Use a CSV file instead.");
+  }
+  return parseCsv(await file.text());
+}
+
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
+  for (let index = 0; index < text.length; index += 1) {
+    const character = text[index];
+    if (quoted) {
+      if (character === '"' && text[index + 1] === '"') {
+        field += '"';
+        index += 1;
+      } else if (character === '"') {
+        quoted = false;
+      } else {
+        field += character;
+      }
+    } else if (character === '"' && field === "") {
+      quoted = true;
+    } else if (character === ",") {
+      row.push(field);
+      field = "";
+    } else if (character === "\n" || character === "\r") {
+      if (character === "\r" && text[index + 1] === "\n") index += 1;
+      row.push(field);
+      if (row.some((cell) => cell.trim())) rows.push(row);
+      row = [];
+      field = "";
+    } else {
+      field += character;
+    }
+  }
+  if (quoted) throw new Error("The CSV has an unclosed quoted field.");
+  row.push(field);
+  if (row.some((cell) => cell.trim())) rows.push(row);
+  if (rows.length < 2) throw new Error("The CSV needs a header row and at least one student row.");
+
+  const headers = rows[0].map((header) => String(header).replace(/^\uFEFF/, "").trim());
+  return rows.slice(1).map((cells) => Object.fromEntries(headers.map((header, index) => [header, cells[index] || ""])));
 }
 
 function toStudent(row) {

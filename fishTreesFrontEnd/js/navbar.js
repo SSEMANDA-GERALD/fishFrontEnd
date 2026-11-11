@@ -40,7 +40,7 @@ if (siteHeader) {
               <a class="btn btn-fishtrees nav-cta" href="recommendations.html">Get started</a>
             </li>
             <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-              <a id="accountLink" class="nav-link account-icon-link" href="signin.html" aria-label="Sign in or open your account" title="Account">
+              <a id="accountLink" class="nav-link account-icon-link" href="dashboard.html" aria-label="Open the presentation demo dashboard" title="Demo dashboard">
                 <i class="bi bi-person-circle" aria-hidden="true"></i>
               </a>
             </li>
