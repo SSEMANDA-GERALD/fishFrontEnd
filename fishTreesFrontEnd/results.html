@@ -17,18 +17,19 @@
     <section class="results-heading">
       <p class="results-eyebrow">A-Level combinations</p>
       <h1>Your subject combinations</h1>
-      <p>Review ranked subject pathways for each school you selected, along with the reasons and career directions behind each match.</p>
+      <p>Review paid, ranked subject pathway reports and the reasons behind each match.</p>
     </section>
 
     <div id="emptyResults" class="results-empty" hidden>
       <h2>No profile to show yet</h2>
-      <p>Enter your schools, interests and grades to generate a report.</p>
-      <a class="results-link" href="recommendations.html">Back to recommendations</a>
+      <p id="resultsEmptyMessage">Paid reports appear here after payment is verified.</p>
+      <a class="results-link" href="dashboard.html">Account dashboard</a>
     </div>
 
     <div id="resultsContent" hidden>
       <div class="results-top-actions">
         <button id="exportResults" class="results-link results-link-button" type="button">Export as PDF</button>
+        <button id="exportResultsExcel" class="results-link results-link-button" type="button">Export Excel</button>
       </div>
       <section class="profile-strip" aria-label="Student profile">
         <div>
@@ -46,6 +47,8 @@
       </section>
 
       <div id="schoolReports" class="school-reports"></div>
+      <div id="feedbackForms" class="feedback-forms"></div>
+      <p id="resultsStatus" class="guidance-disclaimer" role="status" aria-live="polite"></p>
 
       <p class="guidance-disclaimer">Guidance estimate based on synthetic example profiles, not an admissions decision or validated assessment. Confirm current offerings and entry requirements with each school.</p>
 
@@ -72,6 +75,8 @@
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
   <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/results.js"></script>
 </body>
 </html>
