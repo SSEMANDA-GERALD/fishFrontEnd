@@ -8,6 +8,14 @@ const pages = [
   ["Contact", "contact.html", "contact"]
 ];
 
+if (!document.querySelector('link[data-account-icons]')) {
+  const iconStyles = document.createElement("link");
+  iconStyles.rel = "stylesheet";
+  iconStyles.href = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css";
+  iconStyles.dataset.accountIcons = "true";
+  document.head.append(iconStyles);
+}
+
 if (siteHeader) {
   const links = pages.map(([label, href, page]) => {
     const active = siteHeader.dataset.page === page;
@@ -33,9 +41,24 @@ if (siteHeader) {
             <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
               <a class="btn btn-fishtrees nav-cta" href="recommendations.html">Get started</a>
             </li>
+            <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+              <a id="accountLink" class="nav-link account-icon-link" href="signin.html" aria-label="Sign in or open your account" title="Account">
+                <i class="bi bi-person-circle" aria-hidden="true"></i>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
   `;
+
+  fetch("/api/auth/me").then(async (response) => {
+    if (!response.ok) return;
+    const { account } = await response.json();
+    if (!account) return;
+    const accountLink = document.getElementById("accountLink");
+    accountLink.href = ["admin", "superadmin"].includes(account.role) ? "admin.html" : "dashboard.html";
+    accountLink.title = account.displayName;
+    accountLink.setAttribute("aria-label", `Account: ${account.displayName}`);
+  }).catch(() => {});
 }

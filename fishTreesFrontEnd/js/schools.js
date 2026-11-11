@@ -3,26 +3,49 @@ const subjects = [
   "Geography", "History", "Economics", "Computer Studies"
 ];
 
-let lastBatch = null;
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("bulkForm").addEventListener("submit", importResults);
   document.getElementById("downloadTemplate").addEventListener("click", downloadTemplate);
-  document.getElementById("exportExcel").addEventListener("click", exportExcel);
-  document.getElementById("exportPdf").addEventListener("click", exportPdf);
+  await checkInstitutionAccount();
 });
+
+async function checkInstitutionAccount() {
+  const form = document.getElementById("bulkForm");
+  const message = document.getElementById("schoolGateMessage");
+  try {
+    const { account } = await fishTreesApi("/api/auth/me");
+    if (!account) throw Object.assign(new Error("Sign in with an approved school or institution account to upload a batch."), { status: 401 });
+    document.getElementById("activeSchoolName").textContent = account.organizationName || account.displayName;
+    if (["admin", "superadmin"].includes(account.role)) {
+      document.getElementById("adminSchoolField").hidden = false;
+      document.getElementById("adminSchoolName").required = true;
+    }
+    if (account.status !== "approved") {
+      form.hidden = true;
+      message.textContent = "This institution account is awaiting administrator approval.";
+    } else if (!["school", "institution", "admin", "superadmin"].includes(account.role)) {
+      form.hidden = true;
+      message.textContent = "Bulk recommendations are available to approved institution accounts.";
+    }
+  } catch (error) {
+    form.hidden = true;
+    message.textContent = error.status === 401
+      ? "Sign in with an approved school or institution account to upload a batch."
+      : error.message;
+    const signIn = document.createElement("a");
+    signIn.href = "signin.html?next=schools.html";
+    signIn.textContent = "Sign in";
+    message.append(" ", signIn);
+  }
+}
 
 async function importResults(event) {
   event.preventDefault();
   const file = document.getElementById("studentFile").files[0];
-  const school = document.getElementById("schoolName").value.trim();
   const status = document.getElementById("uploadStatus");
   const submitButton = document.getElementById("generateReports");
 
-  if (!file || !school) return;
-  lastBatch = null;
-  document.getElementById("batchSection").hidden = true;
-  document.getElementById("batchResults").replaceChildren();
+  if (!file) return;
   status.classList.remove("success");
   status.textContent = "Reading student results...";
   submitButton.disabled = true;
@@ -38,20 +61,22 @@ async function importResults(event) {
     if (invalidRow) throw new Error(`Row ${invalidRow.rowNumber} needs a student name and at least one final grade.`);
     const students = parsedRows.map(({ student }) => student);
 
-    status.textContent = `Generating reports for ${students.length} students...`;
-    const response = await fetch("/api/recommendations/bulk", {
+    status.textContent = `Creating a payment order for ${students.length} students...`;
+    const result = await fishTreesApi("/api/payment-orders", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ school, students })
+      body: JSON.stringify({
+        mode: "bulk",
+        paymentMethod: "mobile-money",
+        school: document.getElementById("adminSchoolName").value.trim(),
+        students,
+      })
     });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "The recommendation service could not process this file.");
-
-    lastBatch = result;
-    renderBatch(result);
-    status.textContent = `${result.students.length} student reports are ready.`;
-    status.classList.add("success");
+    window.location.href = `payment.html?order=${encodeURIComponent(result.order.id)}`;
   } catch (error) {
+    if (error.status === 401) {
+      window.location.href = "signin.html?next=schools.html";
+      return;
+    }
     status.textContent = error.message || "Could not read the file. Check that it is a valid CSV or Excel workbook.";
   } finally {
     submitButton.disabled = false;
@@ -91,65 +116,6 @@ function findValue(values, keys) {
   return "";
 }
 
-function renderBatch(batch) {
-  const section = document.getElementById("batchSection");
-  const list = document.getElementById("batchResults");
-  document.getElementById("batchTitle").textContent = batch.school;
-  document.getElementById("batchCount").textContent = `${batch.students.length} student reports`;
-  list.replaceChildren();
-
-  batch.students.forEach((student) => {
-    const report = document.createElement("details");
-    report.className = "student-report";
-    const summary = document.createElement("summary");
-    const name = document.createElement("span");
-    name.className = "student-name";
-    name.textContent = student.name;
-    const topFit = document.createElement("span");
-    topFit.className = "student-top-fit";
-    const schoolReport = student.reports[0];
-    const top = schoolReport.recommendations[0];
-    topFit.textContent = top ? `Top fit: ${top.code} (${top.score}%)` : "No pathway ranked";
-    summary.append(name, topFit);
-
-    const body = document.createElement("div");
-    body.className = "student-report-body";
-    schoolReport.recommendations.forEach((pathway) => body.append(createPathway(pathway)));
-    if (schoolReport.cautions.length) {
-      const caution = document.createElement("section");
-      caution.className = "student-pathway";
-      const title = document.createElement("h3");
-      title.textContent = "Lower-priority options to review";
-      caution.append(title);
-      schoolReport.cautions.forEach((item) => {
-        const note = document.createElement("p");
-        note.textContent = `${item.code} (${item.subjects.join(", ")}): ${item.reason}`;
-        caution.append(note);
-      });
-      body.append(caution);
-    }
-    report.append(summary, body);
-    list.append(report);
-  });
-  section.hidden = false;
-  section.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-function createPathway(pathway) {
-  const item = document.createElement("section");
-  item.className = "student-pathway";
-  const title = document.createElement("h3");
-  title.textContent = `#${pathway.rank} ${pathway.code} - ${pathway.score}% fit`;
-  const subjectsText = document.createElement("p");
-  subjectsText.textContent = `Study: ${pathway.subjects.join(", ")}`;
-  const career = document.createElement("p");
-  career.textContent = `Could lead toward: ${pathway.career}`;
-  const reason = document.createElement("p");
-  reason.textContent = `Why: ${pathway.reason}`;
-  item.append(title, subjectsText, career, reason);
-  return item;
-}
-
 function downloadTemplate() {
   const headers = ["student_name", "interests", ...subjects.map((subject) => `final_${normalizeHeader(subject)}`), ...subjects.map((subject) => `mock_${normalizeHeader(subject)}`)];
   const example = ["Sample Student", "Technology and Computing; Engineering and Innovation", "A", "B", "A", "B", "C", "B", "C", "B", "A", "A", "B", "B", "C", "", "", "", "", ""];
@@ -159,31 +125,6 @@ function downloadTemplate() {
 
 function escapeCsv(value) {
   return `"${String(value).replaceAll('"', '""')}"`;
-}
-
-function exportExcel() {
-  if (!lastBatch) return;
-  const rows = [];
-  lastBatch.students.forEach((student) => {
-    const report = student.reports[0];
-    report.recommendations.forEach((pathway) => rows.push({
-      Student: student.name, School: report.school, Rank: pathway.rank, Combination: pathway.code,
-      Subjects: pathway.subjects.join(", "), "Fit score": pathway.score, "Career directions": pathway.career, Reason: pathway.reason
-    }));
-    report.cautions.forEach((item) => rows.push({
-      Student: student.name, School: report.school, Rank: "Review", Combination: item.code,
-      Subjects: item.subjects.join(", "), "Fit score": "", "Career directions": "", Reason: item.reason
-    }));
-  });
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows), "Recommendations");
-  XLSX.writeFile(workbook, "fishtrees-school-reports.xlsx");
-}
-
-function exportPdf() {
-  if (!lastBatch) return;
-  document.querySelectorAll(".student-report").forEach((report) => { report.open = true; });
-  window.print();
 }
 
 function downloadFile(filename, type, content) {

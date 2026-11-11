@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderInterestCards();
   renderGradeFields();
   renderSelectedSchools();
+  restorePendingProfile();
 
   document.getElementById("recommendationForm").addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -70,17 +71,21 @@ document.addEventListener("DOMContentLoaded", () => {
     status.textContent = "Preparing your recommendations...";
     try {
       const recommendationData = saveRecommendationData();
-      const response = await fetch("/api/recommendations", {
+      const result = await fishTreesApi("/api/payment-orders", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(recommendationData)
+        body: JSON.stringify({
+          mode: "individual",
+          paymentMethod: "mobile-money",
+          profile: recommendationData,
+        })
       });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "The recommendation service could not process your profile.");
-      recommendationData.reports = result.reports;
-      localStorage.setItem("fishTreesRecommendation", JSON.stringify(recommendationData));
-      window.location.href = "results.html";
+      window.location.href = `payment.html?order=${encodeURIComponent(result.order.id)}`;
     } catch (error) {
+      if (error.status === 401) {
+        sessionStorage.setItem("fishTreesPendingProfile", JSON.stringify(recommendationData));
+        window.location.href = "signin.html?next=recommendations.html";
+        return;
+      }
       status.textContent = error.message || "Could not reach the recommendation service. Start it with python app.py and try again.";
     } finally {
       submitButton.disabled = false;
@@ -215,6 +220,28 @@ function renderSelectedSchools() {
   status.textContent = selectedSchools.length ? `${selectedSchools.length} of 3 schools selected.` : "Choose at least one school.";
 }
 
+function restorePendingProfile() {
+  const savedProfile = sessionStorage.getItem("fishTreesPendingProfile");
+  if (!savedProfile) return;
+  sessionStorage.removeItem("fishTreesPendingProfile");
+  try {
+    const profile = JSON.parse(savedProfile);
+    selectedSchools = Array.isArray(profile.schools) ? profile.schools.slice(0, 3) : [];
+    renderSelectedSchools();
+    document.getElementById("careerAspiration").value = profile.aspiration || "";
+    document.querySelectorAll(".interest-card").forEach((button) => {
+      button.setAttribute("aria-pressed", String((profile.interests || []).includes(button.textContent.trim())));
+    });
+    subjects.forEach((subject) => {
+      const subjectId = subject.toLowerCase().replaceAll(" ", "-");
+      document.getElementById(`oLevelResults-${subjectId}`).value = profile.oLevelResults?.[subject] || "";
+      document.getElementById(`mockResults-${subjectId}`).value = profile.mockResults?.[subject] || "";
+    });
+  } catch {
+    sessionStorage.removeItem("fishTreesPendingProfile");
+  }
+}
+
 function saveRecommendationData() {
   const selectedInterests = Array.from(document.querySelectorAll('.interest-card[aria-pressed="true"]'))
     .map((button) => button.textContent.trim());
@@ -232,6 +259,5 @@ function saveRecommendationData() {
     mockResults: collectGrades("mockResults")
   };
 
-  localStorage.setItem("fishTreesRecommendation", JSON.stringify(recommendationData));
   return recommendationData;
 }

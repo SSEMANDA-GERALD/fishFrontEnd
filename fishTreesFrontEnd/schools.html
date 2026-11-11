@@ -17,7 +17,7 @@
     <section class="schools-heading">
       <p class="schools-eyebrow">School workspace</p>
       <h1>Student pathway reports</h1>
-      <p>Import a class list with final grades, optional mock grades and interests. Reports are generated for guidance and review.</p>
+      <p>Import a class list with final grades, optional mock grades and interests. Reports unlock after the payment is verified.</p>
     </section>
 
     <form id="bulkForm" class="bulk-form">
@@ -30,9 +30,13 @@
       </div>
 
       <div class="bulk-fields">
-        <div class="field-box">
-          <label for="schoolName">School name</label>
-          <input id="schoolName" name="schoolName" type="text" required maxlength="120" placeholder="Enter school name">
+        <div class="field-box active-school-field">
+          <label>Institution account</label>
+          <p id="activeSchoolName" class="active-school-name">Checking account...</p>
+        </div>
+        <div id="adminSchoolField" class="field-box" hidden>
+          <label for="adminSchoolName">School for this report</label>
+          <input id="adminSchoolName" maxlength="120" placeholder="Enter the school's name">
         </div>
         <div class="field-box">
           <label for="studentFile">Student results file</label>
@@ -40,35 +44,22 @@
         </div>
       </div>
 
-      <p class="column-note">Required columns: student_name and final grades. Optional columns: mock grades (use “mock_” before the subject) and interests.</p>
+      <p class="column-note">UGX 500 per student. Required columns: student_name and final grades. Optional columns: mock grades (use “mock_” before the subject) and interests.</p>
       <div class="bulk-actions">
-        <p class="privacy-note">Files are read in this browser. Student names, grades and interests are sent to the local service for this report; the service does not retain them.</p>
+        <p class="privacy-note">Student names, grades and interests are stored with the paid order and report. Do not upload student records without appropriate authorization. Feedback enters the training export only when the respondent opts in.</p>
         <button id="generateReports" class="primary-action" type="submit">Generate reports</button>
       </div>
       <p id="uploadStatus" class="upload-status" role="status" aria-live="polite"></p>
     </form>
 
-    <section id="batchSection" class="batch-section" hidden>
-      <div class="batch-heading">
-        <div>
-          <p class="schools-eyebrow">Batch results</p>
-          <h2 id="batchTitle">Recommendations</h2>
-          <p id="batchCount" class="batch-count"></p>
-        </div>
-        <div class="export-actions" aria-label="Export batch report">
-          <button id="exportExcel" class="export-button" type="button" title="Export as Excel">Export Excel</button>
-          <button id="exportPdf" class="export-button" type="button" title="Export as PDF">Export PDF</button>
-        </div>
-      </div>
-      <div id="batchResults" class="batch-results"></div>
-      <p class="guidance-note">This is a guidance estimate based on synthetic example profiles, not an admissions decision or validated assessment. Confirm subject combinations and entry requirements with each institution.</p>
-    </section>
+    <p id="schoolGateMessage" class="guidance-note" role="status" aria-live="polite"></p>
   </main>
 
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
   <script src="js/navbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/schools.js"></script>
 </body>
 </html>

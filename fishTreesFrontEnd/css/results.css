@@ -273,6 +273,76 @@
   gap: 0.75rem;
 }
 
+.bulk-student-report {
+  padding: 1.5rem 0 0.5rem;
+  border-bottom: 2px solid var(--results-line);
+}
+
+.bulk-student-report > h2 {
+  margin: 0 0 0.75rem;
+  color: var(--results-ink);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.feedback-form {
+  display: grid;
+  max-width: 680px;
+  gap: 0.65rem;
+  margin: 1.2rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid var(--results-line);
+  border-bottom: 1px solid var(--results-line);
+}
+
+.feedback-form h3 {
+  margin: 0;
+  color: var(--results-ink);
+  font-size: 1.05rem;
+}
+
+.feedback-form > label:not(.feedback-check) {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--results-ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.feedback-form select,
+.feedback-form textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #b8c5bb;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.feedback-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  color: var(--results-copy);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.feedback-check input {
+  margin-top: 0.25rem;
+  accent-color: var(--results-accent);
+}
+
+.feedback-form .account-primary {
+  justify-self: start;
+}
+
+.feedback-status {
+  min-height: 1.3rem;
+  margin: 0;
+  color: var(--results-accent);
+  font-size: 0.88rem;
+}
+
 .results-empty {
   padding: 1.5rem 0;
   border-top: 1px solid var(--results-line);
@@ -317,6 +387,7 @@
   footer,
   .results-actions,
   .results-top-actions,
+  .feedback-forms,
   .testing-notice {
     display: none !important;
   }
