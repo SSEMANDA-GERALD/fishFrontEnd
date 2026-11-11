@@ -46,6 +46,7 @@ const schools = [
 
 const grades = ["A", "B", "C", "D", "E", "F", "U"];
 const sampleGrades = ["A", "B", "A", "B", "A", "B", "B", "A", "A"];
+let selectedSchools = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("schoolOptions").innerHTML = schools
@@ -54,14 +55,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderInterestCards();
   renderGradeFields();
+  renderSelectedSchools();
 
-  document.getElementById("recommendationForm").addEventListener("submit", (event) => {
+  document.getElementById("recommendationForm").addEventListener("submit", async (event) => {
     event.preventDefault();
-    saveRecommendationData();
-    window.location.href = "payment.html";
+    if (!selectedSchools.length) {
+      document.getElementById("schoolSelectionStatus").textContent = "Add at least one school to continue.";
+      return;
+    }
+
+    const submitButton = event.currentTarget.querySelector('[type="submit"]');
+    const status = document.getElementById("recommendationStatus");
+    submitButton.disabled = true;
+    status.textContent = "Preparing your recommendations...";
+    try {
+      const recommendationData = saveRecommendationData();
+      const response = await fetch("/api/recommendations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recommendationData)
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "The recommendation service could not process your profile.");
+      recommendationData.reports = result.reports;
+      localStorage.setItem("fishTreesRecommendation", JSON.stringify(recommendationData));
+      window.location.href = "results.html";
+    } catch (error) {
+      status.textContent = error.message || "Could not reach the recommendation service. Start it with python app.py and try again.";
+    } finally {
+      submitButton.disabled = false;
+    }
   });
 
   document.getElementById("loadSampleData").addEventListener("click", loadSampleData);
+  document.getElementById("addSchool").addEventListener("click", addSchoolSelection);
+  document.getElementById("schoolSearch").addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addSchoolSelection();
+    }
+  });
+  document.getElementById("selectedSchools").addEventListener("click", (event) => {
+    const removeButton = event.target.closest("[data-remove-school]");
+    if (!removeButton) return;
+    selectedSchools.splice(Number(removeButton.dataset.removeSchool), 1);
+    renderSelectedSchools();
+  });
 
   document.getElementById("mockResultsToggle").addEventListener("click", (event) => {
     const button = event.currentTarget;
@@ -112,7 +151,8 @@ function createGradeRows(section) {
 }
 
 function loadSampleData() {
-  document.getElementById("schoolSearch").value = "Makerere College School";
+  selectedSchools = ["Makerere College School"];
+  renderSelectedSchools();
   document.getElementById("careerAspiration").value = "I would like to explore a career in biomedical engineering.";
 
   const sampleInterests = ["Medicine and Healthcare", "Engineering and Innovation", "Technology and Computing"];
@@ -133,6 +173,48 @@ function loadSampleData() {
   mockToggle.setAttribute("aria-expanded", "true");
 }
 
+function addSchoolSelection() {
+  const input = document.getElementById("schoolSearch");
+  const school = input.value.trim();
+  const status = document.getElementById("schoolSelectionStatus");
+  if (!school) {
+    status.textContent = "Enter or select a school first.";
+    return;
+  }
+  if (selectedSchools.some((item) => item.toLowerCase() === school.toLowerCase())) {
+    status.textContent = "That school is already selected.";
+    return;
+  }
+  if (selectedSchools.length === 3) {
+    status.textContent = "Choose up to three schools.";
+    return;
+  }
+  selectedSchools.push(school);
+  input.value = "";
+  renderSelectedSchools();
+}
+
+function renderSelectedSchools() {
+  const container = document.getElementById("selectedSchools");
+  container.replaceChildren();
+  selectedSchools.forEach((school, index) => {
+    const chip = document.createElement("span");
+    chip.className = "school-chip";
+    const name = document.createElement("span");
+    name.textContent = school;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.dataset.removeSchool = String(index);
+    remove.setAttribute("aria-label", `Remove ${school}`);
+    remove.title = `Remove ${school}`;
+    remove.textContent = "×";
+    chip.append(name, remove);
+    container.append(chip);
+  });
+  const status = document.getElementById("schoolSelectionStatus");
+  status.textContent = selectedSchools.length ? `${selectedSchools.length} of 3 schools selected.` : "Choose at least one school.";
+}
+
 function saveRecommendationData() {
   const selectedInterests = Array.from(document.querySelectorAll('.interest-card[aria-pressed="true"]'))
     .map((button) => button.textContent.trim());
@@ -142,7 +224,8 @@ function saveRecommendationData() {
   }));
 
   const recommendationData = {
-    school: document.getElementById("schoolSearch").value.trim(),
+    school: selectedSchools[0] || "",
+    schools: [...selectedSchools],
     aspiration: document.getElementById("careerAspiration").value.trim(),
     interests: selectedInterests,
     oLevelResults: collectGrades("oLevelResults"),
@@ -150,4 +233,5 @@ function saveRecommendationData() {
   };
 
   localStorage.setItem("fishTreesRecommendation", JSON.stringify(recommendationData));
+  return recommendationData;
 }

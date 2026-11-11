@@ -110,6 +110,50 @@ select {
   gap: 0.5rem;
 }
 
+.school-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+}
+
+.selected-schools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.school-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid #b8cdbb;
+  background: #f1f6ef;
+  color: #193321;
+  font-size: 0.86rem;
+}
+
+.school-chip button {
+  padding: 0 0.15rem;
+  border: 0;
+  background: transparent;
+  color: #193321;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.school-selection-status,
+.recommendation-status {
+  min-height: 1.25rem;
+  margin: 0;
+  color: #58675d;
+  font-size: 0.85rem;
+}
+
+.recommendation-status:not(:empty) {
+  padding: 0.55rem 0;
+}
+
 label {
   font-weight: 700;
   color: var(--forest-deep);

@@ -1,0 +1,22 @@
+interests,Mathematics,English,Physics,Chemistry,Biology,Geography,History,Economics,Computer Studies,combination
+Technology and Computing|Engineering and Innovation,A,B,A,B,B,B,C,B,A,PCM
+Technology and Computing|Engineering and Innovation,A,B,B,A,C,B,C,B,A,PCM
+Engineering and Innovation|Business and Entrepreneurship,B,B,A,B,C,B,C,A,B,PCM
+Medicine and Healthcare|Education and Research,B,A,B,A,A,B,B,B,C,PCB
+Medicine and Healthcare|Education and Research,A,B,A,B,A,B,C,B,B,PCB
+Medicine and Healthcare|Agriculture and Environmental Sciences,B,B,B,A,A,A,C,B,C,PCB
+Medicine and Healthcare|Agriculture and Environmental Sciences,B,B,B,A,A,A,C,B,C,BCM
+Agriculture and Environmental Sciences|Education and Research,B,A,C,B,A,A,B,B,B,BCM
+Agriculture and Environmental Sciences|Medicine and Healthcare,A,B,B,A,B,B,C,B,B,BCM
+Business and Entrepreneurship|Agriculture and Environmental Sciences,A,B,C,B,C,A,C,A,B,MEG
+Business and Entrepreneurship|Technology and Computing,A,B,B,B,C,B,C,A,A,MEG
+Agriculture and Environmental Sciences|Business and Entrepreneurship,B,A,C,B,C,A,C,B,B,MEG
+Law and Governance|Arts and Humanities,B,A,C,B,C,B,A,B,C,HEG
+Law and Governance|Education and Research,B,A,B,C,C,A,A,B,B,HEG
+Arts and Humanities|Education and Research,C,A,C,C,C,B,A,B,C,HEG
+Law and Governance|Media and Communication,B,A,C,C,C,B,A,B,C,HEL
+Media and Communication|Arts and Humanities,C,A,C,B,C,B,A,B,B,HEL
+Law and Governance|Arts and Humanities,B,A,B,C,C,B,A,C,C,HEL
+Engineering and Innovation|Business and Entrepreneurship,A,B,A,B,C,B,C,A,A,PEM
+Business and Entrepreneurship|Technology and Computing,A,B,B,B,C,B,C,A,A,PEM
+Engineering and Innovation|Technology and Computing,B,B,A,B,C,B,C,B,A,PEM

@@ -1,6 +1,6 @@
 # FishTrees Pathways
 
-This is a student project for helping learners explore A-Level study options. The current website is a front-end prototype made with HTML, CSS, JavaScript, and Bootstrap. It has no server, database, recommendation engine, login system, or live payment processing.
+This student project helps learners explore A-Level study options. The site uses HTML, CSS, and vanilla JavaScript; a small Flask service provides explainable recommendations. It has no database, login system, or live payment processing.
 
 The detailed team responsibilities are in [TEAM_ROLES.md](TEAM_ROLES.md).
 
@@ -12,8 +12,10 @@ The website pages are in [fishTreesFrontEnd/](fishTreesFrontEnd/):
 | --- | --- |
 | `index.html` | Home page |
 | `recommendations.html` | Learner details and grades form |
+| `schools.html` | School bulk import and batch reports |
 | `payment.html` | Payment options page; currently front-end only |
-| `results.html` | Demonstration pathway results |
+| `results.html` | Ranked individual pathway reports |
+| `css/schools.css` | School import and report styling |
 | `about.html` | Project introduction |
 | `contact.html` | Contact information |
 | `style.css` | Shared site styling, including the navbar and brand styles |
@@ -23,7 +25,10 @@ The website pages are in [fishTreesFrontEnd/](fishTreesFrontEnd/):
 | `js/navbar.js` | Builds the shared navbar on each page |
 | `js/recommendations.js` | Populates and controls the recommendations form |
 | `js/payment.js` | Validates the individual payment email field |
-| `js/results.js` | Shows saved profile data and sample pathways |
+| `js/results.js` | Renders saved profile data and ranked pathway reports |
+| `js/schools.js` | Reads CSV/Excel files and exports school reports |
+| `app.py` | Local Flask API and nearest-neighbor recommendation model |
+| `datasets/training_profiles.csv` | Synthetic labeled profiles used by the model |
 
 ## How The Pages Load
 
@@ -45,17 +50,26 @@ The JavaScript files are placed near the end of the page, after the page content
 <script src="js/recommendations.js"></script>
 ```
 
-The order matters on the recommendations page:
+The order matters on pages that use the shared navigation:
 
 1. `navbar.js` replaces the empty header placeholder with the navbar HTML.
 2. Bootstrap's bundle adds behavior to Bootstrap components, including the responsive navbar toggle.
-3. `recommendations.js` adds the school, interest, and grade UI and the mock-results toggle.
+3. The page script adds its form, report, or import behavior.
 
-Each page loads `navbar.js` and the Bootstrap bundle. The recommendations, payment, and results pages also load their page-specific scripts. No build or install step is needed; open a page in a browser or use a local static web server.
+Each page loads `navbar.js` and the Bootstrap bundle. The recommendations and batch import pages also load SheetJS from jsDelivr to read or create spreadsheets. The recommendation pages require the Flask service below; opening the HTML files directly will not provide API access.
 
-## Deployment
+## Run Locally
 
-This is a static site and has no build command. Static hosts can publish the repository root; the root `index.html` forwards visitors to `fishTreesFrontEnd/index.html`. Alternatively, set the publish directory to `fishTreesFrontEnd/`. The Bootstrap CDN requires an internet connection. Payment and school sign-in are demonstration-only and do not submit credentials or process transactions. The Contact form depends on FormSubmit; verify its configured recipient and complete any required activation before relying on live submissions.
+From the repository root, install the dependency and start the service:
+
+```powershell
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Open `http://127.0.0.1:5000/`. There is no frontend build step. Bootstrap and SheetJS load from CDNs and require an internet connection. The API is bound to localhost and has no authentication; do not expose it publicly or upload real student records without adding appropriate access controls, consent, and data protection. Bulk data is processed in memory and is not stored by the service. Individual profiles are kept in browser local storage.
+
+Payment remains a front-end demonstration. The Contact form depends on FormSubmit; verify its configured recipient and activation before relying on live submissions.
 
 ## Shared Navbar
 
@@ -65,7 +79,7 @@ Each page has one small placeholder instead of repeating all of the navbar marku
 <header data-page="recommendations"></header>
 ```
 
-The valid values are `home`, `about`, `recommendations`, `payment`, and `contact`. `js/navbar.js` reads this value, creates the logo, links, and “Get started” link, then adds `active` and `aria-current="page"` to the matching link. The “Get started” link always points to `recommendations.html`.
+The valid values are `home`, `about`, `recommendations`, `schools`, `payment`, and `contact`. `js/navbar.js` reads this value, creates the logo, links, and “Get started” link, then adds `active` and `aria-current="page"` to the matching link. The “Get started” link always points to `recommendations.html`.
 
 To change the navbar:
 
@@ -85,19 +99,25 @@ The page is split across three files:
 - [recommendations.js](fishTreesFrontEnd/js/recommendations.js) fills in repeated options and handles the mock-results toggle.
 - [recommendations.css](fishTreesFrontEnd/css/recommendations.css) controls the form layout, colors, panels, fields, buttons, and smaller-screen layout.
 
-### Current Front-End Behavior
+### Current Behavior
 
 - The `schools` array in `recommendations.js` supplies searchable school suggestions to the `<datalist>`.
 - The `interests` array supplies nine selectable buttons. Multiple interests can stay selected at once.
 - The `subjects` and `grades` arrays generate the O-Level and mock grade selectors.
 - “Enter mock results” shows or hides the mock grade grid and updates its text and `aria-expanded` value.
 - “Load sample data” fills the profile and both grade sets, and opens the mock results.
-- “Get recommendations” saves the form in browser storage and opens `payment.html`.
-- “Testing” on `payment.html` opens `results.html` using the saved profile, without processing a payment.
+- Students can select up to three schools. “Get recommendations” calls the local API and opens a separate report for each selected school.
+- The report ranks pathway combinations and shows their subjects, possible career directions, rationale, and lower-priority cautions. “Export as PDF” opens the browser print dialog; choose Save as PDF.
 - The payment email field uses browser email validation. Payment processing is not connected.
-- `results.html` maps selected interests to common A-Level subject combinations and offers browser printing, including Save as PDF. Check each school's current subject offerings; the prototype has no verified school catalog.
+- The school workspace accepts CSV, XLSX, and XLS files, generates batch reports, and exports an Excel workbook or a printable PDF report.
 
-There is no project backend: profile data stays in browser storage, and payment and school sign-in do not send data to a server. The Contact form uses the external FormSubmit service.
+The local Python service uses a transparent nearest-neighbor model loaded from 21 synthetic labeled profiles, combined with pathway interest overlap and relevant subject grades. It is a demonstration model, not independently validated guidance. Scores are estimates, not admissions probabilities. The current project has no verified school subject-offering catalog; confirm offerings and entry requirements with each school. The Contact form uses the external FormSubmit service.
+
+### School Import Format
+
+Use the Download CSV template button or provide a workbook whose first sheet contains one student per row. `student_name` and at least one final grade are required. Use `final_mathematics`, `final_english`, and equivalent `final_<subject>` columns for grades; mock grades use `mock_<subject>`. `interests` accepts multiple values separated by commas, semicolons, or vertical bars. Grades use A, B, C, D, E, F, or U. The report combines final and mock grades when both are supplied.
+
+The bulk page reads the file in the browser and sends the student name, grades, and interests to the local API. The service does not retain those records. The API has no authentication and is intended for local demonstration only.
 
 ### Changing Form Content Or Behavior
 
@@ -121,7 +141,7 @@ The saved profile is shared between pages through the `fishTreesRecommendation` 
 
 ### Shared Styling: `style.css`
 
-`style.css` is linked by all six pages. It contains the shared brand colors and styles for the navbar, logo, navigation links, common FishTrees buttons, footer, and home-page sections. Change shared navbar or brand styling here so the update remains consistent across pages.
+`style.css` is linked by all seven pages. It contains the shared brand colors and styles for the navbar, logo, navigation links, common FishTrees buttons, footer, and home-page sections. Change shared navbar or brand styling here so the update remains consistent across pages.
 
 ### Recommendations Styling: `css/recommendations.css`
 
@@ -150,7 +170,8 @@ Most of the recommendations form's layout and visual design is custom CSS, not B
 - `index.html` uses the shared navbar and `style.css`; the home page sections are styled in `style.css`.
 - `about.html` and `contact.html` use the shared navbar and Bootstrap layout/spacing utilities, with shared styles from `style.css`.
 - `payment.html` uses the shared navbar, Bootstrap layout and card/form styles, `style.css`, and the additional `css/payment-bootstrap.css` rules.
-- `results.html` uses the shared navbar and `css/results.css` for the demonstration pathways and submitted grade summary.
+- `schools.html` uses `css/schools.css` and `js/schools.js` for batch import, reports, and exports.
+- `results.html` uses the shared navbar and `css/results.css` for ranked pathways and the submitted grade summary.
 
 The page files are regular HTML and can be opened directly. Since Bootstrap is loaded from a CDN, its styles and navbar behavior need an internet connection.
 
@@ -158,9 +179,9 @@ The page files are regular HTML and can be opened directly. Since Bootstrap is l
 
 After changing the navbar, form, or styles:
 
-1. Open all six pages and check that each has the right active nav item.
+1. Start the Flask service, then open the seven site pages and check that each has the right active nav item.
 2. Check the navbar at desktop width and use its toggle at mobile width.
-3. On recommendations, confirm school suggestions, multiple selected interests, sample data, mock results, and both navigation actions.
-4. On payment, confirm invalid emails are rejected, Testing preserves the saved profile, and valid email displays the front-end-only status.
-5. On results, confirm the saved profile, combinations, and entered grades appear; test Export as PDF / Print.
+3. On recommendations, select one to three schools, load sample data, request recommendations, and inspect each school's report.
+4. On schools, import a template CSV, verify row validation, expand reports, and export Excel and PDF.
+5. On results, confirm rankings, outcomes, rationale, cautions, and grades; test Export as PDF.
 6. Check the pages at desktop and phone widths for overflow, overlap, and readable labels.

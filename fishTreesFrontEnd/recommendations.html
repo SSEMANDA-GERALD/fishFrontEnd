@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="FishTrees Pathways student recommendation form preview.">
+  <meta name="description" content="Explore ranked subject pathway guidance based on your interests and grades.">
   <title>Recommendations | FishTrees Pathways</title>
   <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,9 +29,14 @@
 
           <div class="two-column">
             <div class="field-box">
-              <label for="schoolSearch">School</label>
-              <input id="schoolSearch" list="schoolOptions" class="form-control" placeholder="Search or select your school" autocomplete="off">
+              <label for="schoolSearch">Schools (choose up to three)</label>
+              <div class="school-entry">
+                <input id="schoolSearch" list="schoolOptions" class="form-control" placeholder="Search or enter a school" autocomplete="off">
+                <button id="addSchool" class="secondary-btn" type="button">Add school</button>
+              </div>
               <datalist id="schoolOptions"></datalist>
+              <div id="selectedSchools" class="selected-schools" aria-live="polite"></div>
+              <p id="schoolSelectionStatus" class="school-selection-status" role="status">Choose at least one school.</p>
             </div>
 
             <div class="field-box">
@@ -73,6 +78,7 @@
             <button class="primary-btn" type="submit">Get recommendations</button>
           </div>
         </div>
+        <p id="recommendationStatus" class="recommendation-status" role="status" aria-live="polite"></p>
     </form>
   </main>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="View your FishTrees Pathways demonstration recommendations.">
+  <meta name="description" content="Review ranked subject pathway recommendations for your selected schools.">
   <title>Your Results | FishTrees Pathways</title>
   <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,19 +17,22 @@
     <section class="results-heading">
       <p class="results-eyebrow">A-Level combinations</p>
       <h1>Your subject combinations</h1>
-      <p id="schoolAvailability">These common combinations are suggestions to discuss with your school. Confirm which combinations it offers.</p>
+      <p>Review ranked subject pathways for each school you selected, along with the reasons and career directions behind each match.</p>
     </section>
 
     <div id="emptyResults" class="results-empty" hidden>
       <h2>No profile to show yet</h2>
-      <p>Enter your school, interests, or grades first, then return to view pathway ideas.</p>
+      <p>Enter your schools, interests and grades to generate a report.</p>
       <a class="results-link" href="recommendations.html">Back to recommendations</a>
     </div>
 
     <div id="resultsContent" hidden>
+      <div class="results-top-actions">
+        <button id="exportResults" class="results-link results-link-button" type="button">Export as PDF</button>
+      </div>
       <section class="profile-strip" aria-label="Student profile">
         <div>
-          <span class="profile-label">School</span>
+          <span class="profile-label">Selected schools</span>
           <strong id="resultSchool">Not provided</strong>
         </div>
         <div>
@@ -42,16 +45,9 @@
         </div>
       </section>
 
-      <section class="pathway-section" aria-labelledby="pathway-title">
-        <div class="section-heading">
-          <div>
-            <p class="results-eyebrow">Matched to your interests</p>
-            <h2 id="pathway-title">Recommended combinations</h2>
-          </div>
-          <span id="testingNotice" class="testing-notice" hidden>Testing mode: payment bypassed</span>
-        </div>
-        <div id="recommendationsList" class="pathway-list"></div>
-      </section>
+      <div id="schoolReports" class="school-reports"></div>
+
+      <p class="guidance-disclaimer">Guidance estimate based on synthetic example profiles, not an admissions decision or validated assessment. Confirm current offerings and entry requirements with each school.</p>
 
       <details class="grades-details">
         <summary>Your entered grades</summary>
@@ -69,7 +65,6 @@
 
       <div class="results-actions">
         <a class="results-link" href="recommendations.html">Edit your profile</a>
-        <button id="exportResults" class="results-link results-link-button" type="button">Export as PDF / Print</button>
       </div>
     </div>
   </main>
