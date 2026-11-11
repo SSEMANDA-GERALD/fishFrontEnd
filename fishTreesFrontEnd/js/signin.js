@@ -1,15 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const status = document.getElementById("signinStatus");
-  try {
-    const account = window.FishTreesDemo.getAccount();
-    if (account) {
-      redirectForAccount(account);
-      return;
-    }
-  } catch (error) {
-    status.textContent = error.message;
-  }
-
   document.querySelectorAll("form[data-role]").forEach((form) => {
     form.addEventListener("submit", (event) => {
       event.preventDefault();

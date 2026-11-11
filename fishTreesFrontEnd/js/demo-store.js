@@ -1,5 +1,6 @@
 (function () {
-  const storageKey = "fishTreesPresentationDemo";
+  const storageKey = "fishTreesWorkflowV2";
+  const stateVersion = 2;
   const gradeValues = { A: 5, B: 4, C: 3, D: 2, E: 1, F: 0, U: 0 };
   const accounts = {
     admin: { username: "admin", password: "admin123", role: "admin", displayName: "Presentation Administrator" },
@@ -22,10 +23,10 @@
     } catch (error) {
       throw new Error("Browser storage is unavailable. Open the site in a browser that allows local storage and try again.");
     }
-    if (!raw) return { version: 1, orders: [], feedback: [], account: null };
+    if (!raw) return { version: stateVersion, orders: [], feedback: [], account: null };
     try {
       const state = JSON.parse(raw);
-      if (state.version !== 1 || !Array.isArray(state.orders) || !Array.isArray(state.feedback)) throw new Error();
+      if (state.version !== stateVersion || !Array.isArray(state.orders) || !Array.isArray(state.feedback)) throw new Error();
       if (!Object.prototype.hasOwnProperty.call(state, "account")) state.account = null;
       return state;
     } catch (error) {
@@ -46,12 +47,12 @@
   }
 
   function createIndividualOrder(profile) {
+    requireSchoolAccount();
     return saveOrder({
       id: createId(),
       createdAt: new Date().toISOString(),
       mode: "individual",
       status: "pending",
-      amount: 500,
       predictionCount: 1,
       profile,
       reports: [],
@@ -59,12 +60,12 @@
   }
 
   function createBulkOrder(school, students) {
+    requireSchoolAccount();
     return saveOrder({
       id: createId(),
       createdAt: new Date().toISOString(),
       mode: "bulk",
       status: "pending",
-      amount: students.length * 500,
       predictionCount: students.length,
       school,
       students: students.map((student) => ({
@@ -78,8 +79,10 @@
 
   function saveOrder(order) {
     const state = readState();
+    const account = requireSchoolAccount(state);
     order.reference = `FT-${createId().slice(-6).toUpperCase()}`;
-    order.createdByRole = state.account ? state.account.role : "visitor";
+    order.createdByRole = account.role;
+    order.createdByUsername = account.username;
     state.orders.unshift(order);
     writeState(state);
     return order;
@@ -87,17 +90,26 @@
 
   function getOrder(id) {
     if (!id) return null;
-    return readState().orders.find((order) => order.id === id) || null;
-  }
-
-  function getOrders(role) {
-    const orders = readState().orders;
-    return role ? orders.filter((order) => order.createdByRole === role) : orders;
-  }
-
-  function completePayment(id) {
     const state = readState();
-    const order = state.orders.find((item) => item.id === id);
+    const account = requireSchoolAccount(state);
+    return state.orders.find((order) => order.id === id && ownsOrder(order, account)) || null;
+  }
+
+  function getOrders() {
+    const state = readState();
+    const account = state.account;
+    if (!account || !["school", "admin"].includes(account.role)) {
+      throw new Error("Sign in with an administrator or school account to view requests.");
+    }
+    return account.role === "admin"
+      ? state.orders
+      : state.orders.filter((order) => ownsOrder(order, account));
+  }
+
+  function completeRequest(id) {
+    const state = readState();
+    const account = requireSchoolAccount(state);
+    const order = state.orders.find((item) => item.id === id && ownsOrder(item, account));
     if (!order) throw new Error("This request could not be found. Start again from your account workspace.");
     if (order.status === "pending") {
       order.status = "completed";
@@ -129,6 +141,18 @@
     return readState().account || null;
   }
 
+  function requireSchoolAccount(state) {
+    const account = (state || readState()).account;
+    if (!account || account.role !== "school") {
+      throw new Error("Sign in with a school account to manage recommendation requests.");
+    }
+    return account;
+  }
+
+  function ownsOrder(order, account) {
+    return order.createdByRole === account.role && order.createdByUsername === account.username;
+  }
+
   function signOut() {
     const state = readState();
     state.account = null;
@@ -137,6 +161,7 @@
 
   function saveFeedback(predictionId, feedback) {
     const state = readState();
+    requireSchoolAccount(state);
     state.feedback.push({ predictionId, ...feedback, createdAt: new Date().toISOString() });
     writeState(state);
   }
@@ -191,7 +216,7 @@
     signIn,
     getAccount,
     signOut,
-    completePayment,
+    completeRequest,
     saveFeedback,
   };
 })();

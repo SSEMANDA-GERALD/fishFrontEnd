@@ -16,11 +16,15 @@ function loadDashboard() {
       window.location.replace("admin.html");
       return;
     }
+    if (account.role !== "school") {
+      window.location.replace("signin.html");
+      return;
+    }
     document.getElementById("dashboardTitle").textContent = `${account.displayName} dashboard`;
-    const orders = window.FishTreesDemo.getOrders("school");
+    const orders = window.FishTreesDemo.getOrders();
     document.getElementById("dashboardContent").hidden = false;
     document.getElementById("predictionCount").textContent = orders.filter((order) => order.status === "completed").reduce((sum, order) => sum + order.predictionCount, 0);
-    document.getElementById("amountPaid").textContent = `UGX ${orders.filter((order) => order.status === "completed").reduce((sum, order) => sum + order.amount, 0).toLocaleString()}`;
+    document.getElementById("completedOrderCount").textContent = orders.filter((order) => order.status === "completed").length;
     document.getElementById("orderCount").textContent = orders.length;
     document.getElementById("bulkLink").hidden = false;
     renderOrders(orders);
@@ -45,7 +49,7 @@ function renderOrders(orders) {
   if (!orders.length) {
     const empty = document.createElement("p");
     empty.className = "account-note";
-    empty.textContent = "No payment orders yet.";
+    empty.textContent = "No recommendation requests yet.";
     list.append(empty);
     return;
   }
@@ -56,7 +60,7 @@ function renderOrders(orders) {
     const reference = document.createElement("strong");
     reference.textContent = order.reference;
     const description = document.createElement("p");
-    description.textContent = `${order.mode === "bulk" ? "Bulk" : "Single"} · ${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"} · UGX ${Number(order.amount).toLocaleString()} · ${order.status === "completed" ? "complete" : "payment incomplete"}`;
+    description.textContent = `${order.mode === "bulk" ? "Bulk" : "Single"} · ${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"} · ${order.status === "completed" ? "preview complete" : "ready to continue"}`;
     details.append(reference, description);
     const action = document.createElement("a");
     action.className = "order-action";
@@ -65,7 +69,7 @@ function renderOrders(orders) {
       action.textContent = "View report";
     } else {
       action.href = `payment.html?order=${encodeURIComponent(order.id)}`;
-      action.textContent = "Continue";
+      action.textContent = "Continue to preview";
     }
     row.append(details, action);
     list.append(row);

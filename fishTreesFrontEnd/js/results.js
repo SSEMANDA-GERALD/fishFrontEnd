@@ -12,8 +12,13 @@ function loadCompletedOrder() {
   const message = document.getElementById("resultsEmptyMessage");
   const orderId = new URLSearchParams(window.location.search).get("order");
   try {
-    if (!window.FishTreesDemo.getAccount()) {
+    const account = window.FishTreesDemo.getAccount();
+    if (!account) {
       window.location.replace("signin.html");
+      return;
+    }
+    if (account.role !== "school") {
+      window.location.replace("admin.html");
       return;
     }
     const order = window.FishTreesDemo.getOrder(orderId);
@@ -22,7 +27,7 @@ function loadCompletedOrder() {
       return;
     }
     if (order.status !== "completed") {
-      message.textContent = "Complete the simulated payment to view this sample report.";
+      message.textContent = "Continue the request to view its recommendation preview.";
       empty.hidden = false;
       return;
     }
@@ -31,7 +36,7 @@ function loadCompletedOrder() {
     exportRows = [];
     if (order.mode === "individual") renderIndividualReport(order);
     else renderBulkReport(order);
-    document.getElementById("resultsStatus").textContent = "Recommendations are illustrative and stored only in this browser.";
+    document.getElementById("resultsStatus").textContent = "Recommendations are illustrative and stored only in this browser. No payment was taken.";
   } catch (error) {
     message.textContent = error.message;
     empty.hidden = false;

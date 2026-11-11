@@ -18,11 +18,10 @@ function loadAdmin() {
     document.getElementById("adminTitle").textContent = `${account.displayName} dashboard`;
     const orders = window.FishTreesDemo.getOrders();
     const completedOrders = orders.filter((order) => order.status === "completed");
-    const predictionCount = completedOrders.reduce((sum, order) => sum + order.predictionCount, 0);
     document.getElementById("adminStats").hidden = false;
-    document.getElementById("statPredictions").textContent = predictionCount;
-    document.getElementById("statRevenue").textContent = `UGX ${completedOrders.reduce((sum, order) => sum + order.amount, 0).toLocaleString()}`;
-    document.getElementById("statPayments").textContent = orders.filter((order) => order.status === "pending").length;
+    document.getElementById("statPredictions").textContent = completedOrders.reduce((sum, order) => sum + order.predictionCount, 0);
+    document.getElementById("statCompleted").textContent = completedOrders.length;
+    document.getElementById("statAwaitingSchool").textContent = orders.filter((order) => order.status === "pending").length;
     renderOrders(orders);
     document.getElementById("adminStatus").textContent = "";
   } catch (error) {
@@ -44,19 +43,13 @@ function renderOrders(orders) {
     const reference = document.createElement("strong");
     reference.textContent = order.reference;
     const summary = document.createElement("p");
-    const role = order.createdByRole === "school" ? "School" : "Administrator";
+    const role = order.createdByRole === "school" ? "School" : "Unknown";
     const kind = order.mode === "bulk" ? "Bulk" : "Single";
-    const status = order.status === "completed" ? "Complete (simulated payment)" : "Waiting for Continue";
-    summary.textContent = `${role} · ${kind} · ${order.predictionCount} learner${order.predictionCount === 1 ? "" : "s"} · UGX ${Number(order.amount).toLocaleString()} · ${status}`;
+    const status = order.status === "completed" ? "Preview complete" : "Waiting for school to continue";
+    summary.textContent = `${role} · ${kind} · ${order.predictionCount} learner${order.predictionCount === 1 ? "" : "s"} · ${status}`;
     details.append(reference, summary);
 
-    const action = document.createElement("a");
-    action.className = "order-action";
-    action.href = order.status === "completed"
-      ? `results.html?order=${encodeURIComponent(order.id)}`
-      : `payment.html?order=${encodeURIComponent(order.id)}`;
-    action.textContent = order.status === "completed" ? "View report" : "Continue";
-    row.append(details, action);
+    row.append(details);
     list.append(row);
   });
 }

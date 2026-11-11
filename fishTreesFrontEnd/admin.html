@@ -17,18 +17,14 @@
       <div>
         <p class="account-eyebrow">Administrator workspace</p>
         <h1 id="adminTitle">Operations dashboard</h1>
-        <p>View prediction activity and run single or bulk pathway reports. Payments are simulated; no money is charged.</p>
+        <p>Review request activity. Schools manage their own recommendation previews; no payments are processed.</p>
       </div>
-      <button id="adminSignout" class="text-action" type="button">Back to home</button>
+      <button id="adminSignout" class="text-action" type="button">Sign out</button>
     </section>
-    <nav class="dashboard-actions" aria-label="Recommendation tools">
-      <a class="account-action" href="recommendations.html">Single prediction</a>
-      <a class="account-action" href="schools.html">Bulk predictions</a>
-    </nav>
     <div id="adminStats" class="account-stat-grid" hidden>
       <article class="account-stat"><span>Predictions generated</span><strong id="statPredictions">0</strong></article>
-      <article class="account-stat"><span>Simulated total (UGX)</span><strong id="statRevenue">0</strong></article>
-      <article class="account-stat"><span>Requests awaiting Continue</span><strong id="statPayments">0</strong></article>
+      <article class="account-stat"><span>Requests completed</span><strong id="statCompleted">0</strong></article>
+      <article class="account-stat"><span>Requests awaiting school</span><strong id="statAwaitingSchool">0</strong></article>
     </div>
     <section class="dashboard-section">
       <div class="dashboard-section-heading">
@@ -37,7 +33,7 @@
       </div>
       <div id="adminOrders" class="admin-list"></div>
     </section>
-    <p class="account-note">The account and report data is kept in this browser only.</p>
+    <p class="account-note">Activity is stored in this browser only. This administrator view cannot continue school requests.</p>
     <p id="adminStatus" class="account-status" role="status" aria-live="polite"></p>
   </main>
   <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>

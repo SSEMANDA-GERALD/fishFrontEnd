@@ -51,8 +51,13 @@ let selectedSchools = [];
 document.addEventListener("DOMContentLoaded", () => {
   const recommendationStatus = document.getElementById("recommendationStatus");
   try {
-    if (!window.FishTreesDemo.getAccount()) {
+    const account = window.FishTreesDemo.getAccount();
+    if (!account) {
       window.location.replace("signin.html");
+      return;
+    }
+    if (account.role !== "school") {
+      window.location.replace("admin.html");
       return;
     }
   } catch (error) {

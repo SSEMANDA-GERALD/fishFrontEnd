@@ -9,7 +9,6 @@ const accountLabel = currentAccount
 const pages = [
   ["Home", "index.html", "home"],
   ["About", "about.html", "about"],
-  ["Payment", "payment.html", "payment"],
   ["Contact", "contact.html", "contact"]
 ];
 

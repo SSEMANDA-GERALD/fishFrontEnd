@@ -18,9 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.replace("signin.html");
     return;
   }
-  if (!["school", "admin"].includes(account.role)) {
-    form.hidden = true;
-    status.textContent = "Sign in with a school or administrator account to use bulk predictions.";
+  if (account.role !== "school") {
+    window.location.replace("admin.html");
     return;
   }
 

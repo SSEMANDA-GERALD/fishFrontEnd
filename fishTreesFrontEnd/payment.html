@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Continue the simulated payment for a FishTrees Pathways recommendation.">
-  <title>Payment | FishTrees Pathways</title>
+  <meta name="description" content="Continue a FishTrees Pathways recommendation preview.">
+  <title>Recommendation Request | FishTrees Pathways</title>
   <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -12,33 +12,32 @@
   <link rel="stylesheet" href="css/payment-bootstrap.css">
 </head>
 <body>
-  <header data-page="payment"></header>
+  <header data-page="account"></header>
 
   <main class="container py-5">
     <section class="mb-4" aria-labelledby="page-title">
-      <p class="eyebrow mb-2">Access and payment</p>
+      <p class="eyebrow mb-2">Recommendation preview</p>
       <h1 id="page-title" class="display-5 fw-bold text-forest">Your next step starts here</h1>
-      <p class="lead text-secondary mb-0">Continue to complete your recommendation request.</p>
-      <p class="alert alert-warning mt-3 mb-0" role="note">This is a payment simulation. No money is charged or transferred.</p>
+      <p class="lead text-secondary mb-0">Continue to view your recommendation preview.</p>
+      <p class="alert alert-warning mt-3 mb-0" role="note">No payment provider is connected. This prototype does not charge or transfer money.</p>
     </section>
 
     <div class="row g-4">
       <div class="col-lg-6">
         <section class="card h-100 border-0 border-top border-4 border-forest shadow-sm" aria-labelledby="individual-title">
           <div class="card-body p-4">
-            <p class="eyebrow mb-2">Payment</p>
-            <h2 id="individual-title" class="h3 text-forest">Recommendation payment</h2>
-            <p class="text-secondary">Press Continue to complete the simulation and view the recommendation.</p>
+            <p class="eyebrow mb-2">Request</p>
+            <h2 id="individual-title" class="h3 text-forest">Recommendation request</h2>
+            <p class="text-secondary">Continue without payment to view the illustrative recommendation.</p>
 
-            <p class="price-line border-top border-bottom py-3 mb-3">
-              <span class="fw-bold text-forest">UGX</span>
-              <strong id="paymentAmount" class="display-6 text-forest">500</strong>
-              <span id="paymentQuantity" class="text-secondary">per recommendation</span>
+            <p class="border-top border-bottom py-3 mb-3">
+              <strong class="text-forest">Amount due: none</strong>
+              <span id="paymentQuantity" class="text-secondary">Selected learners</span>
             </p>
             <p id="paymentOrderSummary" class="small text-secondary" hidden></p>
 
             <form id="paymentForm">
-              <button class="btn btn-forest w-100" type="submit">Continue</button>
+              <button class="btn btn-forest w-100" type="submit">Continue without payment</button>
               <p id="paymentStatus" class="small text-secondary mt-2 mb-0" role="status" aria-live="polite"></p>
               <a id="paymentResultsLink" class="btn btn-outline-forest w-100 mt-2" href="#" hidden>View recommendations</a>
               <a id="paymentStartLink" class="btn btn-outline-forest w-100 mt-2" href="signin.html" hidden>Go to account sign in</a>

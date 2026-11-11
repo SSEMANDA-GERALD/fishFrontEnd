@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("paymentForm").addEventListener("submit", continuePayment);
+  document.getElementById("paymentForm").addEventListener("submit", continueRequest);
   loadPaymentOrder();
 });
 
@@ -9,10 +9,15 @@ function loadPaymentOrder() {
   const status = document.getElementById("paymentStatus");
   let order;
   try {
-    if (!window.FishTreesDemo.getAccount()) {
+    const account = window.FishTreesDemo.getAccount();
+    if (!account) {
       form.hidden = true;
-      status.textContent = "Sign in to continue to your payment simulation.";
+      status.textContent = "Sign in with a school account to continue.";
       document.getElementById("paymentStartLink").hidden = false;
+      return;
+    }
+    if (account.role !== "school") {
+      window.location.replace(account.role === "admin" ? "admin.html" : "signin.html");
       return;
     }
     order = window.FishTreesDemo.getOrder(orderId);
@@ -23,26 +28,25 @@ function loadPaymentOrder() {
   }
   if (!order) {
     form.hidden = true;
-    status.textContent = "No payment request was found. Start from your account workspace.";
+    status.textContent = "No recommendation request was found. Start from your account workspace.";
     document.getElementById("paymentStartLink").hidden = false;
     return;
   }
 
-  document.getElementById("paymentAmount").textContent = Number(order.amount).toLocaleString();
   document.getElementById("paymentQuantity").textContent = `${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"}`;
   const summary = document.getElementById("paymentOrderSummary");
   summary.textContent = `${order.reference} · ${order.predictionCount} recommendation${order.predictionCount === 1 ? "" : "s"}`;
   summary.hidden = false;
   if (order.status === "completed") {
     form.hidden = true;
-    status.textContent = "Payment simulation complete.";
+    status.textContent = "Request preview complete. No payment was taken.";
     const resultsLink = document.getElementById("paymentResultsLink");
     resultsLink.href = `results.html?order=${encodeURIComponent(order.id)}`;
     resultsLink.hidden = false;
   }
 }
 
-function continuePayment(event) {
+function continueRequest(event) {
   event.preventDefault();
   const form = event.currentTarget;
   const orderId = new URLSearchParams(window.location.search).get("order");
@@ -50,7 +54,7 @@ function continuePayment(event) {
   const button = form.querySelector('button[type="submit"]');
   button.disabled = true;
   try {
-    const order = window.FishTreesDemo.completePayment(orderId);
+    const order = window.FishTreesDemo.completeRequest(orderId);
     window.location.href = `results.html?order=${encodeURIComponent(order.id)}`;
   } catch (error) {
     status.textContent = error.message;
