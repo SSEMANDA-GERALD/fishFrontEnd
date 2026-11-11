@@ -9,6 +9,7 @@ const accountLabel = currentAccount
 const pages = [
   ["Home", "index.html", "home"],
   ["About", "about.html", "about"],
+  ["Recommendations", "recommendations.html", "recommendations"],
   ["Contact", "contact.html", "contact"]
 ];
 
@@ -43,7 +44,7 @@ if (siteHeader) {
           <ul class="navbar-nav ms-auto align-items-lg-center">
             ${links}
             <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-              <a class="btn btn-fishtrees nav-cta" href="signin.html">Get started</a>
+              <a class="btn btn-fishtrees nav-cta" href="recommendations.html">Get started</a>
             </li>
             <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
               <a id="accountLink" class="nav-link account-icon-link" href="${accountHref}" aria-label="${accountLabel}" title="Account">

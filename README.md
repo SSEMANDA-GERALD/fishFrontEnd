@@ -19,12 +19,12 @@ The credentials are public frontend examples, not secure accounts. Sign-in is st
 
 After signing in:
 
-1. A school account opens its workspace, where it can choose **Single prediction** or **Bulk predictions**.
+1. Anyone can open **Recommendations** and create a single illustrative prediction without an account. A school account also has a workspace for request history and bulk predictions.
 2. The administrator opens a read-only dashboard with request totals and recent activity. Administrators cannot create or continue school requests.
-3. Enter a learner profile or use **Load sample data**. Bulk predictions accept a CSV/XLSX class list.
-4. On the request page, press **Continue without payment** to view the illustrative report.
+3. Enter a learner profile or use **Load sample data**. Bulk predictions accept a CSV/XLSX class list and require a school account.
+4. Submit the profile to open the payment step, then press **Continue without payment** to view the illustrative results.
 
-There is no payment integration or fee configured. No money is charged, transferred, received, or verified. No card details, PINs, or transaction references are requested. Orders, sign-in state, and feedback stay in this browser and are not shared across devices. Do not enter real student records.
+There is no payment integration or fee configured. No money is charged, transferred, received, or verified. No card details, PINs, or transaction references are requested. Orders, sign-in state, and feedback stay in this browser and are not shared across devices. Anonymous requests are associated with the current browser tab session. Do not enter real student records.
 
 ## Important limitations
 
@@ -39,7 +39,7 @@ The site is in [fishTreesFrontEnd/](fishTreesFrontEnd/):
 
 - `index.html`, `about.html`, and `contact.html` provide the main site pages.
 - `signin.html` offers administrator and school presentation sign-in.
-- `recommendations.html` and `payment.html` provide the single prediction flow.
+- `recommendations.html` and `payment.html` provide the public single-prediction flow; visitors do not need an account.
 - `schools.html` supports browser-side CSV/Excel import for bulk predictions.
 - `results.html` displays generated sample recommendations.
 - `dashboard.html` is the school workspace; `admin.html` is the administrator dashboard.

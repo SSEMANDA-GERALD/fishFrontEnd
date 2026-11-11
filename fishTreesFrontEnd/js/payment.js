@@ -10,14 +10,12 @@ function loadPaymentOrder() {
   let order;
   try {
     const account = window.FishTreesDemo.getAccount();
-    if (!account) {
-      form.hidden = true;
-      status.textContent = "Sign in with a school account to continue.";
-      document.getElementById("paymentStartLink").hidden = false;
+    if (account && account.role === "admin") {
+      window.location.replace("admin.html");
       return;
     }
-    if (account.role !== "school") {
-      window.location.replace(account.role === "admin" ? "admin.html" : "signin.html");
+    if (account && account.role !== "school") {
+      window.location.replace("signin.html");
       return;
     }
     order = window.FishTreesDemo.getOrder(orderId);
@@ -28,7 +26,7 @@ function loadPaymentOrder() {
   }
   if (!order) {
     form.hidden = true;
-    status.textContent = "No recommendation request was found. Start from your account workspace.";
+    status.textContent = "No recommendation request was found. Start from the recommendations page.";
     document.getElementById("paymentStartLink").hidden = false;
     return;
   }

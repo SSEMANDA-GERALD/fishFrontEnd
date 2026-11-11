@@ -13,12 +13,12 @@ function loadCompletedOrder() {
   const orderId = new URLSearchParams(window.location.search).get("order");
   try {
     const account = window.FishTreesDemo.getAccount();
-    if (!account) {
-      window.location.replace("signin.html");
+    if (account && account.role === "admin") {
+      window.location.replace("admin.html");
       return;
     }
-    if (account.role !== "school") {
-      window.location.replace("admin.html");
+    if (account && account.role !== "school") {
+      window.location.replace("signin.html");
       return;
     }
     const order = window.FishTreesDemo.getOrder(orderId);

@@ -1,6 +1,7 @@
 (function () {
   const storageKey = "fishTreesWorkflowV2";
   const stateVersion = 2;
+  const visitorKey = "fishTreesVisitorId";
   const gradeValues = { A: 5, B: 4, C: 3, D: 2, E: 1, F: 0, U: 0 };
   const accounts = {
     admin: { username: "admin", password: "admin123", role: "admin", displayName: "Presentation Administrator" },
@@ -47,7 +48,7 @@
   }
 
   function createIndividualOrder(profile) {
-    requireSchoolAccount();
+    requireRequester();
     return saveOrder({
       id: createId(),
       createdAt: new Date().toISOString(),
@@ -79,7 +80,7 @@
 
   function saveOrder(order) {
     const state = readState();
-    const account = requireSchoolAccount(state);
+    const account = requireRequester(state);
     order.reference = `FT-${createId().slice(-6).toUpperCase()}`;
     order.createdByRole = account.role;
     order.createdByUsername = account.username;
@@ -91,7 +92,7 @@
   function getOrder(id) {
     if (!id) return null;
     const state = readState();
-    const account = requireSchoolAccount(state);
+    const account = requireRequester(state);
     return state.orders.find((order) => order.id === id && ownsOrder(order, account)) || null;
   }
 
@@ -108,7 +109,7 @@
 
   function completeRequest(id) {
     const state = readState();
-    const account = requireSchoolAccount(state);
+    const account = requireRequester(state);
     const order = state.orders.find((item) => item.id === id && ownsOrder(item, account));
     if (!order) throw new Error("This request could not be found. Start again from your account workspace.");
     if (order.status === "pending") {
@@ -149,6 +150,30 @@
     return account;
   }
 
+  function requireRequester(state) {
+    const account = (state || readState()).account;
+    if (account && account.role === "admin") {
+      throw new Error("Administrators cannot create or continue recommendation requests.");
+    }
+    if (account && account.role !== "school") {
+      throw new Error("Sign in with a school account or continue as a visitor.");
+    }
+    return account || { role: "visitor", username: getVisitorId() };
+  }
+
+  function getVisitorId() {
+    try {
+      let visitorId = sessionStorage.getItem(visitorKey);
+      if (!visitorId) {
+        visitorId = createId();
+        sessionStorage.setItem(visitorKey, visitorId);
+      }
+      return visitorId;
+    } catch (error) {
+      throw new Error("Browser session storage is unavailable. Enable it to make a recommendation request.");
+    }
+  }
+
   function ownsOrder(order, account) {
     return order.createdByRole === account.role && order.createdByUsername === account.username;
   }
@@ -161,7 +186,7 @@
 
   function saveFeedback(predictionId, feedback) {
     const state = readState();
-    requireSchoolAccount(state);
+    requireRequester(state);
     state.feedback.push({ predictionId, ...feedback, createdAt: new Date().toISOString() });
     writeState(state);
   }
