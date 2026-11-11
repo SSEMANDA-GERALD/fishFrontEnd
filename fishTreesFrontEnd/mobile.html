@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Complete your individual recommendation payment using MTN MoMo or Airtel Money.">
+  <title>Mobile Money Payment | FishTrees Pathways</title>
+  <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
+  <link href="https://jsdelivr.net" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/payment-bootstrap.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg home-navbar">
+      <div class="container">
+        <a class="navbar-brand" href="index.html" aria-label="FishTrees Pathways home">
+          <img class="site-logo" src="images/FishTrees Pathways Logo.png" alt="FishTrees Pathways">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="recommendations.html">Recommendations</a></li>
+            <li class="nav-item"><a class="nav-link active" href="payment.html" aria-current="page">Payment</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            <li class="nav-item ms-lg-3 mt-2 mt-lg-0"><a class="btn btn-fishtrees nav-cta" href="recommendations.html">Get started</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <a href="payment.html" class="text-decoration-none text-forest fw-semibold">&larr; Back to payment methods</a>
+        </div>
+
+        <section class="card border-0 border-top border-4 border-forest shadow-sm" aria-labelledby="momo-title">
+          <div class="card-body p-4">
+            <p class="eyebrow mb-2">Mobile money checkout</p>
+            <h1 id="momo-title" class="h3 text-forest">Pay with Mobile Money</h1>
+            <p class="text-secondary">Enter your MTN MoMo or Airtel Money phone number to receive a payment prompt on your phone.</p>
+
+            <p class="price-line border-top border-bottom py-3 mb-4">
+              <span class="fw-bold text-forest">UGX</span>
+              <strong class="display-6 text-forest">500</strong>
+              <span class="text-secondary">total amount</span>
+            </p>
+
+            <form id="mobileMoneyForm">
+              <fieldset class="mb-3">
+                <legend class="fs-6 fw-semibold mb-2">Select network</legend>
+                <div class="row g-2">
+                  <div class="col-6">
+                    <label class="form-check payment-option border rounded p-3 w-100" for="networkMtn">
+                      <input class="form-check-input" id="networkMtn" type="radio" name="network" value="MTN" checked>
+                      <span class="form-check-label fw-semibold">MTN MoMo</span>
+                    </label>
+                  </div>
+                  <div class="col-6">
+                    <label class="form-check payment-option border rounded p-3 w-100" for="networkAirtel">
+                      <input class="form-check-input" id="networkAirtel" type="radio" name="network" value="Airtel">
+                      <span class="form-check-label fw-semibold">Airtel Money</span>
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold" for="phoneNumber">Phone number</label>
+                <input class="form-control" id="phoneNumber" name="phoneNumber" type="tel" placeholder="e.g. 0772 123456" pattern="[0-9\s+]{10,15}" required>
+                <div class="form-text">Make sure your phone is nearby to enter your Mobile Money PIN.</div>
+              </div>
+
+              <button id="payNowBtn" class="btn btn-forest w-100 py-2" type="submit">Pay UGX 500</button>
+            </form>
+
+            <!-- Status Message Box -->
+            <div id="paymentStatus" class="alert alert-success mt-3 d-none" role="alert">
+              <strong>Prompt sent!</strong> Please check your phone and enter your PIN to approve the UGX 500 payment.
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="https://jsdelivr.net"></script>
+
+  <script>
+    const momoForm = document.getElementById('mobileMoneyForm');
+    const statusBox = document.getElementById('paymentStatus');
+    const payBtn = document.getElementById('payNowBtn');
+
+    momoForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const phone = document.getElementById('phoneNumber').value.trim();
+      const network = document.querySelector('input[name="network"]:checked').value;
+
+      if (phone) {
+        payBtn.disabled = true;
+        payBtn.textContent = 'Sending prompt...';
+        
+        statusBox.innerHTML = <strong>Prompt sent to ${phone} (${network})!</strong> Please check your phone and enter your PIN to complete the payment.;
+        statusBox.classList.remove('d-none');
+      }
+    });
+  </script>
+</body>

@@ -20,6 +20,7 @@
       <h1 id="paymentTitle">Review your order</h1>
       <p>Reports are generated only after payment is verified by an administrator.</p>
     </section>
+<<<<<<< HEAD
     <section id="paymentPanel" class="payment-panel" hidden>
       <dl class="payment-summary">
         <div><dt>Order reference</dt><dd id="orderReference">-</dd></div>
@@ -42,6 +43,53 @@
           <input id="paymentReference" maxlength="120" autocomplete="off" required>
           <button class="account-primary" type="submit">Submit for verification</button>
         </form>
+=======
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <section class="card h-100 border-0 border-top border-4 border-forest shadow-sm" aria-labelledby="individual-title">
+          <div class="card-body p-4">
+            <p class="eyebrow mb-2">For one student</p>
+            <h2 id="individual-title" class="h3 text-forest">Individual recommendation</h2>
+            <p class="text-secondary">Complete your student profile, make a payment, then view your recommendation.</p>
+
+            <p class="price-line border-top border-bottom py-3 mb-3">
+              <span class="fw-bold text-forest">UGX</span>
+              <strong class="display-6 text-forest">500</strong>
+              <span class="text-secondary">per recommendation</span>
+            </p>
+
+            <form id="paymentForm">
+              <fieldset class="mb-3">
+                <legend class="fs-6 fw-semibold mb-3">Choose a payment method</legend>
+                <label class="form-check payment-option d-flex align-items-start gap-2 border rounded p-3 mb-2" for="mobileMoney">
+                  <input class="form-check-input mt-1" id="mobileMoney" type="radio" name="paymentMethod" value="mobile-money" checked>
+                  <span class="form-check-label"><strong>Mobile money</strong><small class="d-block text-secondary">MTN MoMo or Airtel Money</small></span>
+                  <a href="mobile.html" class="stretched-link" aria-label="Pay with mobile money"></a>
+                </label>
+                <label class="form-check payment-option d-flex align-items-start gap-2 border rounded p-3 mb-2" for="bankTransfer">
+                  <input class="form-check-input mt-1" id="bankTransfer" type="radio" name="paymentMethod" value="bank-transfer">
+                  <span class="form-check-label"><strong>Bank transfer</strong><small class="d-block text-secondary">Pay through your bank</small></span>
+                </label>
+                <label class="form-check payment-option d-flex align-items-start gap-2 border rounded p-3" for="bankCard">
+                  <input class="form-check-input mt-1" id="bankCard" type="radio" name="paymentMethod" value="card">
+                  <span class="form-check-label"><strong>Bank card</strong><small class="d-block text-secondary">Visa or Mastercard</small></span>
+                </label>
+              </fieldset>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold" for="paymentEmail">Email address</label>
+                <input class="form-control" id="paymentEmail" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+                <div class="form-text">Enter a valid email address to continue.</div>
+              </div>
+
+              <button class="btn btn-forest w-100" type="submit">Continue to payment</button>
+              <p id="paymentStatus" class="small text-secondary mt-2 mb-0" role="status" aria-live="polite"></p>
+              <button id="testingButton" class="btn btn-outline-secondary btn-sm w-100 mt-2" type="button">Testing</button>
+            </form>
+          </div>
+        </section>
+>>>>>>> c7ef2d8eccbee9e8c95159dd50416729541df8c3
       </div>
       <p id="paymentStatusMessage" class="account-status" role="status" aria-live="polite"></p>
       <button id="refreshPayment" class="text-action" type="button">Refresh payment status</button>
