@@ -52,11 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const recommendationStatus = document.getElementById("recommendationStatus");
   try {
     const account = window.FishTreesDemo.getAccount();
-    if (account && account.role === "admin") {
-      window.location.replace("admin.html");
-      return;
-    }
-    if (account && account.role !== "school") {
+    if (account && !["school", "admin"].includes(account.role)) {
       window.location.replace("signin.html");
       return;
     }
@@ -83,7 +79,16 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const recommendationData = saveRecommendationData();
       const order = window.FishTreesDemo.createIndividualOrder(recommendationData);
-      window.location.href = `payment.html?order=${encodeURIComponent(order.id)}`;
+      const account = window.FishTreesDemo.getAccount();
+
+      // School accounts and administrators never pay
+      if (account && (account.role === "school" || account.role === "admin")) {
+        window.FishTreesDemo.completeRequest(order.id);
+        window.location.href = `results.html?order=${encodeURIComponent(order.id)}`;
+      } else {
+        // Visitors who go through the recommendations page are directed to payment
+        window.location.href = `payment.html?order=${encodeURIComponent(order.id)}`;
+      }
     } catch (error) {
       document.getElementById("recommendationStatus").textContent = error.message;
     }

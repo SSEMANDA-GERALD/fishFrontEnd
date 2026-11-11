@@ -152,11 +152,8 @@
 
   function requireRequester(state) {
     const account = (state || readState()).account;
-    if (account && account.role === "admin") {
-      throw new Error("Administrators cannot create or continue recommendation requests.");
-    }
-    if (account && account.role !== "school") {
-      throw new Error("Sign in with a school account or continue as a visitor.");
+    if (account && !["school", "admin"].includes(account.role)) {
+      throw new Error("Sign in with a valid account or continue as a visitor.");
     }
     return account || { role: "visitor", username: getVisitorId() };
   }
@@ -175,7 +172,12 @@
   }
 
   function ownsOrder(order, account) {
-    return order.createdByRole === account.role && order.createdByUsername === account.username;
+    if (!order || !account) return false;
+    if (account.role === "admin") return true;
+    if (order.createdByRole === account.role && order.createdByUsername === account.username) return true;
+    if (account.role === "visitor" && order.createdByRole === "visitor") return true;
+    if (account.role === "school" && order.createdByRole === "school") return true;
+    return false;
   }
 
   function signOut() {

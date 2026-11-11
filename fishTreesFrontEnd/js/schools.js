@@ -54,7 +54,9 @@ async function importResults(event) {
 
     const school = document.getElementById("schoolName").value.trim() || "School cohort";
     const order = window.FishTreesDemo.createBulkOrder(school, students);
-    window.location.href = `payment.html?order=${encodeURIComponent(order.id)}`;
+    // School accounts never pay: complete request directly and view results
+    window.FishTreesDemo.completeRequest(order.id);
+    window.location.href = `results.html?order=${encodeURIComponent(order.id)}`;
   } catch (error) {
     status.textContent = error.message || "Could not read the file. Check that it is a valid CSV or Excel workbook.";
   } finally {

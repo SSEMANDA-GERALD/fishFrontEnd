@@ -1,3 +1,14 @@
+:root {
+  color-scheme: light;
+  --forest: #193321;
+  --leaf: #e4fd97;
+  --pale-green: #f3f7ef;
+  --ink: #1f2d24;
+  --line: #dfe7d8;
+  --bs-body-color: #1f2d24;
+  --bs-secondary-color: #58675d;
+}
+
 body {
   background: var(--pale-green);
   color: var(--ink);
@@ -6,6 +17,11 @@ body {
 .card {
   background-color: #fff;
   color: var(--ink);
+  border-radius: 8px;
+}
+
+.bg-forest {
+  background-color: var(--forest);
 }
 
 .text-forest {
@@ -16,9 +32,65 @@ body {
   border-color: var(--forest) !important;
 }
 
+.eyebrow {
+  color: var(--forest);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.payment-option {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.payment-option:hover {
+  background-color: #f8faf6;
+}
+
+.payment-option .form-check-input {
+  position: static;
+  margin-left: 0;
+  flex: 0 0 auto;
+  accent-color: var(--forest);
+}
+
+.payment-option:has(.form-check-input:checked) {
+  border-color: var(--forest) !important;
+  background: #eef6e8;
+}
+
 .price-line {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
   border-color: var(--line) !important;
+}
+
+.btn-forest {
+  background: var(--forest);
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid var(--forest);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-forest:hover {
+  background: #2d3e2c;
+  color: #fff;
+  border-color: #2d3e2c;
+}
+
+.btn-outline-forest {
+  border: 1px solid var(--forest);
+  color: var(--forest);
+  font-weight: 600;
+  background: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline-forest:hover {
+  background: var(--forest);
+  color: #fff;
 }

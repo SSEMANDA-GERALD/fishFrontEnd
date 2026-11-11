@@ -64,12 +64,14 @@ function renderOrders(orders) {
     details.append(reference, description);
     const action = document.createElement("a");
     action.className = "order-action";
-    if (order.status === "completed") {
-      action.href = `results.html?order=${encodeURIComponent(order.id)}`;
-      action.textContent = "View report";
-    } else {
-      action.href = `payment.html?order=${encodeURIComponent(order.id)}`;
-      action.textContent = "Continue to preview";
+    action.href = `results.html?order=${encodeURIComponent(order.id)}`;
+    action.textContent = "View report";
+    if (order.status !== "completed") {
+      action.addEventListener("click", () => {
+        try {
+          window.FishTreesDemo.completeRequest(order.id);
+        } catch (_) {}
+      });
     }
     row.append(details, action);
     list.append(row);

@@ -13,21 +13,20 @@ function loadCompletedOrder() {
   const orderId = new URLSearchParams(window.location.search).get("order");
   try {
     const account = window.FishTreesDemo.getAccount();
-    if (account && account.role === "admin") {
-      window.location.replace("admin.html");
-      return;
-    }
-    if (account && account.role !== "school") {
+    if (account && !["school", "admin"].includes(account.role)) {
       window.location.replace("signin.html");
       return;
     }
-    const order = window.FishTreesDemo.getOrder(orderId);
+    let order = window.FishTreesDemo.getOrder(orderId);
+    if (order && order.status !== "completed" && account && (account.role === "school" || account.role === "admin")) {
+      order = window.FishTreesDemo.completeRequest(orderId);
+    }
     if (!order) {
       empty.hidden = false;
       return;
     }
     if (order.status !== "completed") {
-      message.textContent = "Continue the request to view its recommendation preview.";
+      message.textContent = "Please complete the payment step to view your recommendations.";
       empty.hidden = false;
       return;
     }
