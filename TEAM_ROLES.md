@@ -51,12 +51,12 @@ Any sample recommendation is for demonstrating the interface only. Do not descri
 
 **Main file:** `fishTreesFrontEnd/payment.html`, with shared styles in `style.css`.
 
-The prices are **UGX 500 per individual recommendation** and **UGX 500,000 per school per year**. The school subscription is annual because schools have one main intake each year. Confirm with the team how to explain what the subscription covers; do not promise unbuilt services.
+The current presentation displays **UGX 500 per learner** as an illustrative amount. School batch totals use the same per-learner demo amount. These are not approved or collected prices.
 
 Suggested page parts:
 
 - A clear comparison of the individual recommendation option and school annual subscription option.
-- A visible price for each option: UGX 500 per individual recommendation and UGX 500,000 per school per year.
+- A clearly marked presentation-only checkout using the displayed illustrative amount.
 - A simple explanation of what happens next in this front-end demonstration.
 - A clearly labelled demo or confirmation state, rather than a claim that money was actually received.
 - A way for a school to ask about subscription details, coordinated with Grace's contact information.
@@ -69,7 +69,7 @@ Beginner steps:
 4. Build and style `payment.html` using the shared site layout.
 5. Test links and the demo state, and make sure no screen falsely confirms a real transaction.
 
-There is no backend or live payment processing in this project. Do not collect or store mobile-money PINs, card numbers, passwords, or other payment credentials. Any payment interaction shown is only a front-end mock-up.
+There is no backend, account service, or live payment processing in this project. Do not collect mobile-money PINs, card numbers, passwords, or real transaction references. Any payment interaction shown is only a front-end simulation and does not transfer or verify money.
 
 ## Stefan: Home page
 
