@@ -2,8 +2,6 @@ const siteHeader = document.querySelector("header[data-page]");
 const pages = [
   ["Home", "index.html", "home"],
   ["About", "about.html", "about"],
-  ["Recommendations", "recommendations.html", "recommendations"],
-  ["For schools", "schools.html", "schools"],
   ["Payment", "payment.html", "payment"],
   ["Contact", "contact.html", "contact"]
 ];
@@ -52,13 +50,4 @@ if (siteHeader) {
     </nav>
   `;
 
-  fetch("/api/auth/me").then(async (response) => {
-    if (!response.ok) return;
-    const { account } = await response.json();
-    if (!account) return;
-    const accountLink = document.getElementById("accountLink");
-    accountLink.href = ["admin", "superadmin"].includes(account.role) ? "admin.html" : "dashboard.html";
-    accountLink.title = account.displayName;
-    accountLink.setAttribute("aria-label", `Account: ${account.displayName}`);
-  }).catch(() => {});
 }

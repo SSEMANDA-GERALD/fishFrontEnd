@@ -14,6 +14,9 @@ The website pages are in [fishTreesFrontEnd/](fishTreesFrontEnd/):
 | `recommendations.html` | Learner details and grades form |
 | `schools.html` | School bulk import and batch reports |
 | `payment.html` | Payment order and reference verification |
+| `mobile.html` | Mobile-money receipt reference submission |
+| `bank-transfer.html` | Bank transfer reference submission |
+| `bank-card.html` | Card receipt reference submission |
 | `results.html` | Ranked individual pathway reports |
 | `signin.html` | Student and institution sign-in |
 | `signup.html` | Student signup and institution access requests |
@@ -30,9 +33,11 @@ The website pages are in [fishTreesFrontEnd/](fishTreesFrontEnd/):
 | `js/navbar.js` | Builds the shared navbar on each page |
 | `js/recommendations.js` | Populates and controls the recommendations form |
 | `js/payment.js` | Loads order status and submits payment references |
+| `js/payment-method.js` | Loads an order and submits a receipt reference |
 | `js/results.js` | Loads paid reports and records satisfaction feedback |
 | `js/schools.js` | Reads CSV/Excel files and creates bulk payment orders |
 | `js/auth.js` | Same-origin API helper with CSRF tokens |
+| `js/api-config.js` | Backend origin used by the hosted frontend |
 | `js/signin.js` | Authenticates users and routes them to their workspace |
 | `js/signup.js` | Handles student and institution account requests |
 | `js/dashboard.js` | Shows account orders and paid reports |
@@ -43,6 +48,8 @@ The website pages are in [fishTreesFrontEnd/](fishTreesFrontEnd/):
 | `setup_database.py` | Creates tables and interactively seeds initial accounts |
 | `database/create_database.sql` | Creates the MySQL database |
 | `tests/test_platform.py` | Tests account, payment, consent, and analytics workflows |
+| `vercel.json` | Vercel Python function settings and file bundle |
+| `.python-version` | Python runtime selected for Vercel |
 
 ## How The Pages Load
 
@@ -70,7 +77,7 @@ The order matters on pages that use the shared navigation:
 2. Bootstrap's bundle adds behavior to Bootstrap components, including the responsive navbar toggle.
 3. The page script adds its form, report, or import behavior.
 
-Each page loads `navbar.js` and the Bootstrap bundle. The recommendations, school import, and report pages also load SheetJS from jsDelivr. All account, payment, and recommendation pages require the Flask service; opening HTML files directly does not provide API access.
+Each page loads `navbar.js` and the Bootstrap bundle. The recommendations, school import, and report pages also load SheetJS from jsDelivr. Account, payment, and recommendation pages load `api-config.js` before the shared auth helper so they can talk to the separately hosted API.
 
 ## MySQL Setup
 
@@ -99,6 +106,25 @@ python app.py
 
 The current checkout has no MySQL server/client installed, so MySQL provisioning and live database connectivity still need to be done on a machine with MySQL. Keep this app bound to localhost until deployed behind HTTPS with managed secrets and operational security controls.
 
+## Deploy The API On Vercel
+
+Vercel detects the root Flask `app.py` entrypoint and deploys it as a Python Function. Import this repository into Vercel with the repository root as the project root. Add these environment variables in the Vercel project settings for Production and Preview as appropriate:
+
+| Variable | Value |
+| --- | --- |
+| `FISHTREES_SECRET_KEY` | A long random secret; do not reuse an account password |
+| `FISHTREES_DB_HOST` | Reachable external MySQL host |
+| `FISHTREES_DB_PORT` | MySQL port, usually `3306` |
+| `FISHTREES_DB_NAME` | `fishtrees` |
+| `FISHTREES_DB_USER` | Restricted database user |
+| `FISHTREES_DB_PASSWORD` | Database password |
+| `FISHTREES_FRONTEND_ORIGINS` | Exact hosted frontend origin, including `https://`, no trailing slash |
+| `FISHTREES_SESSION_SAMESITE` | `None` when frontend and API are on different sites |
+
+Vercel enables secure session cookies for deployed requests. MySQL must be hosted separately with network access from Vercel; do not use a local SQLite file for deployed accounts. Configure the database provider's SSL and network allow-list as required. Run `setup_database.py` once from a secure environment connected to the production database to create the initial super-admin and sample school accounts.
+
+After the Vercel project is deployed, set `window.FISHTREES_API_BASE` in [api-config.js](fishTreesFrontEnd/js/api-config.js) to the API's HTTPS origin (for example, `https://your-api-project.vercel.app`) and redeploy the already-hosted frontend. Its exact origin must match `FISHTREES_FRONTEND_ORIGINS`. The same-origin local default works with `python app.py`.
+
 ## Accounts And Payments
 
 Students can create approved student accounts. School and other institution applications start as `pending`; an admin must approve them before report tools unlock. Public signup cannot create administrator roles. The account icon links to sign-in or the current user's workspace.
@@ -121,7 +147,7 @@ Each page has one small placeholder instead of repeating all of the navbar marku
 <header data-page="recommendations"></header>
 ```
 
-The valid values are `home`, `about`, `recommendations`, `schools`, `payment`, `contact`, and `account`. `js/navbar.js` reads this value, creates the logo, navigation, and account icon, then adds `active` and `aria-current="page"` to the matching link. The “Get started” link points to `recommendations.html`.
+The valid values are `home`, `about`, `payment`, `contact`, and `account`. `js/navbar.js` reads this value, creates the logo, navigation, Get started button, and account icon, then adds `active` and `aria-current="page"` to the matching link. Recommendations and schools are accessed through Get started and the account dashboard, not separate navbar links.
 
 To change the navbar:
 
@@ -222,7 +248,7 @@ Bootstrap, Bootstrap Icons, and SheetJS load from CDNs and need an internet conn
 
 After changing the navbar, form, or styles:
 
-1. Configure MySQL, run `setup_database.py`, start Flask, then open the eleven site pages.
+1. Configure MySQL, run `setup_database.py`, start Flask, then open the fourteen site pages.
 2. Check the navbar at desktop width and use its toggle at mobile width.
 3. Sign up as an institution and confirm it cannot use reports until approved.
 4. Create an individual or bulk order, confirm it remains pending, submit a reference, then verify it as an admin.

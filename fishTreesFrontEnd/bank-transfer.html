@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Submit a bank transfer reference for payment verification.">
+  <title>Bank Transfer | FishTrees Pathways</title>
+  <link rel="icon" type="image/png" href="images/FishTrees Pathways Logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/payment-bootstrap.css">
+</head>
+<body data-payment-method="bank-transfer">
+  <header data-page="payment"></header>
+  <main class="container py-5">
+    <div class="row justify-content-center"><div class="col-lg-6">
+      <a id="methodReturn" href="payment.html" class="d-inline-block text-forest text-decoration-none fw-semibold mb-3">Back to payment methods</a>
+      <section class="card border-0 border-top border-4 border-forest shadow-sm"><div class="card-body p-4">
+        <p class="eyebrow mb-2">Bank transfer</p><h1 class="h3 text-forest">Submit a transfer reference</h1>
+        <p class="text-secondary">Bank account details are not configured in this build. Obtain official payment instructions from FishTrees before transferring money.</p>
+        <p class="price-line border-top border-bottom py-3 mb-3"><span class="fw-bold text-forest">UGX</span><strong id="methodAmount" class="display-6 text-forest">500</strong><span>total due</span></p>
+        <p id="methodOrderSummary" class="small text-secondary"></p>
+        <form id="paymentReferenceForm">
+          <div class="mb-3"><label class="form-label fw-semibold" for="paymentReference">Bank transfer reference</label><input class="form-control" id="paymentReference" maxlength="120" autocomplete="off" required></div>
+          <button class="btn btn-forest w-100" type="submit">Submit for verification</button>
+          <p id="methodPaymentStatus" class="small text-secondary mt-2 mb-0" role="status" aria-live="polite"></p>
+        </form>
+      </div></section>
+    </div></div>
+  </main>
+  <footer class="home-footer text-center py-4">&copy; 2026 FishTrees Pathways. All rights reserved.</footer>
+  <script src="js/navbar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/payment-method.js"></script>
+</body>
+</html>

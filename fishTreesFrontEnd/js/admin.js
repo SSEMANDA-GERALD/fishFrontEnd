@@ -5,8 +5,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("pendingAccounts").addEventListener("click", handleAdminAction);
   document.getElementById("pendingPayments").addEventListener("click", handleAdminAction);
+  document.getElementById("trainingExport").addEventListener("click", downloadTrainingFeedback);
   loadAdmin();
 });
+
+async function downloadTrainingFeedback(event) {
+  event.preventDefault();
+  const status = document.getElementById("adminStatus");
+  try {
+    const response = await fetch(fishTreesApiUrl("/api/admin/training-feedback.csv"), { credentials: "include" });
+    if (!response.ok) throw new Error("Could not download the training feedback export.");
+    const url = URL.createObjectURL(await response.blob());
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "fishtrees-consented-feedback.csv";
+    link.click();
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    status.textContent = error.message;
+  }
+}
 
 async function loadAdmin() {
   const status = document.getElementById("adminStatus");

@@ -1,0 +1,1 @@
+window.FISHTREES_API_BASE = window.FISHTREES_API_BASE || "";

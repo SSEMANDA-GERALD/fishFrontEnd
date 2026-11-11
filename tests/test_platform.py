@@ -2,6 +2,7 @@ import os
 import unittest
 
 os.environ["FISHTREES_DATABASE_URL"] = "sqlite://"
+os.environ["FISHTREES_FRONTEND_ORIGINS"] = "https://frontend.example.test"
 
 import app as platform
 from extensions import db
@@ -56,6 +57,13 @@ class PlatformWorkflowTests(unittest.TestCase):
         response = self.client.post("/api/auth/login", json={})
         self.assertEqual(response.status_code, 400)
 
+    def test_api_cors_only_allows_configured_frontend(self):
+        allowed = self.client.get("/api/health", headers={"Origin": "https://frontend.example.test"})
+        denied = self.client.get("/api/health", headers={"Origin": "https://untrusted.example.test"})
+        self.assertEqual(allowed.headers.get("Access-Control-Allow-Origin"), "https://frontend.example.test")
+        self.assertEqual(allowed.headers.get("Access-Control-Allow-Credentials"), "true")
+        self.assertIsNone(denied.headers.get("Access-Control-Allow-Origin"))
+
     def test_institution_requires_admin_approval(self):
         response = self.post("/api/auth/signup", {
             "email": "office@school.example",
@@ -100,6 +108,9 @@ class PlatformWorkflowTests(unittest.TestCase):
         })
         self.assertEqual(order_response.status_code, 201)
         order_id = order_response.get_json()["order"]["id"]
+        selected_method = self.post(f"/api/payment-orders/{order_id}/method", {"paymentMethod": "bank-transfer"})
+        self.assertEqual(selected_method.status_code, 200)
+        self.assertEqual(selected_method.get_json()["order"]["paymentMethod"], "bank-transfer")
         denied = self.post("/api/recommendations", {})
         self.assertEqual(denied.status_code, 402)
 

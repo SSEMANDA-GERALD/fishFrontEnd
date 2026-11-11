@@ -1,81 +1,86 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const orderId = new URLSearchParams(window.location.search).get("order");
-  const form = document.getElementById("paymentReferenceForm");
-  document.getElementById("refreshPayment").addEventListener("click", loadOrder);
-  form.addEventListener("submit", submitReference);
-  if (!orderId) {
-    document.getElementById("paymentGateMessage").textContent = "Create a recommendation request first. Its payment order will appear here.";
-    return;
-  }
-  loadOrder();
+  document.getElementById("paymentForm").addEventListener("submit", continueToPaymentMethod);
+  loadPaymentOrder();
 });
 
-async function loadOrder() {
+async function loadPaymentOrder() {
   const orderId = new URLSearchParams(window.location.search).get("order");
-  const gate = document.getElementById("paymentGateMessage");
+  const form = document.getElementById("paymentForm");
+  const status = document.getElementById("paymentStatus");
+  if (!orderId) {
+    form.hidden = true;
+    status.textContent = "Create a recommendation request first; its order will appear here.";
+    return;
+  }
+
   try {
     const { order } = await fishTreesApi(`/api/payment-orders/${encodeURIComponent(orderId)}`);
-    renderOrder(order);
-    gate.textContent = "";
+    document.getElementById("paymentAmount").textContent = Number(order.amount).toLocaleString();
+    document.getElementById("paymentQuantity").textContent = `${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"}`;
+    const summary = document.getElementById("paymentOrderSummary");
+    summary.textContent = `Order ${order.reference} · ${order.status.toUpperCase()}`;
+    summary.hidden = false;
+    if (order.status !== "pending") {
+      form.hidden = true;
+      status.textContent = order.status === "paid"
+        ? "Payment is verified. View your report from the account dashboard."
+        : "This order is no longer pending. Contact an administrator for help.";
+      return;
+    }
+    if (order.paymentMethod) {
+      const radio = form.querySelector(`[name="paymentMethod"][value="${order.paymentMethod}"]`);
+      if (radio) radio.checked = true;
+    }
+    const { account } = await fishTreesApi("/api/auth/me");
+    if (account && !document.getElementById("paymentEmail").value) {
+      document.getElementById("paymentEmail").value = account.email;
+    }
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("submitted") === "1") {
+      status.textContent = "Your payment reference was submitted. Reports unlock after an administrator verifies the payment.";
+    }
   } catch (error) {
-    gate.textContent = error.status === 401 ? "Sign in to view this payment order." : error.message;
+    form.hidden = true;
+    status.textContent = error.message;
     if (error.status === 401) {
-      const link = document.createElement("a");
-      link.href = "signin.html";
-      link.textContent = " Sign in";
-      gate.append(link);
+      const next = `payment.html?order=${encodeURIComponent(orderId)}`;
+      window.location.href = `signin.html?next=${encodeURIComponent(next)}`;
     }
   }
 }
 
-function renderOrder(order) {
-  document.getElementById("paymentPanel").hidden = false;
-  document.getElementById("orderReference").textContent = order.reference;
-  document.getElementById("orderQuantity").textContent = `${order.predictionCount} student${order.predictionCount === 1 ? "" : "s"}`;
-  document.getElementById("orderAmount").textContent = `${order.currency} ${Number(order.amount).toLocaleString()}`;
-  document.getElementById("orderStatus").textContent = order.status.toUpperCase();
-  document.getElementById("selectedPaymentMethod").textContent = formatMethod(order.paymentMethod);
-  document.getElementById("paymentMethod").value = order.paymentMethod || "mobile-money";
-  document.getElementById("paymentReference").value = order.paymentReference || "";
-
-  const isPending = order.status === "pending";
-  document.getElementById("paymentInstructions").hidden = !isPending;
-  document.getElementById("paymentStatusMessage").textContent = isPending
-    ? order.paymentReference ? "Your payment reference is awaiting administrator verification." : "Order created. Submit your transaction reference after paying."
-    : order.status === "paid" ? "Payment verified. Your report is ready."
-      : "This payment order was rejected. Contact an administrator before creating another order.";
-  const reportLink = document.getElementById("viewReport");
-  reportLink.hidden = order.status !== "paid";
-  reportLink.href = `results.html?order=${encodeURIComponent(order.id)}`;
-}
-
-async function submitReference(event) {
+async function continueToPaymentMethod(event) {
   event.preventDefault();
+  const form = event.currentTarget;
   const orderId = new URLSearchParams(window.location.search).get("order");
-  const status = document.getElementById("paymentStatusMessage");
-  const button = event.currentTarget.querySelector('button[type="submit"]');
+  const selected = form.querySelector('[name="paymentMethod"]:checked');
+  const status = document.getElementById("paymentStatus");
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  if (!selected || !orderId) {
+    status.textContent = "Select a payment method for an active order.";
+    return;
+  }
+
+  const button = form.querySelector('button[type="submit"]');
   button.disabled = true;
   try {
-    const result = await fishTreesApi(`/api/payment-orders/${encodeURIComponent(orderId)}/reference`, {
+    await fishTreesApi(`/api/payment-orders/${encodeURIComponent(orderId)}/method`, {
       method: "POST",
-      body: JSON.stringify({
-        paymentMethod: document.getElementById("paymentMethod").value,
-        paymentReference: document.getElementById("paymentReference").value.trim(),
-      }),
+      body: JSON.stringify({ paymentMethod: selected.value }),
     });
-    status.textContent = result.message;
-    renderOrder(result.order);
+    const destinations = {
+      "mobile-money": "mobile.html",
+      "bank-transfer": "bank-transfer.html",
+      card: "bank-card.html",
+    };
+    window.location.href = `${destinations[selected.value]}?order=${encodeURIComponent(orderId)}`;
   } catch (error) {
     status.textContent = error.message;
+    if (error.status === 401) window.location.href = "signin.html";
   } finally {
     button.disabled = false;
   }
-}
-
-function formatMethod(method) {
-  return ({
-    "mobile-money": "Mobile money",
-    "bank-transfer": "Bank transfer",
-    card: "Bank card",
-  })[method] || "Not selected";
 }

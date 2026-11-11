@@ -8,6 +8,7 @@ from functools import wraps
 from pathlib import Path
 
 from flask import Flask, Response, jsonify, redirect, request, send_from_directory
+from flask_cors import CORS
 from flask_login import current_user, login_user, logout_user
 from flask_wtf.csrf import generate_csrf
 from sqlalchemy import URL, func, or_
@@ -69,9 +70,20 @@ PATHWAYS = [
     },
 ]
 
+is_vercel = os.environ.get("VERCEL") == "1"
+secret_key = os.environ.get("FISHTREES_SECRET_KEY")
+if is_vercel and not secret_key:
+    raise RuntimeError("FISHTREES_SECRET_KEY must be configured in Vercel environment variables.")
+
+frontend_origins = [
+    origin.strip().rstrip("/")
+    for origin in os.environ.get("FISHTREES_FRONTEND_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
 app = Flask(__name__, static_folder=None)
 app.config.update(
-    SECRET_KEY=os.environ.get("FISHTREES_SECRET_KEY") or secrets.token_urlsafe(32),
+    SECRET_KEY=secret_key or secrets.token_urlsafe(32),
     SQLALCHEMY_DATABASE_URI=os.environ.get(
         "FISHTREES_DATABASE_URL",
         URL.create(
@@ -85,11 +97,19 @@ app.config.update(
     ),
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=os.environ.get("FISHTREES_HTTPS", "0") == "1",
+    SESSION_COOKIE_SAMESITE=os.environ.get("FISHTREES_SESSION_SAMESITE", "None" if is_vercel else "Lax"),
+    SESSION_COOKIE_SECURE=is_vercel or os.environ.get("FISHTREES_HTTPS", "0") == "1",
     MAX_CONTENT_LENGTH=10 * 1024 * 1024,
     WTF_CSRF_TIME_LIMIT=3600,
 )
+if frontend_origins:
+    CORS(
+        app,
+        resources={r"/api/*": {"origins": frontend_origins}},
+        supports_credentials=True,
+        allow_headers=["Content-Type", "X-CSRFToken"],
+        methods=["GET", "POST", "OPTIONS"],
+    )
 db.init_app(app)
 login_manager.init_app(app)
 csrf.init_app(app)
@@ -367,6 +387,22 @@ def get_payment_order(order_id):
     if order is None:
         return jsonify({"error": "Payment order not found."}), 404
     return jsonify({"order": order_payload(order, include_predictions=True)})
+
+
+@app.post("/api/payment-orders/<order_id>/method")
+@api_login_required
+def select_payment_method(order_id):
+    order = owned_order_or_404(order_id)
+    if order is None:
+        return jsonify({"error": "Payment order not found."}), 404
+    if order.status != "pending":
+        return jsonify({"error": "This payment order is no longer pending."}), 409
+    method = (request.get_json(silent=True) or {}).get("paymentMethod")
+    if method not in {"mobile-money", "bank-transfer", "card"}:
+        return jsonify({"error": "Choose a supported payment method."}), 400
+    order.payment_method = method
+    db.session.commit()
+    return jsonify({"order": order_payload(order)})
 
 
 @app.post("/api/payment-orders/<order_id>/reference")

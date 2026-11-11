@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  fishTreesApi("/api/auth/me").then(({ account }) => {
+    if (account) window.location.replace(["admin", "superadmin"].includes(account.role) ? "admin.html" : "dashboard.html");
+  }).catch(() => {});
+
   document.getElementById("signinForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const status = document.getElementById("signinStatus");
