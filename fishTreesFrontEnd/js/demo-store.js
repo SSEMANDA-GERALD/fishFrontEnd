@@ -93,7 +93,19 @@
     if (!id) return null;
     const state = readState();
     const account = requireRequester(state);
-    return state.orders.find((order) => order.id === id && ownsOrder(order, account)) || null;
+    const order = state.orders.find((order) => order.id === id && ownsOrder(order, account)) || null;
+    if (order && order.status === "completed") {
+      if (order.mode === "individual" && order.reports && (!order.reports[0] || !order.reports[0].cautions || !order.reports[0].cautions.length)) {
+        order.reports = createReports(order.profile);
+        writeState(state);
+      } else if (order.mode === "bulk" && order.students && order.students.length && (!order.students[0].reports[0] || !order.students[0].reports[0].cautions || !order.students[0].reports[0].cautions.length)) {
+        order.students.forEach((student) => {
+          student.reports = createReports(student.profile);
+        });
+        writeState(state);
+      }
+    }
+    return order;
   }
 
   function getOrders() {
@@ -214,6 +226,41 @@
             gradeCount: subjectGrades.length,
           };
         }).sort((left, right) => right.score - left.score || right.matchedInterests - left.matchedInterests || left.index - right.index);
+        const nonRecommended = ranked.slice(3);
+        const cautionsList = nonRecommended.map(({ pathway, score, matchedInterests }) => {
+          const weakSubjects = pathway.subjects.filter((subject) => {
+            const val = gradeValues[grades[subject]];
+            return val !== undefined && val <= 2;
+          });
+
+          let reason = "";
+          if (weakSubjects.length > 0) {
+            const subjectDetails = weakSubjects.map((s) => `${s} (Grade ${grades[s]})`).join(", ");
+            reason = `Academic foundation risk in ${subjectDetails}. UNEB A-Level ${pathway.code} requires advanced competence in ${weakSubjects.join(" and ")}; attempting this combination with current performance presents a high risk of failing to obtain university principal passes.`;
+          } else if (selectedInterests.length > 0 && matchedInterests === 0) {
+            reason = `Career and interest divergence. Your declared interests (${selectedInterests.slice(0, 2).join(", ")}) do not align with ${pathway.careers}. Opting for ${pathway.code} diverts your preparation away from the prerequisites of your desired university courses.`;
+          } else {
+            reason = `Lower relative academic fit (${score}% compatibility). Based on your overall grade distribution and profile, ${pathway.code} offers significantly lower competitiveness for national merit university admissions compared to your top recommendations.`;
+          }
+
+          return {
+            code: pathway.code,
+            subjects: pathway.subjects,
+            score,
+            weakSubjects,
+            reason,
+          };
+        });
+
+        const sortedCautions = cautionsList.sort((a, b) => {
+          if (b.weakSubjects.length !== a.weakSubjects.length) {
+            return b.weakSubjects.length - a.weakSubjects.length;
+          }
+          return a.score - b.score;
+        });
+
+        const cautions = sortedCautions.slice(0, 2);
+
         return {
           school,
           availabilityNote: `Common combinations to discuss with ${school}. Confirm which combinations the school currently offers.`,
@@ -229,7 +276,7 @@
                 ? `${pathway.reason} Your entered grades were considered in this illustrative match.`
                 : pathway.reason,
           })),
-          cautions: [],
+          cautions,
         };
       });
     return reports;

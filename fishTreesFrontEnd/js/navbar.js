@@ -10,6 +10,7 @@ const pages = [
   ["Home", "index.html", "home"],
   ["About", "about.html", "about"],
   ["Recommendations", "recommendations.html", "recommendations"],
+  ["Payment", "payment.html", "payment"],
   ["Contact", "contact.html", "contact"]
 ];
 

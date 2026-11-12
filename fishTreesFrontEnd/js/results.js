@@ -99,15 +99,45 @@ function renderSchoolReport(report, container, studentName) {
     const cautions = document.createElement("section");
     cautions.className = "caution-section";
     const cautionHeading = document.createElement("h3");
-    cautionHeading.textContent = "Lower-priority options to review carefully";
+    cautionHeading.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>Risked Combinations (Not Recommended)';
     cautions.append(cautionHeading);
     report.cautions.forEach((item) => {
-      const note = document.createElement("p");
-      note.textContent = `${item.code} (${item.subjects.join(", ")}): ${item.reason}`;
-      cautions.append(note);
+      const card = document.createElement("div");
+      card.className = "caution-item";
+
+      const header = document.createElement("div");
+      header.className = "caution-item-header";
+
+      const codeSpan = document.createElement("span");
+      codeSpan.className = "caution-code";
+      codeSpan.textContent = `${item.code} (${item.subjects.join(", ")})`;
+
+      const badge = document.createElement("span");
+      badge.className = "caution-badge";
+      badge.textContent = "High Risk";
+
+      header.append(codeSpan, badge);
+
+      const label = document.createElement("div");
+      label.className = "caution-reason-label";
+      label.textContent = "Why this combination is not recommended:";
+
+      const reasonText = document.createElement("p");
+      reasonText.className = "caution-reason";
+      reasonText.textContent = item.reason;
+
+      card.append(header, label, reasonText);
+      cautions.append(card);
+
       exportRows.push({
-        Student: studentName, School: report.school, Rank: "Review", Combination: item.code,
-        Subjects: item.subjects.join(", "), "Fit score": "", "Career directions": "", Reason: item.reason,
+        Student: studentName,
+        School: report.school,
+        Rank: "Risked / Not Recommended",
+        Combination: item.code,
+        Subjects: item.subjects.join(", "),
+        "Fit score": item.score ? `${item.score}%` : "",
+        "Career directions": "",
+        Reason: item.reason,
       });
     });
     section.append(cautions);
